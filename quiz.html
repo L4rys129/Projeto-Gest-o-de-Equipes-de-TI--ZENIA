@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZenIA – Avaliação</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif}
+
+body.fem  {--bg:#f0eeff;--bg2:#fce7f3;--primary:#7c3aed;--primary2:#ec4899;--accent:#a78bfa;--card:#fff;--border:#ede9fe;--text:#1a0a3d;--muted:#9ca3af;--cp-ans-bg:#fce7f3;--cp-ans-c:#be185d;--cp-esg-bg:#ede9fe;--cp-esg-c:#6d28d9;--cp-est-bg:#fef3c7;--cp-est-c:#92400e;--bar1:linear-gradient(135deg,#f472b6,#ec4899);--bar2:linear-gradient(135deg,#c084fc,#7c3aed);--bar3:linear-gradient(135deg,#fbbf24,#f59e0b);--grad:linear-gradient(135deg,#a78bfa,#7c3aed)}
+body.masc {--bg:#070b14;--bg2:#0d1220;--primary:#6366f1;--primary2:#34d399;--accent:#818cf8;--card:#0d1220;--border:rgba(255,255,255,.08);--text:#fff;--muted:rgba(255,255,255,.4);--cp-ans-bg:rgba(99,102,241,.15);--cp-ans-c:#a5b4fc;--cp-esg-bg:rgba(52,211,153,.15);--cp-esg-c:#6ee7b7;--cp-est-bg:rgba(251,191,36,.1);--cp-est-c:#fbbf24;--bar1:linear-gradient(135deg,#818cf8,#6366f1);--bar2:linear-gradient(135deg,#60a5fa,#3b82f6);--bar3:linear-gradient(135deg,#34d399,#059669);--grad:linear-gradient(135deg,#6366f1,#34d399)}
+body.neutro{--bg:#f8f7ff;--bg2:#ede9fe;--primary:#7c3aed;--primary2:#059669;--accent:#a78bfa;--card:#fff;--border:#ede9fe;--text:#1a0a3d;--muted:#9ca3af;--cp-ans-bg:#fce7f3;--cp-ans-c:#be185d;--cp-esg-bg:#ede9fe;--cp-esg-c:#6d28d9;--cp-est-bg:#d1fae5;--cp-est-c:#065f46;--bar1:linear-gradient(135deg,#c084fc,#a78bfa);--bar2:linear-gradient(135deg,#a78bfa,#7c3aed);--bar3:linear-gradient(135deg,#6ee7b7,#059669);--grad:linear-gradient(135deg,#a78bfa,#7c3aed)}
+
+body{background:var(--bg);color:var(--text)}
+
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--grad);border-radius:10px;display:grid;place-items:center;font-size:18px}
+.logo-name{font-family:'Fraunces',serif;font-weight:900;font-size:20px;color:var(--primary)}
+.btn-top{padding:9px 18px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--primary);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+
+.wrap{max-width:680px;margin:0 auto;padding:36px 16px 80px}
+
+/* PROGRESS */
+.prog-area{margin-bottom:28px}
+.prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
+.prog-label{font-size:13px;font-weight:600;color:var(--primary)}
+.prog-pct{font-size:13px;color:var(--muted);font-weight:500}
+.prog-bar{height:10px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:var(--grad);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.xp-row{display:flex;align-items:center;gap:10px;margin-top:8px}
+.xp-lbl{font-size:12px;font-weight:700;color:#f59e0b;white-space:nowrap}
+.xp-bar{flex:1;height:6px;background:#fde68a;border-radius:99px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:99px;transition:width .5s ease}
+.xp-pts{font-size:12px;font-weight:700;color:#f59e0b}
+
+/* CAT PILL */
+.cat-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:16px}
+.cp-ans{background:var(--cp-ans-bg);color:var(--cp-ans-c)}
+.cp-esg{background:var(--cp-esg-bg);color:var(--cp-esg-c)}
+.cp-est{background:var(--cp-est-bg);color:var(--cp-est-c)}
+
+/* QUESTION CARD */
+.q-card{background:var(--card);border-radius:24px;padding:32px;box-shadow:0 4px 24px rgba(124,58,237,.08);border:1px solid var(--border);animation:slideIn .35s cubic-bezier(.4,0,.2,1) both}
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.q-icon{font-size:42px;margin-bottom:10px;display:block}
+.q-num{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:6px}
+.q-text{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:24px}
+
+/* OPTIONS */
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-radius:14px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;font-weight:500;color:var(--text);transition:all .18s ease}
+.opt:hover{border-color:var(--accent);transform:translateX(4px)}
+.opt.sel{border-color:var(--primary);background:var(--border);font-weight:600}
+.opt-left{display:flex;align-items:center;gap:10px}
+.opt-emoji{font-size:18px}
+.opt-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--border);color:var(--primary)}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+.btn-prev{padding:11px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--primary);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+.btn-next{padding:12px 32px;border-radius:12px;border:none;background:var(--grad);color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,.3);transition:opacity .2s,transform .15s}
+.btn-next:hover{opacity:.9;transform:translateY(-1px)}
+.btn-next:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+/* TOAST */
+.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-16px);background:#1a0a3d;color:white;padding:9px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── RESULTADO ── */
+#scr-result{display:none}
+.disclaimer{background:rgba(251,191,36,.12);border:1px solid #fbbf24;border-radius:14px;padding:14px 18px;font-size:13px;line-height:1.6;margin-bottom:20px;display:flex;gap:10px}
+body.masc .disclaimer{color:#fbbf24}
+body.fem .disclaimer,.body.neutro .disclaimer{color:#92400e}
+
+.res-card{background:var(--card);border-radius:24px;padding:28px 32px;border:1px solid var(--border);box-shadow:0 4px 24px rgba(124,58,237,.08);margin-bottom:20px}
+.res-top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.res-icon{font-size:52px}
+.res-tag{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.res-title{font-family:'Fraunces',serif;font-size:30px;font-weight:900;color:var(--text)}
+.res-desc{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.6}
+
+.pct-list{display:flex;flex-direction:column;gap:16px}
+.pct-item{}
+.pct-head{display:flex;justify-content:space-between;margin-bottom:6px}
+.pct-name{font-size:14px;font-weight:600;color:var(--text)}
+.pct-val{font-size:14px;font-weight:700;color:var(--primary)}
+.pct-track{height:14px;background:var(--border);border-radius:99px;overflow:hidden}
+.pct-fill{height:100%;border-radius:99px;transition:width 1.3s cubic-bezier(.4,0,.2,1);width:0%}
+.pct-fill.ans{background:var(--bar1)}
+.pct-fill.esg{background:var(--bar2)}
+.pct-fill.est{background:var(--bar3)}
+.pct-level{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* ── ATIVIDADES ── */
+#scr-ativ{display:none}
+.ativ-header{text-align:center;margin-bottom:28px}
+.ativ-header h2{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--text)}
+.ativ-header p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.6}
+.ativ-xp-row{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#fef3c7,#fde68a);padding:7px 18px;border-radius:99px;font-size:13px;font-weight:700;color:#92400e;margin-top:12px}
+
+/* HIGHLIGHT (atividade recomendada) */
+.ativ-highlight{background:var(--card);border:2px solid var(--primary);border-radius:20px;padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden}
+.ativ-highlight::before{content:'⭐ RECOMENDADO PARA VOCÊ';position:absolute;top:12px;right:16px;font-size:10px;font-weight:700;letter-spacing:.8px;color:var(--primary);background:var(--border);padding:3px 10px;border-radius:99px}
+.ativ-highlight-inner{display:flex;align-items:center;gap:16px;margin-top:8px}
+.ativ-hl-icon{font-size:42px}
+.ativ-hl-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
+.ativ-hl-why{font-size:13px;color:var(--muted);line-height:1.5}
+.ativ-hl-source{font-size:11px;color:var(--accent);margin-top:6px;font-style:italic}
+
+.ativ-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.ativ-card{background:var(--card);border-radius:18px;padding:20px;border:1.5px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s;text-align:center;position:relative}
+.ativ-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,58,237,.12)}
+.ativ-card.done{border-color:var(--primary);opacity:.7}
+.ativ-card-icon{font-size:36px;margin-bottom:8px}
+.ativ-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.ativ-card-sub{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:6px}
+.ativ-card-source{font-size:10px;color:var(--accent);font-style:italic;margin-bottom:8px}
+.ativ-card-pts{display:inline-block;font-size:11px;font-weight:700;color:var(--primary);background:var(--border);padding:3px 10px;border-radius:99px}
+.ativ-done-lbl{display:none;font-size:11px;font-weight:700;color:#059669}
+.ativ-card.done .ativ-done-lbl{display:block}
+.ativ-card.done .ativ-card-pts{display:none}
+
+/* FINAL */
+.final-card{background:var(--card);border-radius:24px;padding:36px;text-align:center;border:1px solid var(--border);margin-top:16px;display:none}
+.final-emoji{font-size:64px;display:block;margin-bottom:12px;animation:bounce 1.5s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.final-title{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--text);margin-bottom:8px}
+.final-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+.final-xp{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#fef3c7,#fde68a);padding:10px 24px;border-radius:99px;font-size:15px;font-weight:700;color:#92400e;margin-bottom:24px}
+.btn-dash{display:inline-block;padding:14px 32px;border-radius:14px;border:none;background:var(--grad);color:white;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(124,58,237,.3);transition:transform .2s;margin:6px}
+.btn-dash:hover{transform:translateY(-2px)}
+.btn-rec{display:inline-block;padding:14px 32px;border-radius:14px;border:1.5px solid var(--primary);background:transparent;color:var(--primary);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;margin:6px}
+.btn-rec:hover{background:var(--border)}
+
+/* ── MODAIS ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--card);border-radius:24px;padding:32px;max-width:480px;width:100%;text-align:center;position:relative;animation:slideIn .3s ease both;max-height:90vh;overflow-y:auto}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--border);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px;color:var(--text)}
+.modal h3{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);margin-bottom:6px}
+.modal-source{font-size:11px;color:var(--accent);font-style:italic;margin-bottom:10px}
+.modal p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.btn-ativ{padding:12px 28px;border-radius:12px;border:none;background:var(--grad);color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-top:8px}
+.btn-ativ:hover{opacity:.9}
+
+/* BREATHING */
+.breath-wrap{margin:16px auto}
+.breath-circle{width:130px;height:130px;border-radius:50%;background:var(--grad);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;transition:transform 4s ease-in-out;cursor:pointer}
+.breath-circle.inhale{transform:scale(1.5)}
+.breath-circle.exhale{transform:scale(1)}
+.breath-phase{font-size:18px;font-weight:700;color:var(--primary)}
+.breath-info{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* PMR */
+.pmr-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
+.pmr-step{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border);cursor:pointer;transition:all .2s}
+.pmr-step.active{border-color:var(--primary);background:var(--border)}
+.pmr-step.done{border-color:#059669;background:rgba(5,150,105,.08)}
+.pmr-num{width:26px;height:26px;border-radius:50%;background:var(--border);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--primary);flex-shrink:0}
+.pmr-step.done .pmr-num{background:#059669;color:white}
+.pmr-txt{font-size:13px;font-weight:500;color:var(--text)}
+.pmr-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.pmr-timer{font-size:28px;font-weight:900;color:var(--primary);margin:8px 0}
+
+/* GROUNDING */
+.ground-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
+.ground-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border);cursor:pointer;transition:all .2s}
+.ground-item.done{border-color:var(--primary);background:var(--border)}
+.ground-num{width:28px;height:28px;border-radius:50%;background:var(--border);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--primary);flex-shrink:0}
+.ground-item.done .ground-num{background:var(--primary);color:white}
+
+/* JOURNAL */
+.journal-prompts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
+.journal-prompt{padding:10px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:13px;color:var(--muted);font-style:italic}
+textarea.journal-area{width:100%;min-height:100px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg);padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;resize:vertical}
+textarea.journal-area:focus{border-color:var(--primary)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><div class="logo-icon">🧠</div><span class="logo-name">ZenIA</span></div>
+  <button class="btn-top" onclick="location.href='cadastro.html'">↩ Sair</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ══ TELA 1: QUIZ ══ -->
+  <div id="scr-quiz">
+    <div class="prog-area">
+      <div class="prog-top">
+        <span class="prog-label" id="prog-label">Pergunta 1 de 15</span>
+        <span class="prog-pct" id="prog-pct">0%</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="xp-row">
+        <span class="xp-lbl">⭐ XP</span>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+        <span class="xp-pts" id="xp-pts">0 pts</span>
+      </div>
+    </div>
+    <div id="q-cat" class="cat-pill cp-ans"></div>
+    <div class="q-card">
+      <span class="q-icon" id="q-icon"></span>
+      <div class="q-num" id="q-num"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <div class="nav">
+      <button class="btn-prev" id="btn-prev" onclick="prevQ()">← Anterior</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Próxima →</button>
+    </div>
+  </div>
+
+  <!-- ══ TELA 2: RESULTADO ══ -->
+  <div id="scr-result">
+    <div class="disclaimer">⚠️ <span><strong>Atenção:</strong> Este resultado é <strong>apenas indicativo</strong> e não substitui uma avaliação profissional. Caso identifique sintomas persistentes, procure um psicólogo ou médico de sua confiança.</span></div>
+    <div class="res-card">
+      <div class="res-top">
+        <div class="res-icon" id="res-icon"></div>
+        <div>
+          <div class="res-tag">SEU RESULTADO</div>
+          <div class="res-title" id="res-title"></div>
+          <div class="res-desc" id="res-desc"></div>
+        </div>
+      </div>
+      <div class="pct-list">
+        <div class="pct-item">
+          <div class="pct-head"><span class="pct-name">😰 Ansiedade</span><span class="pct-val" id="v-ans">0%</span></div>
+          <div class="pct-track"><div class="pct-fill ans" id="b-ans"></div></div>
+          <div class="pct-level" id="l-ans"></div>
+        </div>
+        <div class="pct-item">
+          <div class="pct-head"><span class="pct-name">🪫 Esgotamento</span><span class="pct-val" id="v-esg">0%</span></div>
+          <div class="pct-track"><div class="pct-fill esg" id="b-esg"></div></div>
+          <div class="pct-level" id="l-esg"></div>
+        </div>
+        <div class="pct-item">
+          <div class="pct-head"><span class="pct-name">🤯 Estresse</span><span class="pct-val" id="v-est">0%</span></div>
+          <div class="pct-track"><div class="pct-fill est" id="b-est"></div></div>
+          <div class="pct-level" id="l-est"></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <button class="btn-next" style="margin:0 auto" onclick="showAtiv()">Ver atividades para você →</button>
+    </div>
+  </div>
+
+  <!-- ══ TELA 3: ATIVIDADES ══ -->
+  <div id="scr-ativ">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <button class="btn-top" onclick="irDash()" style="font-size:13px">← Ir para o painel</button>
+      <div class="ativ-xp-row" style="margin:0">⭐ <span id="ativ-xp">0</span> XP conquistados</div>
+    </div>
+    <div class="ativ-header">
+      <h2>Atividades para você 🌿</h2>
+      <p>Com base no seu resultado, separamos o que a ciência indica para o que você está sentindo agora.</p>
+    </div>
+
+    <!-- DESTAQUE -->
+    <div class="ativ-highlight" id="ativ-highlight">
+      <div class="ativ-highlight-inner">
+        <div class="ativ-hl-icon" id="hl-icon"></div>
+        <div>
+          <div class="ativ-hl-title" id="hl-title"></div>
+          <div class="ativ-hl-why" id="hl-why"></div>
+          <div class="ativ-hl-source" id="hl-source"></div>
+        </div>
+      </div>
+      <button class="btn-ativ" id="hl-btn" style="margin-top:16px;width:100%"></button>
+    </div>
+
+    <!-- GRID 4 atividades -->
+    <div class="ativ-grid">
+      <div class="ativ-card" id="ac-breath" onclick="openModal('breath')">
+        <div class="ativ-card-icon">🌬️</div>
+        <div class="ativ-card-title">Respiração 4-7-8</div>
+        <div class="ativ-card-sub">Ativa o nervo vago e reduz cortisol em minutos</div>
+        <div class="ativ-card-source">Dr. Andrew Weil — Harvard Medical School</div>
+        <div class="ativ-card-pts">+20 XP</div>
+        <div class="ativ-done-lbl">✅ Concluído</div>
+      </div>
+      <div class="ativ-card" id="ac-ground" onclick="openModal('ground')">
+        <div class="ativ-card-icon">🌱</div>
+        <div class="ativ-card-title">Grounding 5-4-3-2-1</div>
+        <div class="ativ-card-sub">Ancora a mente no presente, interrompe espiral de pensamentos</div>
+        <div class="ativ-card-source">Terapia Cognitivo-Comportamental (TCC)</div>
+        <div class="ativ-card-pts">+20 XP</div>
+        <div class="ativ-done-lbl">✅ Concluído</div>
+      </div>
+      <div class="ativ-card" id="ac-pmr" onclick="openModal('pmr')">
+        <div class="ativ-card-icon">💪</div>
+        <div class="ativ-card-title">Relaxamento Muscular</div>
+        <div class="ativ-card-sub">Tensionar e relaxar grupos musculares libera tensão acumulada</div>
+        <div class="ativ-card-source">Edmund Jacobson — validado por centenas de estudos</div>
+        <div class="ativ-card-pts">+25 XP</div>
+        <div class="ativ-done-lbl">✅ Concluído</div>
+      </div>
+      <div class="ativ-card" id="ac-journal" onclick="openModal('journal')">
+        <div class="ativ-card-icon">📓</div>
+        <div class="ativ-card-title">Diário guiado</div>
+        <div class="ativ-card-sub">Escrever preocupações por 15 min/dia reduz ansiedade em até 33%</div>
+        <div class="ativ-card-source">Penn State Worry Questionnaire (PSWQ)</div>
+        <div class="ativ-card-pts">+15 XP</div>
+        <div class="ativ-done-lbl">✅ Concluído</div>
+      </div>
+    </div>
+
+    <div class="final-card" id="final-card">
+      <span class="final-emoji">🎉</span>
+      <div class="final-title">Parabéns!</div>
+      <div class="final-sub">Você completou todas as atividades. Pequenos passos fazem uma grande diferença. Continue cuidando de você!</div>
+      <div class="final-xp" id="final-xp">⭐ 0 XP total</div>
+      <br>
+      <button class="btn-dash" onclick="irDash()">Ver meu painel →</button>
+      <button class="btn-rec" onclick="irRec()">📋 Ver recomendações completas</button>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- ══ MODAL: RESPIRAÇÃO ══ -->
+<div class="modal-bg" id="modal-breath">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('breath')">✕</button>
+    <h3>🌬️ Respiração 4-7-8</h3>
+    <div class="modal-source">Dr. Andrew Weil · Harvard Medical School · Para ansiedade aguda</div>
+    <p>Inspire por 4s, segure por 7s, expire por 8s. Ativa o nervo vago e reduz o cortisol em minutos.</p>
+    <div class="breath-wrap">
+      <div class="breath-circle" id="breath-circle">Toque para<br>iniciar</div>
+      <div class="breath-phase" id="breath-phase">Pronto?</div>
+      <div class="breath-info">Ciclo <span id="breath-cycle">0</span> de 3</div>
+    </div>
+    <button class="btn-ativ" id="btn-breath" onclick="startBreath()">▶ Iniciar</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: GROUNDING ══ -->
+<div class="modal-bg" id="modal-ground">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('ground')">✕</button>
+    <h3>🌱 Técnica 5-4-3-2-1</h3>
+    <div class="modal-source">Terapia Cognitivo-Comportamental (TCC) · Para ansiedade e estresse</div>
+    <p>Ancore-se no presente identificando cada item. Toque para marcar conforme for percebendo.</p>
+    <div class="ground-list">
+      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">5</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que você <strong>vê</strong> agora</div><div style="font-size:11px;color:var(--muted)">Olhe ao redor e nomeie mentalmente</div></div></div>
+      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">4</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que você pode <strong>tocar</strong></div><div style="font-size:11px;color:var(--muted)">Sinta a textura, temperatura</div></div></div>
+      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">3</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que você <strong>ouve</strong></div><div style="font-size:11px;color:var(--muted)">Preste atenção aos sons ao redor</div></div></div>
+      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">2</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que consegue <strong>cheirar</strong></div><div style="font-size:11px;color:var(--muted)">Identifique odores presentes</div></div></div>
+      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">1</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisa que pode <strong>saborear</strong></div><div style="font-size:11px;color:var(--muted)">Perceba o gosto na boca</div></div></div>
+    </div>
+    <div id="ground-ok" style="display:none;color:#059669;font-weight:700;font-size:14px;margin-bottom:10px">✅ Você está presente agora.</div>
+    <button class="btn-ativ" onclick="completeAtiv('ground')">Concluir +20 XP</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: PMR ══ -->
+<div class="modal-bg" id="modal-pmr">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('pmr')">✕</button>
+    <h3>💪 Relaxamento Muscular Progressivo</h3>
+    <div class="modal-source">Edmund Jacobson (1929) · Validado por centenas de estudos · Para esgotamento e estresse</div>
+    <p>Tensione cada grupo muscular por 5 segundos e solte. Siga o timer.</p>
+    <div class="pmr-steps" id="pmr-steps">
+      <div class="pmr-step" data-idx="0"><div class="pmr-num">1</div><div><div class="pmr-txt">Punhos</div><div class="pmr-sub">Feche os punhos com força</div></div></div>
+      <div class="pmr-step" data-idx="1"><div class="pmr-num">2</div><div><div class="pmr-txt">Ombros</div><div class="pmr-sub">Eleve os ombros até as orelhas</div></div></div>
+      <div class="pmr-step" data-idx="2"><div class="pmr-num">3</div><div><div class="pmr-txt">Abdômen</div><div class="pmr-sub">Contraia o abdômen com força</div></div></div>
+      <div class="pmr-step" data-idx="3"><div class="pmr-num">4</div><div><div class="pmr-txt">Pernas</div><div class="pmr-sub">Estique as pernas e contraia</div></div></div>
+      <div class="pmr-step" data-idx="4"><div class="pmr-num">5</div><div><div class="pmr-txt">Rosto</div><div class="pmr-sub">Feche os olhos com força</div></div></div>
+    </div>
+    <div class="pmr-timer" id="pmr-timer" style="display:none">5</div>
+    <button class="btn-ativ" id="btn-pmr" onclick="startPMR()">▶ Iniciar</button>
+  </div>
+</div>
+
+<!-- ══ MODAL: DIÁRIO ══ -->
+<div class="modal-bg" id="modal-journal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('journal')">✕</button>
+    <h3>📓 Diário guiado</h3>
+    <div class="modal-source">Penn State Worry Questionnaire · Reduz ansiedade em até 33%</div>
+    <p>Responda as perguntas abaixo com honestidade. Não há certo ou errado.</p>
+    <div class="journal-prompts">
+      <div class="journal-prompt">💭 O que está te pesando agora?</div>
+      <div class="journal-prompt">🎯 O que disso está no seu controle?</div>
+      <div class="journal-prompt">🌱 Uma coisa pequena que você pode fazer hoje?</div>
+    </div>
+    <textarea class="journal-area" id="journal-text" placeholder="Escreva livremente aqui..."></textarea>
+    <br>
+    <button class="btn-ativ" onclick="completeJournal()" style="margin-top:12px">Salvar +15 XP</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── TEMA ──────────────────────────────────────────────────────
+const gender = localStorage.getItem('zenia_gender') || 'feminino';
+document.body.className = {feminino:'fem', masculino:'masc', neutro:'neutro'}[gender] || 'fem';
+
+// ── PERGUNTAS ─────────────────────────────────────────────────
+const Qs = [
+  {cat:'ans',icon:'😰',text:'Com que frequência você sente um aperto no peito, falta de ar ou coração acelerado sem causa física aparente?'},
+  {cat:'ans',icon:'🌀',text:'Você costuma ter pensamentos acelerados ou preocupações que não consegue desligar, mesmo quando quer descansar?'},
+  {cat:'ans',icon:'😬',text:'Com que frequência você evita situações ou tarefas por medo de que algo ruim aconteça?'},
+  {cat:'ans',icon:'😴',text:'Você tem dificuldade para adormecer ou acorda no meio da noite com pensamentos perturbadores?'},
+  {cat:'ans',icon:'🫀',text:'Com que frequência pequenas incertezas do dia a dia te causam preocupação desproporcional?'},
+  {cat:'esg',icon:'🪫',text:'Você acorda já se sentindo cansado, mesmo após uma noite de sono?'},
+  {cat:'esg',icon:'😶',text:'Com que frequência você sente que perdeu o interesse ou a motivação por coisas que antes te animavam?'},
+  {cat:'esg',icon:'🧊',text:'Você sente indiferença emocional — como se não conseguisse mais se importar com o que acontece ao redor?'},
+  {cat:'esg',icon:'📉',text:'Você sente que seu rendimento e produtividade caíram, mesmo sem saber exatamente por quê?'},
+  {cat:'esg',icon:'🏠',text:'Com que frequência você prefere se isolar das pessoas, mesmo daquelas que você gosta?'},
+  {cat:'est',icon:'🤯',text:'Você sente que tem responsabilidades demais e tempo de menos para dar conta de tudo?'},
+  {cat:'est',icon:'😤',text:'Com que frequência pequenas situações do dia a dia te irritam mais do que deveriam?'},
+  {cat:'est',icon:'⏳',text:'Você sente que está "no limite" e que qualquer nova demanda pode te fazer perder o controle?'},
+  {cat:'est',icon:'🎭',text:'Com que frequência você sente que precisa esconder como está se sentindo para parecer bem para os outros?'},
+  {cat:'est',icon:'💆',text:'Você consegue relaxar e desligar completamente dos problemas nos seus momentos de descanso?', reversed:true},
+];
+
+const OPTS = [
+  {label:'Nunca',          emoji:'😌', score:0},
+  {label:'Raramente',      emoji:'🙂', score:1},
+  {label:'Às vezes',       emoji:'😐', score:2},
+  {label:'Frequentemente', emoji:'😟', score:3},
+  {label:'Sempre',         emoji:'😰', score:4},
+];
+
+// ── ESTADO ────────────────────────────────────────────────────
+let cur=0, answers=new Array(Qs.length).fill(null), xp=0, activXp=0;
+let done={breath:false,ground:false,pmr:false,journal:false};
+let pcts={ans:0,esg:0,est:0};
+
+// ── QUIZ ─────────────────────────────────────────────────────
+function render(){
+  const q=Qs[cur], total=Qs.length, pct=Math.round((cur/total)*100);
+  document.getElementById('prog-label').textContent=`Pergunta ${cur+1} de ${total}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  updateXP();
+  const catMap={ans:['cp-ans','😰 Ansiedade'],esg:['cp-esg','🪫 Esgotamento'],est:['cp-est','🤯 Estresse']};
+  const pill=document.getElementById('q-cat');
+  pill.className='cat-pill '+catMap[q.cat][0];
+  pill.textContent=catMap[q.cat][1];
+  document.getElementById('q-icon').textContent=q.icon;
+  document.getElementById('q-num').textContent=`Pergunta ${cur+1} de ${total}`;
+  document.getElementById('q-text').textContent=q.text;
+  const card=document.querySelector('.q-card');
+  card.style.animation='none';card.offsetHeight;card.style.animation='';
+  const container=document.getElementById('opts');
+  container.innerHTML='';
+  OPTS.forEach((o,i)=>{
+    const d=document.createElement('div');
+    d.className='opt'+(answers[cur]===i?' sel':'');
+    d.innerHTML=`<span class="opt-left"><span class="opt-emoji">${o.emoji}</span><span>${o.label}</span></span><span class="opt-badge">${i===0?'0 pts':'+' +(i*2)+' pts'}</span>`;
+    d.onclick=()=>selectAns(i);
+    container.appendChild(d);
+  });
+  document.getElementById('btn-prev').style.visibility=cur===0?'hidden':'visible';
+  const bn=document.getElementById('btn-next');
+  bn.disabled=answers[cur]===null;
+  bn.textContent=cur===Qs.length-1?'Ver resultado ✓':'Próxima →';
+}
+
+function selectAns(i){
+  const was=answers[cur]===null;
+  answers[cur]=i;
+  if(was){xp+=10;showToast('✨ +10 XP');}
+  document.querySelectorAll('.opt').forEach((el,j)=>el.classList.toggle('sel',j===i));
+  document.getElementById('btn-next').disabled=false;
+  updateXP();
+}
+
+function nextQ(){
+  if(answers[cur]===null)return;
+  if(cur===Qs.length-1){showResult();return;}
+  cur++;render();
+}
+function prevQ(){if(cur>0){cur--;render();}}
+function updateXP(){
+  const p=Math.min((xp/150)*100,100);
+  document.getElementById('xp-fill').style.width=p+'%';
+  document.getElementById('xp-pts').textContent=xp+' pts';
+}
+
+// ── RESULTADO ────────────────────────────────────────────────
+function showResult(){
+  const raw={ans:0,esg:0,est:0},cnt={ans:0,esg:0,est:0};
+  Qs.forEach((q,i)=>{
+    const a=answers[i]??0;
+    raw[q.cat]+=(q.reversed?(4-a):a);
+    cnt[q.cat]++;
+  });
+  for(const k in raw) pcts[k]=Math.round((raw[k]/(4*cnt[k]))*100);
+  const avg=Math.round((pcts.ans+pcts.esg+pcts.est)/3);
+  const level=p=>p===0?'Nenhum sinal':p<=30?'Leve':p<=60?'Moderado':'Elevado';
+  const emoji=p=>p===0?'🟢':p<=30?'🟡':p<=60?'🟠':'🔴';
+  document.getElementById('l-ans').textContent=emoji(pcts.ans)+' '+level(pcts.ans);
+  document.getElementById('l-esg').textContent=emoji(pcts.esg)+' '+level(pcts.esg);
+  document.getElementById('l-est').textContent=emoji(pcts.est)+' '+level(pcts.est);
+  let icon,title,desc;
+  if(avg===0){icon='🌟';title='Sem sinais identificados';desc='Seus indicadores estão zerados. Ótimo equilíbrio emocional! Continue assim.';}
+  else if(avg<=30){icon='😊';title='Equilibrado';desc='Você apresenta poucos sinais de sobrecarga. Continue cuidando de você com as atividades abaixo!';}
+  else if(avg<=60){icon='🧐';title='Atenção moderada';desc='Alguns pontos merecem cuidado. As atividades abaixo foram selecionadas para o que você está sentindo.';}
+  else{icon='💪';title='Atenção elevada';desc='Seus resultados indicam sobrecarga emocional significativa. As atividades abaixo podem ajudar — e considere falar com um profissional.';}
+  document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-title').textContent=title;
+  document.getElementById('res-desc').textContent=desc;
+  document.getElementById('scr-quiz').style.display='none';
+  document.getElementById('scr-result').style.display='block';
+  setTimeout(()=>{
+    ['ans','esg','est'].forEach(k=>{
+      document.getElementById('b-'+k).style.width=pcts[k]+'%';
+      document.getElementById('v-'+k).textContent=pcts[k]+'%';
+    });
+  },120);
+  localStorage.setItem('zenia_pcts',JSON.stringify(pcts));
+  localStorage.setItem('zenia_total',avg);
+  localStorage.setItem('zenia_scores',JSON.stringify({ansiedade:Math.round(pcts.ans/4),esgotamento:Math.round(pcts.esg/4),estresse:Math.round(pcts.est/4)}));
+}
+
+// ── ATIVIDADES ────────────────────────────────────────────────
+const ATIV_DATA={
+  breath:{icon:'🌬️',title:'Respiração 4-7-8',why:'Ativa o nervo vago e reduz o cortisol rapidamente — ideal para ansiedade aguda.',source:'Dr. Andrew Weil · Harvard Medical School',modal:'breath'},
+  ground:{icon:'🌱',title:'Grounding 5-4-3-2-1',why:'Ancora a mente no presente e interrompe a espiral de pensamentos ansiosos.',source:'Terapia Cognitivo-Comportamental (TCC)',modal:'ground'},
+  pmr:{icon:'💪',title:'Relaxamento Muscular Progressivo',why:'Libera tensão física acumulada pelo estresse e esgotamento em grupos musculares.',source:'Edmund Jacobson (1929) · Validado por centenas de estudos',modal:'pmr'},
+  journal:{icon:'📓',title:'Diário guiado',why:'Externalizar preocupações reduz a ruminação e traz clareza sobre o que está no seu controle.',source:'Penn State Worry Questionnaire (PSWQ)',modal:'journal'},
+};
+
+function showAtiv(){
+  // decide destaque
+  const top=Object.entries(pcts).sort((a,b)=>b[1]-a[1])[0][0];
+  const hlMap={ans:'breath',esg:'pmr',est:'ground'};
+  const hlKey=pcts.ans===0&&pcts.esg===0&&pcts.est===0?'journal':hlMap[top];
+  const hl=ATIV_DATA[hlKey];
+  document.getElementById('hl-icon').textContent=hl.icon;
+  document.getElementById('hl-title').textContent=hl.title;
+  document.getElementById('hl-why').textContent=hl.why;
+  document.getElementById('hl-source').textContent=hl.source;
+  document.getElementById('hl-btn').textContent='Começar agora →';
+  document.getElementById('hl-btn').onclick=()=>openModal(hl.modal);
+  document.getElementById('scr-result').style.display='none';
+  document.getElementById('scr-ativ').style.display='block';
+  document.getElementById('ativ-xp').textContent=xp+activXp;
+}
+
+function completeAtiv(id){
+  if(done[id])return;
+  done[id]=true;
+  const pts={breath:20,ground:20,pmr:25,journal:15};
+  activXp+=pts[id];
+  document.getElementById('ac-'+id).classList.add('done');
+  document.getElementById('ativ-xp').textContent=xp+activXp;
+  showToast('🎉 +'+pts[id]+' XP!');
+  closeModal(id);
+  if(Object.values(done).every(Boolean)){
+    document.getElementById('final-card').style.display='block';
+    document.getElementById('final-xp').textContent='⭐ '+(xp+activXp)+' XP total';
+    document.getElementById('final-card').scrollIntoView({behavior:'smooth'});
+  }
+}
+
+function irDash(){localStorage.setItem('zenia_xp',xp+activXp);location.href='index.html';}
+function irRec(){localStorage.setItem('zenia_xp',xp+activXp);localStorage.setItem('zenia_goto','recomendacoes');location.href='index.html';}
+
+// ── TOAST ─────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+// ── MODAIS ────────────────────────────────────────────────────
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');if(id==='pmr')initPMR();}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
+
+// RESPIRAÇÃO
+let bCycle=0,bRunning=false;
+function startBreath(){
+  if(bRunning)return;
+  bRunning=true;
+  document.getElementById('btn-breath').style.display='none';
+  bCycle=0;runBreath();
+}
+function runBreath(){
+  if(bCycle>=3){
+    document.getElementById('breath-phase').textContent='✅ Muito bem!';
+    bRunning=false;
+    setTimeout(()=>completeAtiv('breath'),600);
+    return;
+  }
+  bCycle++;
+  document.getElementById('breath-cycle').textContent=bCycle;
+  const c=document.getElementById('breath-circle');
+  const p=document.getElementById('breath-phase');
+  c.textContent='Inspire...';p.textContent='Inspire... (4s)';
+  c.className='breath-circle inhale';
+  setTimeout(()=>{
+    c.textContent='Segure...';p.textContent='Segure... (7s)';
+    setTimeout(()=>{
+      c.textContent='Expire...';p.textContent='Expire... (8s)';
+      c.className='breath-circle exhale';
+      setTimeout(()=>runBreath(),8000);
+    },7000);
+  },4000);
+}
+
+// GROUNDING
+let groundCount=0;
+function checkGround(el){
+  if(el.classList.contains('done'))return;
+  el.classList.add('done');
+  groundCount++;
+  if(groundCount===5)document.getElementById('ground-ok').style.display='block';
+}
+
+// PMR
+let pmrIdx=0,pmrRunning=false,pmrTimer=null;
+function initPMR(){pmrIdx=0;pmrRunning=false;clearInterval(pmrTimer);document.getElementById('pmr-timer').style.display='none';document.getElementById('btn-pmr').style.display='inline-block';}
+function startPMR(){
+  if(pmrRunning)return;
+  pmrRunning=true;
+  document.getElementById('btn-pmr').style.display='none';
+  runPMR();
+}
+function runPMR(){
+  if(pmrIdx>=5){
+    document.getElementById('pmr-timer').style.display='none';
+    setTimeout(()=>completeAtiv('pmr'),500);
+    return;
+  }
+  const steps=document.querySelectorAll('.pmr-step');
+  steps.forEach((s,i)=>s.classList.remove('active'));
+  steps[pmrIdx].classList.add('active');
+  steps[pmrIdx].scrollIntoView({behavior:'smooth',block:'nearest'});
+  let secs=5;
+  const timerEl=document.getElementById('pmr-timer');
+  timerEl.style.display='block';timerEl.textContent=secs;
+  pmrTimer=setInterval(()=>{
+    secs--;timerEl.textContent=secs;
+    if(secs<=0){
+      clearInterval(pmrTimer);
+      steps[pmrIdx].classList.remove('active');
+      steps[pmrIdx].classList.add('done');
+      pmrIdx++;
+      setTimeout(runPMR,600);
+    }
+  },1000);
+}
+
+// DIÁRIO
+function completeJournal(){
+  if(document.getElementById('journal-text').value.trim().length<10){showToast('Escreva um pouquinho mais 😊');return;}
+  completeAtiv('journal');
+}
+
+render();
+</script>
+</body>
+</html>

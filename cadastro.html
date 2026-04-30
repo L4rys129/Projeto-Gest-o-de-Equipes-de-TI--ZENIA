@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZenIA – Criar conta</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,800;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--purple:#7C3AED;--pink:#F472B6;--pink2:#EC4899;--off:#F8F7FF;--muted:#9CA3AF;--border:#E5E3F0}
+html,body{height:100%;font-family:'DM Sans',sans-serif}
+.screen{display:none;width:100%;min-height:100vh}
+.screen.active{display:flex}
+
+/* SIGNUP */
+#signup{
+  background:linear-gradient(135deg,#1a0a3d 0%,#2D1B69 40%,#7c2d9f 70%,#c46bbf 100%);
+  align-items:center;justify-content:center;padding:32px 16px;position:relative;overflow:hidden
+}
+#signup::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 600px 400px at 20% 80%,rgba(244,114,182,.15) 0%,transparent 60%),
+             radial-gradient(ellipse 400px 400px at 80% 20%,rgba(124,58,237,.2) 0%,transparent 60%)
+}
+.star{position:absolute;width:4px;height:4px;border-radius:50%;background:white;animation:twinkle 3s infinite}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+.card{
+  display:flex;flex-direction:row;   /* ROW = lado a lado */
+  width:100%;max-width:960px;
+  border-radius:28px;overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.45);
+  animation:up .7s ease both;position:relative;z-index:1
+}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAINEL ROXO — ESQUERDA */
+.panel-roxo{
+  width:50%;
+  background:linear-gradient(160deg,rgba(45,27,105,.92) 0%,rgba(74,43,140,.75) 100%);
+  backdrop-filter:blur(20px);
+  padding:52px 44px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden
+}
+.panel-roxo::after{
+  content:'';position:absolute;bottom:-60px;left:-40px;
+  width:300px;height:300px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(236,72,153,.35) 0%,transparent 70%)
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#F472B6,#7C3AED);border-radius:10px;display:grid;place-items:center;font-size:20px}
+.logo-name{font-family:'Fraunces',serif;font-weight:800;font-size:22px;color:white;letter-spacing:-.5px}
+.hero-text{margin-top:36px}
+.hero-text h1{font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:white;line-height:1.15;letter-spacing:-1px}
+.hero-text h1 em{font-style:italic;color:#F472B6}
+.hero-text p{margin-top:16px;font-size:14px;color:rgba(255,255,255,.7);line-height:1.7}
+.features{margin-top:28px;display:flex;flex-direction:column;gap:16px}
+.feature{display:flex;align-items:flex-start;gap:14px}
+.feat-icon{width:38px;height:38px;flex-shrink:0;background:rgba(255,255,255,.1);border-radius:10px;display:grid;place-items:center;font-size:17px;border:1px solid rgba(255,255,255,.15)}
+.feat-text strong{display:block;font-size:13px;font-weight:600;color:white}
+.feat-text span{font-size:12px;color:rgba(255,255,255,.55)}
+.brain-art{font-size:90px;text-align:center;margin-top:20px;filter:drop-shadow(0 0 30px rgba(244,114,182,.6));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* PAINEL BRANCO — DIREITA */
+.panel-branco{
+  width:50%;
+  background:white;
+  padding:48px 44px;
+  display:flex;flex-direction:column;justify-content:center
+}
+.form-title{font-family:'Fraunces',serif;font-size:26px;font-weight:700;color:#1a0a3d;letter-spacing:-.5px}
+.form-sub{font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:24px}
+
+.field{margin-bottom:14px;position:relative}
+.field-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--purple);pointer-events:none}
+.field input{
+  width:100%;padding:12px 14px 12px 42px;
+  border:1.5px solid var(--border);border-radius:12px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:#1a0a3d;
+  background:var(--off);outline:none;transition:border-color .2s,box-shadow .2s
+}
+.field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,237,.1);background:white}
+.eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted)}
+
+.pwd-hint{font-size:11px;color:var(--muted);margin-top:-8px;margin-bottom:10px}
+.strength-bar{height:4px;border-radius:4px;background:var(--border);overflow:hidden;margin-bottom:14px}
+.strength-fill{height:100%;width:0%;background:#f87171;border-radius:4px;transition:width .3s,background .3s}
+
+.gender-label{font-size:12px;color:var(--muted);margin-bottom:6px}
+.gender-group{display:flex;gap:8px;margin-bottom:14px}
+.gender-btn{
+  flex:1;padding:10px 6px;border:1.5px solid var(--border);border-radius:12px;
+  background:var(--off);font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:500;
+  color:#555;cursor:pointer;transition:all .2s;text-align:center
+}
+.gender-btn:hover{border-color:var(--purple);color:var(--purple)}
+.gender-btn.sel{border-color:var(--purple);background:rgba(124,58,237,.08);color:var(--purple);font-weight:600}
+
+.btn-primary{
+  width:100%;padding:14px;
+  background:linear-gradient(135deg,var(--pink2),var(--purple));
+  color:white;border:none;border-radius:14px;
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;
+  transition:opacity .2s,transform .15s;letter-spacing:.3px
+}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+
+
+.login-link{text-align:center;margin-top:16px;font-size:13px;color:var(--muted)}
+.login-link a{color:var(--purple);font-weight:600;text-decoration:none}
+
+/* HOME SCREENS */
+.home-screen{display:none;flex-direction:column;min-height:100vh;animation:fadeIn .6s ease both}
+.home-screen.active{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Feminino */
+#home-feminino{background:linear-gradient(160deg,#fff0f6 0%,#fce7f3 40%,#ede9fe 100%)}
+#home-feminino .hdr{background:linear-gradient(90deg,#ec4899,#a855f7);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+#home-feminino .hdr .hn{color:white;font-family:'Fraunces',serif;font-size:20px;font-weight:800}
+#home-feminino .hdr nav a{color:rgba(255,255,255,.85);font-size:14px;font-weight:500;text-decoration:none;margin-left:20px}
+#home-feminino .hero{padding:60px 48px 40px;display:flex;align-items:center;gap:48px}
+#home-feminino .hero h2{font-family:'Fraunces',serif;font-size:46px;font-weight:800;color:#6d1b7b;line-height:1.1;letter-spacing:-1.5px}
+#home-feminino .hero h2 em{color:#ec4899;font-style:italic}
+#home-feminino .hero p{color:#9c4d7b;font-size:15px;margin-top:16px;line-height:1.7;max-width:380px}
+#home-feminino .hero .cta{display:inline-block;margin-top:28px;padding:14px 32px;background:linear-gradient(135deg,#ec4899,#a855f7);color:white;border-radius:50px;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 8px 24px rgba(236,72,153,.35);transition:transform .2s}
+#home-feminino .hero .cta:hover{transform:translateY(-2px)}
+#home-feminino .hero .emoji{font-size:130px;filter:drop-shadow(0 0 40px rgba(236,72,153,.4))}
+#home-feminino .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 48px 48px}
+#home-feminino .card2{background:white;border-radius:20px;padding:28px 24px;box-shadow:0 4px 20px rgba(236,72,153,.1);border:1px solid rgba(236,72,153,.12);transition:transform .2s}
+#home-feminino .card2:hover{transform:translateY(-4px)}
+#home-feminino .card2 .ci{font-size:36px;margin-bottom:12px}
+#home-feminino .card2 h3{font-family:'Fraunces',serif;font-size:17px;color:#6d1b7b;margin-bottom:6px}
+#home-feminino .card2 p{font-size:13px;color:#b06090;line-height:1.6}
+
+/* Masculino */
+#home-masculino{background:#0d1117}
+#home-masculino .hdr{background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+#home-masculino .hdr .hn{color:#60a5fa;font-family:'Fraunces',serif;font-size:20px;font-weight:800}
+#home-masculino .hdr nav a{color:rgba(255,255,255,.55);font-size:14px;font-weight:500;text-decoration:none;margin-left:20px;transition:color .2s}
+#home-masculino .hdr nav a:hover{color:#60a5fa}
+#home-masculino .hero{padding:70px 48px 40px;display:flex;align-items:center;gap:64px}
+#home-masculino .hero h2{font-family:'Fraunces',serif;font-size:50px;font-weight:800;color:white;line-height:1.05;letter-spacing:-2px}
+#home-masculino .hero h2 em{color:#60a5fa;font-style:normal}
+#home-masculino .hero p{color:rgba(255,255,255,.5);font-size:15px;margin-top:16px;line-height:1.7;max-width:380px}
+#home-masculino .hero .cta{display:inline-block;margin-top:28px;padding:14px 32px;background:#2563eb;color:white;border-radius:8px;font-weight:600;font-size:15px;text-decoration:none;letter-spacing:.5px;box-shadow:0 8px 24px rgba(37,99,235,.4);transition:transform .2s}
+#home-masculino .hero .cta:hover{transform:translateY(-2px)}
+#home-masculino .hero .emoji{font-size:130px;filter:drop-shadow(0 0 40px rgba(96,165,250,.3))}
+#home-masculino .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 48px 48px}
+#home-masculino .card2{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:28px 24px;transition:background .2s,border-color .2s}
+#home-masculino .card2:hover{background:rgba(255,255,255,.07);border-color:rgba(96,165,250,.3)}
+#home-masculino .card2 .ci{font-size:36px;margin-bottom:12px}
+#home-masculino .card2 h3{font-size:15px;font-weight:600;color:white;margin-bottom:6px}
+#home-masculino .card2 p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6}
+
+/* Neutro */
+#home-neutro{background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 50%,#f0f9ff 100%)}
+#home-neutro .hdr{background:white;border-bottom:1px solid #e5e7eb;padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+#home-neutro .hdr .hn{color:#059669;font-family:'Fraunces',serif;font-size:20px;font-weight:800}
+#home-neutro .hdr nav a{color:#6b7280;font-size:14px;font-weight:500;text-decoration:none;margin-left:20px;transition:color .2s}
+#home-neutro .hdr nav a:hover{color:#059669}
+#home-neutro .hero{padding:70px 48px 40px;display:flex;align-items:center;gap:64px}
+#home-neutro .hero h2{font-family:'Fraunces',serif;font-size:46px;font-weight:800;color:#064e3b;line-height:1.1;letter-spacing:-1.5px}
+#home-neutro .hero h2 em{color:#059669;font-style:italic}
+#home-neutro .hero p{color:#4b7c6e;font-size:15px;margin-top:16px;line-height:1.7;max-width:380px}
+#home-neutro .hero .cta{display:inline-block;margin-top:28px;padding:14px 32px;background:linear-gradient(135deg,#059669,#0284c7);color:white;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 8px 24px rgba(5,150,105,.25);transition:transform .2s}
+#home-neutro .hero .cta:hover{transform:translateY(-2px)}
+#home-neutro .hero .emoji{font-size:130px;filter:drop-shadow(0 0 30px rgba(5,150,105,.3))}
+#home-neutro .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 48px 48px}
+#home-neutro .card2{background:white;border-radius:16px;padding:28px 24px;box-shadow:0 2px 16px rgba(5,150,105,.08);border:1px solid rgba(5,150,105,.1);transition:transform .2s}
+#home-neutro .card2:hover{transform:translateY(-4px)}
+#home-neutro .card2 .ci{font-size:36px;margin-bottom:12px}
+#home-neutro .card2 h3{font-family:'Fraunces',serif;font-size:17px;color:#064e3b;margin-bottom:6px}
+#home-neutro .card2 p{font-size:13px;color:#6b9e8e;line-height:1.6}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;opacity:.6;transition:opacity .2s;padding:0}
+#home-feminino .back-btn,#home-masculino .back-btn{color:white}
+#home-neutro .back-btn{color:#059669}
+.back-btn:hover{opacity:1}
+
+@media(max-width:768px){
+  .card{flex-direction:column}
+  .panel-roxo,.panel-branco{width:100%}
+  .panel-roxo{padding:32px 28px}
+  .panel-branco{padding:32px 28px}
+  .hero{flex-direction:column;padding:40px 24px 24px}
+  .emoji{display:none}
+  .cards{grid-template-columns:1fr;padding:0 24px 32px}
+}
+</style>
+</head>
+<body>
+
+<!-- SIGNUP -->
+<div id="signup" class="screen active">
+  <div class="star" style="top:10%;left:15%;animation-delay:.3s"></div>
+  <div class="star" style="top:25%;left:55%;animation-delay:.8s;width:3px;height:3px"></div>
+  <div class="star" style="top:60%;left:25%;animation-delay:1.2s"></div>
+  <div class="star" style="top:15%;left:75%;animation-delay:.5s;width:3px;height:3px"></div>
+  <div class="star" style="top:80%;left:60%;animation-delay:2.1s;width:3px;height:3px"></div>
+
+  <div class="card">
+
+    <!-- ESQUERDA: ROXO -->
+    <div class="panel-roxo">
+      <div>
+        <div class="logo">
+          <div class="logo-icon">🧠</div>
+          <span class="logo-name">ZenIA</span>
+        </div>
+        <div class="hero-text">
+          <h1>Sua mente merece cuidado <em>todos os dias.</em> 🤍</h1>
+          <p>O ZenIA te ajuda a entender como você está se sentindo, receber recomendações personalizadas e acompanhar sua evolução.</p>
+        </div>
+        <div class="features">
+          <div class="feature">
+            <div class="feat-icon">📊</div>
+            <div class="feat-text"><strong>Avaliação inteligente</strong><span>Questionário rápido e personalizado</span></div>
+          </div>
+          <div class="feature">
+            <div class="feat-icon">💜</div>
+            <div class="feat-text"><strong>Recomendações para você</strong><span>Dicas e exercícios sob medida</span></div>
+          </div>
+          <div class="feature">
+            <div class="feat-icon">📈</div>
+            <div class="feat-text"><strong>Acompanhe sua evolução</strong><span>Veja seu progresso ao longo do tempo</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="brain-art">🧠</div>
+    </div>
+
+    <!-- DIREITA: BRANCO -->
+    <div class="panel-branco">
+      <div class="form-title">Criar sua conta ✨</div>
+      <div class="form-sub">É rápido, fácil e gratuito!</div>
+
+      <div class="field">
+        <span class="field-icon">👤</span>
+        <input type="text" id="name" placeholder="Nome completo">
+      </div>
+      <div class="field">
+        <span class="field-icon">✉️</span>
+        <input type="email" id="email" placeholder="E-mail">
+      </div>
+      <div class="field">
+        <span class="field-icon">🔒</span>
+        <input type="password" id="pwd" placeholder="Senha" oninput="updateStrength(this.value)">
+        <button class="eye-btn" onclick="togglePwd('pwd',this)" type="button">👁️</button>
+      </div>
+      <div class="pwd-hint">A senha deve conter pelo menos 6 caracteres.</div>
+      <div class="strength-bar"><div class="strength-fill" id="sfill"></div></div>
+      <div class="field">
+        <span class="field-icon">🛡️</span>
+        <input type="password" id="pwd2" placeholder="Confirmar senha">
+        <button class="eye-btn" onclick="togglePwd('pwd2',this)" type="button">👁️</button>
+      </div>
+
+      <div class="gender-label">Sexo</div>
+      <div class="gender-group">
+        <button class="gender-btn" data-g="feminino" onclick="selGender(this)">♀ Feminino</button>
+        <button class="gender-btn" data-g="masculino" onclick="selGender(this)">♂ Masculino</button>
+        <button class="gender-btn" data-g="neutro" onclick="selGender(this)">◯ Prefiro não informar</button>
+      </div>
+
+      <button class="btn-primary" onclick="signup()">Criar conta →</button>
+
+      <div class="login-link">Já tem uma conta? <a href="#">Fazer login</a></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOME FEMININO -->
+<div id="home-feminino" class="home-screen">
+  <header class="hdr">
+    <div class="logo"><div class="logo-icon" style="background:linear-gradient(135deg,#f9a8d4,#ec4899)">🧠</div><span class="hn">ZenIA</span></div>
+    <nav><a href="#">Início</a><a href="#">Avaliação</a><a href="#">Progresso</a><a href="#">Comunidade</a></nav>
+    <button class="back-btn" onclick="goBack()">← Voltar</button>
+  </header>
+  <div class="hero">
+    <div style="flex:1">
+      <h2>Olá! Que bom<br>ter você aqui. <em>💖</em></h2>
+      <p>Seu espaço seguro para cuidar da sua mente com carinho. Vamos começar sua jornada de bem-estar hoje?</p>
+      <a href="#" class="cta">Fazer minha avaliação 🌸</a>
+    </div>
+    <div class="emoji">🌸</div>
+  </div>
+  <div class="cards">
+    <div class="card2"><div class="ci">🧘‍♀️</div><h3>Meditação guiada</h3><p>Sessões curtas de 5 a 20 minutos para relaxar e recarregar suas energias.</p></div>
+    <div class="card2"><div class="ci">📓</div><h3>Diário emocional</h3><p>Registre seus sentimentos e acompanhe seus padrões ao longo dos dias.</p></div>
+    <div class="card2"><div class="ci">💬</div><h3>Comunidade</h3><p>Conecte-se com outras pessoas na mesma jornada. Você não está sozinha!</p></div>
+  </div>
+</div>
+
+<!-- HOME MASCULINO -->
+<div id="home-masculino" class="home-screen">
+  <header class="hdr">
+    <div class="logo"><div class="logo-icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8)">🧠</div><span class="hn">ZenIA</span></div>
+    <nav><a href="#">Dashboard</a><a href="#">Check-in</a><a href="#">Treinos</a><a href="#">Metas</a></nav>
+    <button class="back-btn" onclick="goBack()">← Voltar</button>
+  </header>
+  <div class="hero">
+    <div style="flex:1">
+      <h2>E aí, pronto<br>pro <em>próximo nível?</em></h2>
+      <p>Controle mental é tão importante quanto físico. Monitore seu estado, acompanhe suas metas e evolua de verdade.</p>
+      <a href="#" class="cta">COMEÇAR CHECK-IN →</a>
+    </div>
+    <div class="emoji">⚡</div>
+  </div>
+  <div class="cards">
+    <div class="card2"><div class="ci">🎯</div><h3>Metas semanais</h3><p>Defina objetivos e acompanhe seu desempenho semana a semana.</p></div>
+    <div class="card2"><div class="ci">📊</div><h3>Dashboard mental</h3><p>Visualize seus dados de humor, foco e energia em tempo real.</p></div>
+    <div class="card2"><div class="ci">🧠</div><h3>Treino cognitivo</h3><p>Exercícios baseados em ciência para fortalecer foco e resiliência.</p></div>
+  </div>
+</div>
+
+<!-- HOME NEUTRO -->
+<div id="home-neutro" class="home-screen">
+  <header class="hdr">
+    <div class="logo"><div class="logo-icon" style="background:linear-gradient(135deg,#34d399,#0284c7)">🧠</div><span class="hn">ZenIA</span></div>
+    <nav><a href="#">Início</a><a href="#">Explorar</a><a href="#">Progresso</a><a href="#">Perfil</a></nav>
+    <button class="back-btn" onclick="goBack()">← Voltar</button>
+  </header>
+  <div class="hero">
+    <div style="flex:1">
+      <h2>Bem-vindo(a) ao<br>seu <em>espaço zen.</em></h2>
+      <p>Um lugar acolhedor para todos. Explore ferramentas de autoconhecimento no seu ritmo, do seu jeito.</p>
+      <a href="#" class="cta">Explorar recursos 🌿</a>
+    </div>
+    <div class="emoji">🌿</div>
+  </div>
+  <div class="cards">
+    <div class="card2"><div class="ci">🌊</div><h3>Mindfulness</h3><p>Práticas de atenção plena para se reconectar consigo mesmo a qualquer momento.</p></div>
+    <div class="card2"><div class="ci">🎨</div><h3>Expressão criativa</h3><p>Arte, escrita e outras ferramentas para processar emoções de forma livre.</p></div>
+    <div class="card2"><div class="ci">📚</div><h3>Biblioteca</h3><p>Artigos, podcasts e vídeos curados sobre saúde mental e bem-estar.</p></div>
+  </div>
+</div>
+
+<script>
+let gender = null;
+
+function selGender(btn){
+  document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  gender = btn.dataset.g;
+}
+function togglePwd(id,btn){
+  const i=document.getElementById(id);
+  if(i.type==='password'){i.type='text';btn.textContent='🙈';}
+  else{i.type='password';btn.textContent='👁️';}
+}
+function updateStrength(v){
+  const f=document.getElementById('sfill');
+  let w=0,c='#f87171';
+  if(v.length>=6){w=40;c='#fb923c';}
+  if(v.length>=8){w=65;c='#facc15';}
+  if(v.length>=10&&/[A-Z]/.test(v)&&/\d/.test(v)){w=90;c='#4ade80';}
+  if(!v.length)w=0;
+  f.style.width=w+'%';f.style.background=c;
+}
+function signup(){
+  if(!gender){alert('Por favor, selecione o campo Sexo para continuar.');return;}
+  localStorage.setItem('zenia_gender', gender);
+  window.location.href = 'index.html';
+}
+function goBack(){
+  document.querySelectorAll('.home-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('signup').classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html> 
