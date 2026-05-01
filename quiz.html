@@ -3,733 +3,806 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZenIA – Avaliação</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>ZenIA – Dashboard</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#7c3aed">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ZenIA">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100%;font-family:'DM Sans',sans-serif}
+html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
+.dash{display:none;width:100%;height:100vh}
+.dash.active{display:flex}
+.layout{display:flex;width:100%;height:100vh;overflow:hidden}
+.sidebar{width:240px;flex-shrink:0;display:flex;flex-direction:column;padding:28px 16px;position:relative;overflow:hidden}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:32px}
+.sb-logo-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:22px}
+.sb-logo-name{font-family:'Fraunces',serif;font-weight:900;font-size:22px;letter-spacing:-.5px}
+.sb-nav{display:flex;flex-direction:column;gap:4px;flex:1}
+.sb-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s,color .2s;text-decoration:none}
+.sb-item span{font-size:18px}
+.sb-tip{border-radius:16px;padding:16px;margin-top:16px;font-size:13px;line-height:1.6}
+.sb-tip strong{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+.main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:20px}
+.topbar{display:flex;align-items:center;justify-content:space-between}
+.topbar-user{display:flex;align-items:center;gap:14px}
+.topbar-avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:22px}
+.topbar-name{font-size:18px;font-weight:700}
+.topbar-sub{font-size:13px;margin-top:1px}
+.btn-sair{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s}
+.btn-sair:hover{opacity:.8}
+.result-card{border-radius:20px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;min-height:200px}
+.result-left{flex:1}
+.result-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.result-title{font-family:'Fraunces',serif;font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1}
+.result-desc{font-size:14px;margin-top:10px;line-height:1.6;max-width:320px}
+.result-badge{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600}
+.result-badge span{font-size:18px}
+.result-center{display:flex;flex-direction:column;align-items:center;gap:10px}
+.donut-wrap{position:relative;width:140px;height:140px}
+.donut-wrap svg{transform:rotate(-90deg)}
+.donut-bg{fill:none;stroke-width:12}
+.donut-fill{fill:none;stroke-width:12;stroke-linecap:round;transition:stroke-dasharray 1s ease}
+.donut-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.donut-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;line-height:1}
+.donut-sub{font-size:11px;margin-top:2px}
+.result-badge2{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600}
+.result-art{font-size:100px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.15))}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{border-radius:16px;padding:22px}
+.card-title{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bar-chart{display:flex;align-items:flex-end;gap:24px;height:130px;padding-bottom:8px;position:relative}
+.bar-chart::before{content:'';position:absolute;left:0;right:0;top:0;bottom:28px;background:repeating-linear-gradient(to bottom,rgba(128,128,128,.1) 0px,rgba(128,128,128,.1) 1px,transparent 1px,transparent 26px)}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.bar-val{font-size:13px;font-weight:700}
+.bar{width:100%;border-radius:8px 8px 0 0;transition:height .8s ease}
+.bar-label{font-size:12px;margin-top:4px}
+.chart-note{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:12px 16px;border-radius:12px;font-size:13px;cursor:pointer}
+.chart-note strong{font-weight:700}
+.attention-inner{display:flex;align-items:center;justify-content:space-between}
+.attention-left{display:flex;align-items:center;gap:12px}
+.attention-emoji{font-size:32px}
+.attention-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700}
+.attention-sub{font-size:12px;margin-top:2px;max-width:160px;line-height:1.5}
+.attention-art{font-size:64px}
+.line-chart-wrap{position:relative;height:100px;margin-top:8px}
+.line-chart-wrap svg{width:100%;height:100%}
+.evolution-note{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;cursor:pointer}
+.evo-pct{font-weight:700}
+.qa-item{border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:transform .2s}
+.qa-item:hover{transform:translateY(-2px)}
+.qa-icon{font-size:22px;margin-top:2px}
+.qa-title{font-size:13px;font-weight:700}
+.qa-sub{font-size:12px;margin-top:2px;line-height:1.4}
+.qa-chevron{margin-left:auto;font-size:14px;opacity:.4;align-self:center}
+.section-label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:-4px}
 
-body.fem  {--bg:#f0eeff;--bg2:#fce7f3;--primary:#7c3aed;--primary2:#ec4899;--accent:#a78bfa;--card:#fff;--border:#ede9fe;--text:#1a0a3d;--muted:#9ca3af;--cp-ans-bg:#fce7f3;--cp-ans-c:#be185d;--cp-esg-bg:#ede9fe;--cp-esg-c:#6d28d9;--cp-est-bg:#fef3c7;--cp-est-c:#92400e;--bar1:linear-gradient(135deg,#f472b6,#ec4899);--bar2:linear-gradient(135deg,#c084fc,#7c3aed);--bar3:linear-gradient(135deg,#fbbf24,#f59e0b);--grad:linear-gradient(135deg,#a78bfa,#7c3aed)}
-body.masc {--bg:#070b14;--bg2:#0d1220;--primary:#6366f1;--primary2:#34d399;--accent:#818cf8;--card:#0d1220;--border:rgba(255,255,255,.08);--text:#fff;--muted:rgba(255,255,255,.4);--cp-ans-bg:rgba(99,102,241,.15);--cp-ans-c:#a5b4fc;--cp-esg-bg:rgba(52,211,153,.15);--cp-esg-c:#6ee7b7;--cp-est-bg:rgba(251,191,36,.1);--cp-est-c:#fbbf24;--bar1:linear-gradient(135deg,#818cf8,#6366f1);--bar2:linear-gradient(135deg,#60a5fa,#3b82f6);--bar3:linear-gradient(135deg,#34d399,#059669);--grad:linear-gradient(135deg,#6366f1,#34d399)}
-body.neutro{--bg:#f8f7ff;--bg2:#ede9fe;--primary:#7c3aed;--primary2:#059669;--accent:#a78bfa;--card:#fff;--border:#ede9fe;--text:#1a0a3d;--muted:#9ca3af;--cp-ans-bg:#fce7f3;--cp-ans-c:#be185d;--cp-esg-bg:#ede9fe;--cp-esg-c:#6d28d9;--cp-est-bg:#d1fae5;--cp-est-c:#065f46;--bar1:linear-gradient(135deg,#c084fc,#a78bfa);--bar2:linear-gradient(135deg,#a78bfa,#7c3aed);--bar3:linear-gradient(135deg,#6ee7b7,#059669);--grad:linear-gradient(135deg,#a78bfa,#7c3aed)}
+/* FEMININO */
+#fem{background:linear-gradient(160deg,#fdf4ff 0%,#fce7f3 50%,#ede9fe 100%)}
+#fem .sidebar{background:linear-gradient(180deg,#3b1d72 0%,#5b21b6 60%,#7c3aed 100%)}
+#fem .sb-logo-icon{background:linear-gradient(135deg,#f472b6,#a855f7)}
+#fem .sb-logo-name{color:white}
+#fem .sb-item{color:rgba(255,255,255,.65)}
+#fem .sb-item:hover{background:rgba(255,255,255,.1);color:white}
+#fem .sb-item.active{background:rgba(255,255,255,.18);color:white;font-weight:600}
+#fem .sb-tip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+#fem .sb-tip strong{color:white}
+#fem .sb-tip p{color:rgba(255,255,255,.65);font-size:12.5px}
+#fem .topbar-avatar{background:linear-gradient(135deg,#f9a8d4,#c084fc)}
+#fem .topbar-name{color:#1a0a3d}
+#fem .topbar-sub{color:#9ca3af}
+#fem .btn-sair{background:white;color:#7c3aed;border:1.5px solid #e9d5ff}
+#fem .result-card{background:linear-gradient(135deg,#fdf4ff 0%,#fae8ff 40%,#ede9fe 100%);border:1px solid #e9d5ff}
+#fem .result-tag{color:#9333ea}
+#fem .result-title{color:#ec4899}
+#fem .result-desc{color:#6b7280}
+#fem .result-badge{background:rgba(236,72,153,.1);color:#be185d}
+#fem .donut-bg{stroke:#f3e8ff}
+#fem .donut-fill{stroke:url(#fem-grad)}
+#fem .donut-num{color:#1a0a3d}
+#fem .donut-sub{color:#9ca3af}
+#fem .result-badge2{background:#f3e8ff;color:#7c3aed}
+#fem .card{background:white;box-shadow:0 2px 12px rgba(139,92,246,.08);border:1px solid #f3e8ff}
+#fem .card-title{color:#7c3aed}
+#fem .bar-val{color:#1a0a3d}
+#fem .bar-label{color:#9ca3af}
+#fem .chart-note{background:#fdf4ff;color:#6b7280}
+#fem .chart-note strong{color:#ec4899}
+#fem .attention-name{color:#ec4899}
+#fem .attention-sub{color:#9ca3af}
+#fem .evolution-note{background:#fdf4ff;color:#6b7280}
+#fem .evo-pct{color:#ec4899}
+#fem .qa-item{background:white;border:1px solid #f3e8ff;box-shadow:0 2px 8px rgba(139,92,246,.06)}
+#fem .qa-title{color:#1a0a3d}
+#fem .qa-sub{color:#9ca3af}
+#fem .section-label{color:#7c3aed}
 
-body{background:var(--bg);color:var(--text)}
+/* MASCULINO */
+#masc{background:#070b14}
+#masc .sidebar{background:#0d1220;border-right:1px solid rgba(255,255,255,.06)}
+#masc .sb-logo-icon{background:linear-gradient(135deg,#6366f1,#8b5cf6)}
+#masc .sb-logo-name{color:white}
+#masc .sb-item{color:rgba(255,255,255,.45)}
+#masc .sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+#masc .sb-item.active{background:rgba(99,102,241,.2);color:#a5b4fc;font-weight:600;border:1px solid rgba(99,102,241,.3)}
+#masc .sb-tip{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2)}
+#masc .sb-tip strong{color:#a5b4fc}
+#masc .sb-tip p{color:rgba(255,255,255,.45);font-size:12.5px}
+#masc .topbar-avatar{background:linear-gradient(135deg,#4f46e5,#7c3aed)}
+#masc .topbar-name{color:white}
+#masc .topbar-sub{color:rgba(255,255,255,.4)}
+#masc .btn-sair{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
+#masc .result-card{background:linear-gradient(135deg,#0f172a,#1e1b4b);border:1px solid rgba(99,102,241,.2)}
+#masc .result-tag{color:#818cf8}
+#masc .result-title{color:white}
+#masc .result-desc{color:rgba(255,255,255,.55)}
+#masc .result-badge{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.2)}
+#masc .donut-bg{stroke:rgba(255,255,255,.08)}
+#masc .donut-fill{stroke:url(#masc-grad)}
+#masc .donut-num{color:white}
+#masc .donut-sub{color:rgba(255,255,255,.4)}
+#masc .result-badge2{background:rgba(99,102,241,.2);color:#a5b4fc}
+#masc .card{background:#0d1220;border:1px solid rgba(255,255,255,.07)}
+#masc .card-title{color:#818cf8}
+#masc .bar-val{color:white}
+#masc .bar-label{color:rgba(255,255,255,.35)}
+#masc .chart-note{background:rgba(99,102,241,.08);color:rgba(255,255,255,.5)}
+#masc .chart-note strong{color:#a78bfa}
+#masc .attention-name{color:#a78bfa}
+#masc .attention-sub{color:rgba(255,255,255,.4)}
+#masc .evolution-note{background:rgba(99,102,241,.08);color:rgba(255,255,255,.5)}
+#masc .evo-pct{color:#34d399}
+#masc .qa-item{background:#0d1220;border:1px solid rgba(255,255,255,.07)}
+#masc .qa-title{color:white}
+#masc .qa-sub{color:rgba(255,255,255,.35)}
+#masc .section-label{color:#818cf8}
 
-/* TOPBAR */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:36px;height:36px;background:var(--grad);border-radius:10px;display:grid;place-items:center;font-size:18px}
-.logo-name{font-family:'Fraunces',serif;font-weight:900;font-size:20px;color:var(--primary)}
-.btn-top{padding:9px 18px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--primary);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+/* NEUTRO */
+#neutro{background:#f8f7ff}
+#neutro .sidebar{background:white;border-right:1px solid #ede9fe}
+#neutro .sb-logo-icon{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+#neutro .sb-logo-name{color:#1a0a3d}
+#neutro .sb-item{color:#6b7280}
+#neutro .sb-item:hover{background:#f5f3ff;color:#7c3aed}
+#neutro .sb-item.active{background:#ede9fe;color:#7c3aed;font-weight:600}
+#neutro .sb-tip{background:linear-gradient(135deg,#ede9fe,#fce7f3)}
+#neutro .sb-tip strong{color:#1a0a3d}
+#neutro .sb-tip p{color:#6b7280;font-size:12.5px}
+#neutro .topbar-avatar{background:linear-gradient(135deg,#c4b5fd,#a78bfa)}
+#neutro .topbar-name{color:#1a0a3d}
+#neutro .topbar-sub{color:#9ca3af}
+#neutro .btn-sair{background:white;color:#7c3aed;border:1.5px solid #ede9fe}
+#neutro .result-card{background:linear-gradient(135deg,#faf5ff 0%,#ede9fe 60%,#f5f3ff 100%);border:1px solid #ddd6fe}
+#neutro .result-tag{color:#7c3aed}
+#neutro .result-title{color:#4c1d95}
+#neutro .result-desc{color:#6b7280}
+#neutro .result-badge{background:rgba(167,139,250,.15);color:#5b21b6}
+#neutro .donut-bg{stroke:#ede9fe}
+#neutro .donut-fill{stroke:url(#neutro-grad)}
+#neutro .donut-num{color:#1a0a3d}
+#neutro .donut-sub{color:#9ca3af}
+#neutro .result-badge2{background:#ede9fe;color:#7c3aed}
+#neutro .card{background:white;box-shadow:0 2px 12px rgba(124,58,237,.06);border:1px solid #ede9fe}
+#neutro .card-title{color:#7c3aed}
+#neutro .bar-val{color:#1a0a3d}
+#neutro .bar-label{color:#9ca3af}
+#neutro .chart-note{background:#faf5ff;color:#6b7280}
+#neutro .chart-note strong{color:#7c3aed}
+#neutro .attention-name{color:#7c3aed}
+#neutro .attention-sub{color:#9ca3af}
+#neutro .evolution-note{background:#faf5ff;color:#6b7280}
+#neutro .evo-pct{color:#059669}
+#neutro .qa-item{background:white;border:1px solid #ede9fe;box-shadow:0 2px 8px rgba(124,58,237,.05)}
+#neutro .qa-title{color:#1a0a3d}
+#neutro .qa-sub{color:#9ca3af}
+#neutro .section-label{color:#7c3aed}
 
-.wrap{max-width:680px;margin:0 auto;padding:36px 16px 80px}
+/* PAINÉIS EXTRAS */
+.tab-panel{display:none;flex-direction:column;gap:20px;animation:fadeIn .3s ease both}
+.tab-panel.visible,.rec-panel.visible{display:flex}
+.rec-panel{display:none;flex-direction:column;gap:20px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tab-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;margin-bottom:4px}
+.tab-sub{font-size:13px;color:#9ca3af}
 
-/* PROGRESS */
-.prog-area{margin-bottom:28px}
-.prog-top{display:flex;justify-content:space-between;margin-bottom:8px}
-.prog-label{font-size:13px;font-weight:600;color:var(--primary)}
-.prog-pct{font-size:13px;color:var(--muted);font-weight:500}
-.prog-bar{height:10px;background:var(--border);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;background:var(--grad);border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.xp-row{display:flex;align-items:center;gap:10px;margin-top:8px}
-.xp-lbl{font-size:12px;font-weight:700;color:#f59e0b;white-space:nowrap}
-.xp-bar{flex:1;height:6px;background:#fde68a;border-radius:99px;overflow:hidden}
-.xp-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:99px;transition:width .5s ease}
-.xp-pts{font-size:12px;font-weight:700;color:#f59e0b}
+/* RECOMENDAÇÕES */
+.rec-section-title{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
+.rec-cards{display:flex;flex-direction:column;gap:12px}
+.rec-card{border-radius:16px;padding:18px 20px;border:1px solid #ede9fe;background:white}
+.rec-card-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rec-card-icon{font-size:22px}
+.rec-card-title{font-size:15px;font-weight:700;color:#1a0a3d}
+.rec-card-desc{font-size:13px;line-height:1.65;margin-bottom:6px;color:#4b5563}
+.rec-card-source{font-size:11px;font-style:italic;color:#9ca3af}
+.rec-priority{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.6px;padding:2px 8px;border-radius:99px;margin-bottom:8px;background:#fce7f3;color:#be185d}
+#masc .rec-card{background:#161f35;border-color:rgba(129,140,248,.25)}
+#masc .rec-card-title{color:#e0e7ff}
+#masc .rec-card-desc{color:#94a3b8}
+#masc .rec-card-source{color:#6366f1}
+#masc .rec-priority{background:rgba(99,102,241,.25);color:#a5b4fc}
+#masc .rec-section-title{color:#818cf8}
+#masc .tab-title{color:#e0e7ff}
+#neutro .rec-card-source{color:#a78bfa}
+#neutro .rec-priority{background:#ede9fe;color:#5b21b6}
 
-/* CAT PILL */
-.cat-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:16px}
-.cp-ans{background:var(--cp-ans-bg);color:var(--cp-ans-c)}
-.cp-esg{background:var(--cp-esg-bg);color:var(--cp-esg-c)}
-.cp-est{background:var(--cp-est-bg);color:var(--cp-est-c)}
+/* HISTÓRICO */
+.hist-card{border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:16px;background:white;border:1px solid #ede9fe}
+.hist-icon{font-size:36px;flex-shrink:0}
+.hist-date{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;color:#7c3aed}
+.hist-title{font-size:18px;font-weight:700;margin-bottom:8px;color:#1a0a3d}
+.hist-bars{display:flex;flex-direction:column;gap:6px;flex:1}
+.hist-bar-row{display:flex;align-items:center;gap:8px}
+.hist-bar-label{font-size:11px;width:90px;flex-shrink:0;color:#9ca3af}
+.hist-bar-track{flex:1;height:6px;border-radius:99px;background:#ede9fe;overflow:hidden}
+.hist-bar-fill{height:100%;border-radius:99px}
+.hist-bar-val{font-size:11px;font-weight:700;width:32px;text-align:right;flex-shrink:0;color:#7c3aed}
+.hist-empty{text-align:center;padding:48px 24px;border-radius:20px;background:white;border:1px solid #ede9fe}
+.hist-empty-icon{font-size:48px;margin-bottom:12px}
+.hist-empty-title{font-size:16px;font-weight:700;margin-bottom:6px;color:#1a0a3d}
+.hist-empty-sub{font-size:13px;color:#9ca3af;margin-bottom:20px}
+#masc .hist-card,#masc .hist-empty{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .hist-date{color:#818cf8}
+#masc .hist-title{color:#e0e7ff}
+#masc .hist-bar-label{color:rgba(255,255,255,.4)}
+#masc .hist-bar-val{color:#818cf8}
+#masc .hist-bar-track{background:rgba(255,255,255,.08)}
+#masc .hist-empty-title{color:#e0e7ff}
 
-/* QUESTION CARD */
-.q-card{background:var(--card);border-radius:24px;padding:32px;box-shadow:0 4px 24px rgba(124,58,237,.08);border:1px solid var(--border);animation:slideIn .35s cubic-bezier(.4,0,.2,1) both}
-@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.q-icon{font-size:42px;margin-bottom:10px;display:block}
-.q-num{font-size:11px;color:var(--muted);font-weight:500;margin-bottom:6px}
-.q-text{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--text);line-height:1.35;margin-bottom:24px}
+/* EXERCÍCIOS */
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ex-card{border-radius:20px;padding:24px;cursor:pointer;transition:transform .2s;text-align:center;background:white;border:1.5px solid #ede9fe}
+.ex-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,58,237,.12)}
+.ex-icon{font-size:40px;margin-bottom:10px}
+.ex-title{font-size:15px;font-weight:700;margin-bottom:4px;color:#1a0a3d}
+.ex-sub{font-size:12px;line-height:1.5;margin-bottom:6px;color:#9ca3af}
+.ex-source{font-size:10px;font-style:italic;color:#a78bfa;margin-bottom:10px}
+.ex-btn{display:inline-block;padding:8px 18px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:#ede9fe;color:#5b21b6}
+#masc .ex-card{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .ex-title{color:#e0e7ff}
+#masc .ex-sub{color:rgba(255,255,255,.4)}
+#masc .ex-source{color:#6366f1}
+#masc .ex-btn{background:rgba(99,102,241,.2);color:#a5b4fc}
 
-/* OPTIONS */
-.opts{display:flex;flex-direction:column;gap:9px}
-.opt{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-radius:14px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;font-weight:500;color:var(--text);transition:all .18s ease}
-.opt:hover{border-color:var(--accent);transform:translateX(4px)}
-.opt.sel{border-color:var(--primary);background:var(--border);font-weight:600}
-.opt-left{display:flex;align-items:center;gap:10px}
-.opt-emoji{font-size:18px}
-.opt-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--border);color:var(--primary)}
+/* CONQUISTAS */
+.conq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.conq-card{border-radius:16px;padding:20px;text-align:center;background:white;border:1.5px solid #ede9fe}
+.conq-icon{font-size:36px;margin-bottom:8px}
+.conq-title{font-size:13px;font-weight:700;margin-bottom:4px;color:#1a0a3d}
+.conq-sub{font-size:11px;line-height:1.4;color:#9ca3af}
+.conq-card.locked{opacity:.4;filter:grayscale(1)}
+.conq-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:6px;background:#ede9fe;color:#5b21b6}
+#masc .conq-card{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .conq-title{color:#e0e7ff}
+#masc .conq-sub{color:rgba(255,255,255,.4)}
+#masc .conq-badge{background:rgba(99,102,241,.2);color:#a5b4fc}
 
-/* NAV */
-.nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
-.btn-prev{padding:11px 24px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--primary);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
-.btn-next{padding:12px 32px;border-radius:12px;border:none;background:var(--grad);color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,.3);transition:opacity .2s,transform .15s}
-.btn-next:hover{opacity:.9;transform:translateY(-1px)}
-.btn-next:disabled{opacity:.35;cursor:not-allowed;transform:none}
+/* CONFIGURAÇÕES */
+.cfg-section{border-radius:16px;padding:22px;background:white;border:1px solid #ede9fe}
+.cfg-title{font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:16px;color:#7c3aed}
+.cfg-field{margin-bottom:14px}
+.cfg-label{font-size:12px;font-weight:600;margin-bottom:6px;display:block;color:#1a0a3d}
+.cfg-input{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid #ede9fe;background:#f8f7ff;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;color:#1a0a3d}
+.cfg-input:focus{border-color:#7c3aed}
+.cfg-btn{padding:11px 24px;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;margin-right:8px}
+.cfg-btn:hover{opacity:.85}
+.cfg-btn-primary{background:linear-gradient(135deg,#a78bfa,#7c3aed);color:white}
+.cfg-btn-danger{background:#fee2e2;color:#dc2626}
+#masc .cfg-section{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .cfg-title{color:#818cf8}
+#masc .cfg-label{color:#e0e7ff}
+#masc .cfg-input{background:#161f35;border-color:rgba(255,255,255,.1);color:white}
 
-/* TOAST */
-.toast{position:fixed;top:76px;left:50%;transform:translateX(-50%) translateY(-16px);background:#1a0a3d;color:white;padding:9px 20px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all .3s;z-index:999;white-space:nowrap}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ── RESULTADO ── */
-#scr-result{display:none}
-.disclaimer{background:rgba(251,191,36,.12);border:1px solid #fbbf24;border-radius:14px;padding:14px 18px;font-size:13px;line-height:1.6;margin-bottom:20px;display:flex;gap:10px}
-body.masc .disclaimer{color:#fbbf24}
-body.fem .disclaimer,.body.neutro .disclaimer{color:#92400e}
-
-.res-card{background:var(--card);border-radius:24px;padding:28px 32px;border:1px solid var(--border);box-shadow:0 4px 24px rgba(124,58,237,.08);margin-bottom:20px}
-.res-top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
-.res-icon{font-size:52px}
-.res-tag{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
-.res-title{font-family:'Fraunces',serif;font-size:30px;font-weight:900;color:var(--text)}
-.res-desc{font-size:14px;color:var(--muted);margin-top:4px;line-height:1.6}
-
-.pct-list{display:flex;flex-direction:column;gap:16px}
-.pct-item{}
-.pct-head{display:flex;justify-content:space-between;margin-bottom:6px}
-.pct-name{font-size:14px;font-weight:600;color:var(--text)}
-.pct-val{font-size:14px;font-weight:700;color:var(--primary)}
-.pct-track{height:14px;background:var(--border);border-radius:99px;overflow:hidden}
-.pct-fill{height:100%;border-radius:99px;transition:width 1.3s cubic-bezier(.4,0,.2,1);width:0%}
-.pct-fill.ans{background:var(--bar1)}
-.pct-fill.esg{background:var(--bar2)}
-.pct-fill.est{background:var(--bar3)}
-.pct-level{font-size:11px;color:var(--muted);margin-top:4px;font-weight:500}
-
-/* ── ATIVIDADES ── */
-#scr-ativ{display:none}
-.ativ-header{text-align:center;margin-bottom:28px}
-.ativ-header h2{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--text)}
-.ativ-header p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.6}
-.ativ-xp-row{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#fef3c7,#fde68a);padding:7px 18px;border-radius:99px;font-size:13px;font-weight:700;color:#92400e;margin-top:12px}
-
-/* HIGHLIGHT (atividade recomendada) */
-.ativ-highlight{background:var(--card);border:2px solid var(--primary);border-radius:20px;padding:20px 24px;margin-bottom:20px;position:relative;overflow:hidden}
-.ativ-highlight::before{content:'⭐ RECOMENDADO PARA VOCÊ';position:absolute;top:12px;right:16px;font-size:10px;font-weight:700;letter-spacing:.8px;color:var(--primary);background:var(--border);padding:3px 10px;border-radius:99px}
-.ativ-highlight-inner{display:flex;align-items:center;gap:16px;margin-top:8px}
-.ativ-hl-icon{font-size:42px}
-.ativ-hl-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:4px}
-.ativ-hl-why{font-size:13px;color:var(--muted);line-height:1.5}
-.ativ-hl-source{font-size:11px;color:var(--accent);margin-top:6px;font-style:italic}
-
-.ativ-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.ativ-card{background:var(--card);border-radius:18px;padding:20px;border:1.5px solid var(--border);cursor:pointer;transition:transform .2s,box-shadow .2s;text-align:center;position:relative}
-.ativ-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,58,237,.12)}
-.ativ-card.done{border-color:var(--primary);opacity:.7}
-.ativ-card-icon{font-size:36px;margin-bottom:8px}
-.ativ-card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.ativ-card-sub{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:6px}
-.ativ-card-source{font-size:10px;color:var(--accent);font-style:italic;margin-bottom:8px}
-.ativ-card-pts{display:inline-block;font-size:11px;font-weight:700;color:var(--primary);background:var(--border);padding:3px 10px;border-radius:99px}
-.ativ-done-lbl{display:none;font-size:11px;font-weight:700;color:#059669}
-.ativ-card.done .ativ-done-lbl{display:block}
-.ativ-card.done .ativ-card-pts{display:none}
-
-/* FINAL */
-.final-card{background:var(--card);border-radius:24px;padding:36px;text-align:center;border:1px solid var(--border);margin-top:16px;display:none}
-.final-emoji{font-size:64px;display:block;margin-bottom:12px;animation:bounce 1.5s ease infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.final-title{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--text);margin-bottom:8px}
-.final-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px}
-.final-xp{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#fef3c7,#fde68a);padding:10px 24px;border-radius:99px;font-size:15px;font-weight:700;color:#92400e;margin-bottom:24px}
-.btn-dash{display:inline-block;padding:14px 32px;border-radius:14px;border:none;background:var(--grad);color:white;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(124,58,237,.3);transition:transform .2s;margin:6px}
-.btn-dash:hover{transform:translateY(-2px)}
-.btn-rec{display:inline-block;padding:14px 32px;border-radius:14px;border:1.5px solid var(--primary);background:transparent;color:var(--primary);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;margin:6px}
-.btn-rec:hover{background:var(--border)}
-
-/* ── MODAIS ── */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:16px}
-.modal-bg.open{display:flex}
-.modal{background:var(--card);border-radius:24px;padding:32px;max-width:480px;width:100%;text-align:center;position:relative;animation:slideIn .3s ease both;max-height:90vh;overflow-y:auto}
-.modal-close{position:absolute;top:14px;right:14px;background:var(--border);border:none;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:15px;color:var(--text)}
-.modal h3{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--text);margin-bottom:6px}
-.modal-source{font-size:11px;color:var(--accent);font-style:italic;margin-bottom:10px}
-.modal p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px}
-.btn-ativ{padding:12px 28px;border-radius:12px;border:none;background:var(--grad);color:white;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s;margin-top:8px}
-.btn-ativ:hover{opacity:.9}
-
-/* BREATHING */
-.breath-wrap{margin:16px auto}
-.breath-circle{width:130px;height:130px;border-radius:50%;background:var(--grad);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;transition:transform 4s ease-in-out;cursor:pointer}
-.breath-circle.inhale{transform:scale(1.5)}
-.breath-circle.exhale{transform:scale(1)}
-.breath-phase{font-size:18px;font-weight:700;color:var(--primary)}
-.breath-info{font-size:12px;color:var(--muted);margin-top:4px}
-
-/* PMR */
-.pmr-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
-.pmr-step{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border);cursor:pointer;transition:all .2s}
-.pmr-step.active{border-color:var(--primary);background:var(--border)}
-.pmr-step.done{border-color:#059669;background:rgba(5,150,105,.08)}
-.pmr-num{width:26px;height:26px;border-radius:50%;background:var(--border);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--primary);flex-shrink:0}
-.pmr-step.done .pmr-num{background:#059669;color:white}
-.pmr-txt{font-size:13px;font-weight:500;color:var(--text)}
-.pmr-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.pmr-timer{font-size:28px;font-weight:900;color:var(--primary);margin:8px 0}
-
-/* GROUNDING */
-.ground-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
-.ground-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border);cursor:pointer;transition:all .2s}
-.ground-item.done{border-color:var(--primary);background:var(--border)}
-.ground-num{width:28px;height:28px;border-radius:50%;background:var(--border);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--primary);flex-shrink:0}
-.ground-item.done .ground-num{background:var(--primary);color:white}
-
-/* JOURNAL */
-.journal-prompts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
-.journal-prompt{padding:10px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--border);font-size:13px;color:var(--muted);font-style:italic}
-textarea.journal-area{width:100%;min-height:100px;border-radius:14px;border:1.5px solid var(--border);background:var(--bg);padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;resize:vertical}
-textarea.journal-area:focus{border-color:var(--primary)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="logo"><div class="logo-icon">🧠</div><span class="logo-name">ZenIA</span></div>
-  <button class="btn-top" onclick="voltarInicio()">← Voltar ao início</button>
-</div>
-
-<!-- MODAL CONFIRMAÇÃO SAÍDA -->
-<div class="modal-bg" id="modal-sair">
-  <div class="modal" style="max-width:380px">
-    <h3 style="margin-bottom:10px">⚠️ Tem certeza?</h3>
-    <p>Se você sair agora, seu progresso no quiz será perdido.</p>
-    <div style="display:flex;gap:10px;margin-top:20px;justify-content:center">
-      <button class="btn-prev" onclick="closeModal('sair')" style="flex:1">Continuar quiz</button>
-      <button class="btn-next" onclick="confirmarSaida()" style="flex:1;margin:0">Sair mesmo assim</button>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-
-  <!-- ══ TELA 1: QUIZ ══ -->
-  <div id="scr-quiz">
-    <div class="prog-area">
-      <div class="prog-top">
-        <span class="prog-label" id="prog-label">Pergunta 1 de 15</span>
-        <span class="prog-pct" id="prog-pct">0%</span>
+<!-- ══ FEMININO ══ -->
+<div id="fem" class="dash">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon">🧠</div><span class="sb-logo-name">ZenIA</span></div>
+      <nav class="sb-nav">
+        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
+        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
+        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
+        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
+        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
+        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
+        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
+      </nav>
+      <div class="sb-tip"><strong>💡 Dica do dia</strong><p>Respire fundo. Um minuto de calma já faz diferença.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-user"><div class="topbar-avatar">🌸</div><div><div class="topbar-name" id="fem-nome">Olá! 👋</div><div class="topbar-sub">Que bom te ver por aqui!</div></div></div>
+        <button class="btn-sair" onclick="sairConta()">↩ Sair</button>
       </div>
-      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-      <div class="xp-row">
-        <span class="xp-lbl">⭐ XP</span>
-        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
-        <span class="xp-pts" id="xp-pts">0 pts</span>
+      <div class="result-card">
+        <div class="result-left">
+          <div class="result-tag">SEU RESULTADO</div>
+          <div class="result-title" id="fem-result-title">Equilibrado ✨</div>
+          <div class="result-desc" id="fem-result-desc">Você demonstra um bom equilíbrio emocional.</div>
+          <div class="result-badge"><span>💗</span> Você está no caminho certo!</div>
+        </div>
+        <div class="result-center">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="140" height="140">
+              <defs><linearGradient id="fem-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+              <circle class="donut-bg" cx="70" cy="70" r="54"/>
+              <circle class="donut-fill" id="fem-donut" cx="70" cy="70" r="54" stroke-dasharray="0 339.3"/>
+            </svg>
+            <div class="donut-text"><div class="donut-num" id="fem-donut-num">0</div><div class="donut-sub">de 75</div></div>
+          </div>
+          <div class="result-badge2">Pontuação total</div>
+        </div>
+        <div class="result-art">💗</div>
       </div>
-    </div>
-    <div id="q-cat" class="cat-pill cp-ans"></div>
-    <div class="q-card">
-      <span class="q-icon" id="q-icon"></span>
-      <div class="q-num" id="q-num"></div>
-      <div class="q-text" id="q-text"></div>
-      <div class="opts" id="opts"></div>
-    </div>
-    <div class="nav">
-      <button class="btn-prev" id="btn-prev" onclick="prevQ()">← Anterior</button>
-      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Próxima →</button>
-    </div>
-  </div>
-
-  <!-- ══ TELA 2: RESULTADO ══ -->
-  <div id="scr-result">
-    <div class="disclaimer">⚠️ <span><strong>Atenção:</strong> Este resultado é <strong>apenas indicativo</strong> e não substitui uma avaliação profissional. Caso identifique sintomas persistentes, procure um psicólogo ou médico de sua confiança.</span></div>
-    <div class="res-card">
-      <div class="res-top">
-        <div class="res-icon" id="res-icon"></div>
-        <div>
-          <div class="res-tag">SEU RESULTADO</div>
-          <div class="res-title" id="res-title"></div>
-          <div class="res-desc" id="res-desc"></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" id="fem-v-ans">0</div><div class="bar" id="fem-b-ans" style="height:4%;background:linear-gradient(180deg,#f472b6,#ec4899)"></div><div class="bar-label">Ansiedade</div></div>
+            <div class="bar-col"><div class="bar-val" id="fem-v-esg">0</div><div class="bar" id="fem-b-esg" style="height:4%;background:linear-gradient(180deg,#e879f9,#c026d3)"></div><div class="bar-label">Esgotamento</div></div>
+            <div class="bar-col"><div class="bar-val" id="fem-v-est">0</div><div class="bar" id="fem-b-est" style="height:4%;background:linear-gradient(180deg,#c084fc,#a855f7)"></div><div class="bar-label">Estresse</div></div>
+          </div>
+          <div class="chart-note"><span>🧠 Maior atenção: <strong id="fem-top">—</strong></span><span>›</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
+            <div class="attention-inner">
+              <div class="attention-left"><div class="attention-emoji">😰</div><div><div class="attention-name" id="fem-attn">—</div><div class="attention-sub">Área que precisa de mais atenção.</div></div></div>
+              <div class="attention-art">🎯</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 SUA EVOLUÇÃO</div>
+            <div class="line-chart-wrap"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><defs><linearGradient id="fem-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs><polyline points="0,15 70,22 145,38 215,50 290,68 365,82 400,88" fill="none" stroke="url(#fem-line)" stroke-width="2.5" stroke-linecap="round"/><circle cx="0" cy="15" r="4" fill="#ec4899"/><circle cx="70" cy="22" r="4" fill="#ec4899"/><circle cx="145" cy="38" r="4" fill="#ec4899"/><circle cx="215" cy="50" r="4" fill="#ec4899"/><circle cx="290" cy="68" r="4" fill="#ec4899"/><circle cx="365" cy="82" r="4" fill="#ec4899"/></svg></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px"><span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span></div>
+            <div class="evolution-note"><span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span><span>›</span></div>
+          </div>
         </div>
       </div>
-      <div class="pct-list">
-        <div class="pct-item">
-          <div class="pct-head"><span class="pct-name">😰 Ansiedade</span><span class="pct-val" id="v-ans">0%</span></div>
-          <div class="pct-track"><div class="pct-fill ans" id="b-ans"></div></div>
-          <div class="pct-level" id="l-ans"></div>
-        </div>
-        <div class="pct-item">
-          <div class="pct-head"><span class="pct-name">🪫 Esgotamento</span><span class="pct-val" id="v-esg">0%</span></div>
-          <div class="pct-track"><div class="pct-fill esg" id="b-esg"></div></div>
-          <div class="pct-level" id="l-esg"></div>
-        </div>
-        <div class="pct-item">
-          <div class="pct-head"><span class="pct-name">🤯 Estresse</span><span class="pct-val" id="v-est">0%</span></div>
-          <div class="pct-track"><div class="pct-fill est" id="b-est"></div></div>
-          <div class="pct-level" id="l-est"></div>
-        </div>
+      <div class="section-label">AÇÕES RÁPIDAS</div>
+      <div class="grid4">
+        <div class="qa-item" onclick="location.href='quiz.html'"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Exercícios','fem')"><div class="qa-icon">🧘‍♀️</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Recomendações','fem')"><div class="qa-icon">💗</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Histórico','fem')"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico</div><div class="qa-sub">Veja suas avaliações anteriores</div></div><span class="qa-chevron">›</span></div>
       </div>
-    </div>
-    <div style="text-align:center">
-      <button class="btn-next" style="margin:0 auto" onclick="showAtiv()">Ver atividades para você →</button>
-    </div>
-  </div>
-
-  <!-- ══ TELA 3: ATIVIDADES ══ -->
-  <div id="scr-ativ">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-      <button class="btn-top" onclick="irDash()" style="font-size:13px">← Ir para o painel</button>
-      <div class="ativ-xp-row" style="margin:0">⭐ <span id="ativ-xp">0</span> XP conquistados</div>
-    </div>
-    <div class="ativ-header">
-      <h2>Atividades para você 🌿</h2>
-      <p>Com base no seu resultado, separamos o que a ciência indica para o que você está sentindo agora.</p>
-    </div>
-
-    <!-- DESTAQUE -->
-    <div class="ativ-highlight" id="ativ-highlight">
-      <div class="ativ-highlight-inner">
-        <div class="ativ-hl-icon" id="hl-icon"></div>
-        <div>
-          <div class="ativ-hl-title" id="hl-title"></div>
-          <div class="ativ-hl-why" id="hl-why"></div>
-          <div class="ativ-hl-source" id="hl-source"></div>
-        </div>
-      </div>
-      <button class="btn-ativ" id="hl-btn" style="margin-top:16px;width:100%"></button>
-    </div>
-
-    <!-- GRID 4 atividades -->
-    <div class="ativ-grid">
-      <div class="ativ-card" id="ac-breath" onclick="openModal('breath')">
-        <div class="ativ-card-icon">🌬️</div>
-        <div class="ativ-card-title">Respiração 4-7-8</div>
-        <div class="ativ-card-sub">Ativa o nervo vago e reduz cortisol em minutos</div>
-        <div class="ativ-card-source">Dr. Andrew Weil — Harvard Medical School</div>
-        <div class="ativ-card-pts">+20 XP</div>
-        <div class="ativ-done-lbl">✅ Concluído</div>
-      </div>
-      <div class="ativ-card" id="ac-ground" onclick="openModal('ground')">
-        <div class="ativ-card-icon">🌱</div>
-        <div class="ativ-card-title">Grounding 5-4-3-2-1</div>
-        <div class="ativ-card-sub">Ancora a mente no presente, interrompe espiral de pensamentos</div>
-        <div class="ativ-card-source">Terapia Cognitivo-Comportamental (TCC)</div>
-        <div class="ativ-card-pts">+20 XP</div>
-        <div class="ativ-done-lbl">✅ Concluído</div>
-      </div>
-      <div class="ativ-card" id="ac-pmr" onclick="openModal('pmr')">
-        <div class="ativ-card-icon">💪</div>
-        <div class="ativ-card-title">Relaxamento Muscular</div>
-        <div class="ativ-card-sub">Tensionar e relaxar grupos musculares libera tensão acumulada</div>
-        <div class="ativ-card-source">Edmund Jacobson — validado por centenas de estudos</div>
-        <div class="ativ-card-pts">+25 XP</div>
-        <div class="ativ-done-lbl">✅ Concluído</div>
-      </div>
-      <div class="ativ-card" id="ac-journal" onclick="openModal('journal')">
-        <div class="ativ-card-icon">📓</div>
-        <div class="ativ-card-title">Diário guiado</div>
-        <div class="ativ-card-sub">Escrever preocupações por 15 min/dia reduz ansiedade em até 33%</div>
-        <div class="ativ-card-source">Penn State Worry Questionnaire (PSWQ)</div>
-        <div class="ativ-card-pts">+15 XP</div>
-        <div class="ativ-done-lbl">✅ Concluído</div>
-      </div>
-    </div>
-
-    <div class="final-card" id="final-card">
-      <span class="final-emoji">🎉</span>
-      <div class="final-title">Parabéns!</div>
-      <div class="final-sub">Você completou todas as atividades. Pequenos passos fazem uma grande diferença. Continue cuidando de você!</div>
-      <div class="final-xp" id="final-xp">⭐ 0 XP total</div>
-      <br>
-      <button class="btn-dash" onclick="irDash()">Ver meu painel →</button>
-      <button class="btn-rec" onclick="irRec()">📋 Ver recomendações completas</button>
-    </div>
-  </div>
-
-</div><!-- /wrap -->
-
-<!-- ══ MODAL: RESPIRAÇÃO ══ -->
-<div class="modal-bg" id="modal-breath">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('breath')">✕</button>
-    <h3>🌬️ Respiração 4-7-8</h3>
-    <div class="modal-source">Dr. Andrew Weil · Harvard Medical School · Para ansiedade aguda</div>
-    <p>Inspire por 4s, segure por 7s, expire por 8s. Ativa o nervo vago e reduz o cortisol em minutos.</p>
-    <div class="breath-wrap">
-      <div class="breath-circle" id="breath-circle">Toque para<br>iniciar</div>
-      <div class="breath-phase" id="breath-phase">Pronto?</div>
-      <div class="breath-info">Ciclo <span id="breath-cycle">0</span> de 3</div>
-    </div>
-    <button class="btn-ativ" id="btn-breath" onclick="startBreath()">▶ Iniciar</button>
+    </main>
   </div>
 </div>
 
-<!-- ══ MODAL: GROUNDING ══ -->
-<div class="modal-bg" id="modal-ground">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('ground')">✕</button>
-    <h3>🌱 Técnica 5-4-3-2-1</h3>
-    <div class="modal-source">Terapia Cognitivo-Comportamental (TCC) · Para ansiedade e estresse</div>
-    <p>Ancore-se no presente identificando cada item. Toque para marcar conforme for percebendo.</p>
-    <div class="ground-list">
-      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">5</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que você <strong>vê</strong> agora</div><div style="font-size:11px;color:var(--muted)">Olhe ao redor e nomeie mentalmente</div></div></div>
-      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">4</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que você pode <strong>tocar</strong></div><div style="font-size:11px;color:var(--muted)">Sinta a textura, temperatura</div></div></div>
-      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">3</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que você <strong>ouve</strong></div><div style="font-size:11px;color:var(--muted)">Preste atenção aos sons ao redor</div></div></div>
-      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">2</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisas que consegue <strong>cheirar</strong></div><div style="font-size:11px;color:var(--muted)">Identifique odores presentes</div></div></div>
-      <div class="ground-item" onclick="checkGround(this)"><div class="ground-num">1</div><div><div style="font-size:13px;font-weight:600;color:var(--text)">Coisa que pode <strong>saborear</strong></div><div style="font-size:11px;color:var(--muted)">Perceba o gosto na boca</div></div></div>
-    </div>
-    <div id="ground-ok" style="display:none;color:#059669;font-weight:700;font-size:14px;margin-bottom:10px">✅ Você está presente agora.</div>
-    <button class="btn-ativ" onclick="completeAtiv('ground')">Concluir +20 XP</button>
+<!-- ══ MASCULINO ══ -->
+<div id="masc" class="dash">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon">🧠</div><span class="sb-logo-name">ZenIA</span></div>
+      <nav class="sb-nav">
+        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
+        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
+        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
+        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
+        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
+        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
+        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
+      </nav>
+      <div class="sb-tip"><strong>🌬 Respiro do dia</strong><p>Respire fundo. Você está fazendo o seu melhor.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-user"><div class="topbar-avatar">👤</div><div><div class="topbar-name" id="masc-nome">Olá! 👋</div><div class="topbar-sub">Que bom te ver por aqui!</div></div></div>
+        <button class="btn-sair" onclick="sairConta()">↩ Sair</button>
+      </div>
+      <div class="result-card">
+        <div class="result-left">
+          <div class="result-tag">SEU RESULTADO</div>
+          <div class="result-title" id="masc-result-title">Equilibrado 🛡️</div>
+          <div class="result-desc" id="masc-result-desc">Você demonstra um bom equilíbrio emocional.</div>
+          <div class="result-badge"><span>🎯</span> Continue assim!</div>
+        </div>
+        <div class="result-center">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="140" height="140">
+              <defs><linearGradient id="masc-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs>
+              <circle class="donut-bg" cx="70" cy="70" r="54"/>
+              <circle class="donut-fill" id="masc-donut" cx="70" cy="70" r="54" stroke-dasharray="0 339.3"/>
+            </svg>
+            <div class="donut-text"><div class="donut-num" id="masc-donut-num">0</div><div class="donut-sub">de 75</div></div>
+          </div>
+          <div class="result-badge2">Pontuação total</div>
+        </div>
+        <div class="result-art">🧠</div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" id="masc-v-ans">0</div><div class="bar" id="masc-b-ans" style="height:4%;background:linear-gradient(180deg,#818cf8,#6366f1)"></div><div class="bar-label">Ansiedade</div></div>
+            <div class="bar-col"><div class="bar-val" id="masc-v-esg">0</div><div class="bar" id="masc-b-esg" style="height:4%;background:linear-gradient(180deg,#60a5fa,#3b82f6)"></div><div class="bar-label">Esgotamento</div></div>
+            <div class="bar-col"><div class="bar-val" id="masc-v-est">0</div><div class="bar" id="masc-b-est" style="height:4%;background:linear-gradient(180deg,#34d399,#059669)"></div><div class="bar-label">Estresse</div></div>
+          </div>
+          <div class="chart-note"><span>🧠 Maior atenção: <strong id="masc-top">—</strong></span><span>›</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
+            <div class="attention-inner">
+              <div class="attention-left"><div class="attention-emoji">😰</div><div><div class="attention-name" id="masc-attn">—</div><div class="attention-sub">Área que precisa de mais atenção.</div></div></div>
+              <div class="attention-art">🎯</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 SUA EVOLUÇÃO</div>
+            <div class="line-chart-wrap"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><defs><linearGradient id="masc-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><polyline points="0,15 70,22 145,38 215,50 290,68 365,82 400,88" fill="none" stroke="url(#masc-line)" stroke-width="2.5" stroke-linecap="round"/><circle cx="0" cy="15" r="4" fill="#818cf8"/><circle cx="70" cy="22" r="4" fill="#818cf8"/><circle cx="145" cy="38" r="4" fill="#818cf8"/><circle cx="215" cy="50" r="4" fill="#818cf8"/><circle cx="290" cy="68" r="4" fill="#818cf8"/><circle cx="365" cy="82" r="4" fill="#818cf8"/></svg></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.3);margin-top:4px"><span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span></div>
+            <div class="evolution-note"><span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">AÇÕES RÁPIDAS</div>
+      <div class="grid4">
+        <div class="qa-item" onclick="location.href='quiz.html'"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Exercícios','masc')"><div class="qa-icon">🧘</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Recomendações','masc')"><div class="qa-icon">💙</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Histórico','masc')"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico</div><div class="qa-sub">Veja suas avaliações anteriores</div></div><span class="qa-chevron">›</span></div>
+      </div>
+    </main>
   </div>
 </div>
 
-<!-- ══ MODAL: PMR ══ -->
-<div class="modal-bg" id="modal-pmr">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('pmr')">✕</button>
-    <h3>💪 Relaxamento Muscular Progressivo</h3>
-    <div class="modal-source">Edmund Jacobson (1929) · Validado por centenas de estudos · Para esgotamento e estresse</div>
-    <p>Tensione cada grupo muscular por 5 segundos e solte. Siga o timer.</p>
-    <div class="pmr-steps" id="pmr-steps">
-      <div class="pmr-step" data-idx="0"><div class="pmr-num">1</div><div><div class="pmr-txt">Punhos</div><div class="pmr-sub">Feche os punhos com força</div></div></div>
-      <div class="pmr-step" data-idx="1"><div class="pmr-num">2</div><div><div class="pmr-txt">Ombros</div><div class="pmr-sub">Eleve os ombros até as orelhas</div></div></div>
-      <div class="pmr-step" data-idx="2"><div class="pmr-num">3</div><div><div class="pmr-txt">Abdômen</div><div class="pmr-sub">Contraia o abdômen com força</div></div></div>
-      <div class="pmr-step" data-idx="3"><div class="pmr-num">4</div><div><div class="pmr-txt">Pernas</div><div class="pmr-sub">Estique as pernas e contraia</div></div></div>
-      <div class="pmr-step" data-idx="4"><div class="pmr-num">5</div><div><div class="pmr-txt">Rosto</div><div class="pmr-sub">Feche os olhos com força</div></div></div>
-    </div>
-    <div class="pmr-timer" id="pmr-timer" style="display:none">5</div>
-    <button class="btn-ativ" id="btn-pmr" onclick="startPMR()">▶ Iniciar</button>
+<!-- ══ NEUTRO ══ -->
+<div id="neutro" class="dash">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon">🧠</div><span class="sb-logo-name">ZenIA</span></div>
+      <nav class="sb-nav">
+        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
+        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
+        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
+        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
+        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
+        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
+        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
+      </nav>
+      <div class="sb-tip"><strong>🌱 Respire. Você não está sozinho.</strong><p>Pequenas atitudes podem transformar seus dias.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-user"><div class="topbar-avatar">🧘</div><div><div class="topbar-name" id="neutro-nome">Olá! 👋</div><div class="topbar-sub">Que bom te ver por aqui.</div></div></div>
+        <button class="btn-sair" onclick="sairConta()">↩ Sair</button>
+      </div>
+      <div class="result-card">
+        <div class="result-left">
+          <div class="result-tag">SEU RESULTADO</div>
+          <div class="result-title" id="neutro-result-title">Equilibrado</div>
+          <div class="result-desc" id="neutro-result-desc">Você demonstra um bom equilíbrio emocional.</div>
+          <div class="result-badge"><span>💜</span> Você está no caminho certo!</div>
+        </div>
+        <div class="result-center">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="140" height="140">
+              <defs><linearGradient id="neutro-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+              <circle class="donut-bg" cx="70" cy="70" r="54"/>
+              <circle class="donut-fill" id="neutro-donut" cx="70" cy="70" r="54" stroke-dasharray="0 339.3"/>
+            </svg>
+            <div class="donut-text"><div class="donut-num" id="neutro-donut-num">0</div><div class="donut-sub">de 75</div></div>
+          </div>
+          <div class="result-badge2">Pontuação total</div>
+        </div>
+        <div class="result-art">🪨</div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" id="neutro-v-ans">0</div><div class="bar" id="neutro-b-ans" style="height:4%;background:linear-gradient(180deg,#c4b5fd,#a78bfa)"></div><div class="bar-label">Ansiedade</div></div>
+            <div class="bar-col"><div class="bar-val" id="neutro-v-esg">0</div><div class="bar" id="neutro-b-esg" style="height:4%;background:linear-gradient(180deg,#a78bfa,#7c3aed)"></div><div class="bar-label">Esgotamento</div></div>
+            <div class="bar-col"><div class="bar-val" id="neutro-v-est">0</div><div class="bar" id="neutro-b-est" style="height:4%;background:linear-gradient(180deg,#6ee7b7,#059669)"></div><div class="bar-label">Estresse</div></div>
+          </div>
+          <div class="chart-note"><span>💡 Maior atenção: <strong id="neutro-top">—</strong></span><span>›</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
+            <div class="attention-inner">
+              <div class="attention-left"><div class="attention-emoji">😰</div><div><div class="attention-name" id="neutro-attn">—</div><div class="attention-sub">Área que precisa de mais atenção.</div></div></div>
+              <button style="padding:8px 16px;background:#ede9fe;color:#7c3aed;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer">Entender mais</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 SUA EVOLUÇÃO</div>
+            <div class="line-chart-wrap"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><defs><linearGradient id="neutro-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><polyline points="0,5 70,18 145,35 215,48 290,65 365,80 400,88" fill="none" stroke="url(#neutro-line)" stroke-width="2.5" stroke-linecap="round"/><circle cx="0" cy="5" r="4" fill="#7c3aed"/><circle cx="70" cy="18" r="4" fill="#7c3aed"/><circle cx="145" cy="35" r="4" fill="#7c3aed"/><circle cx="215" cy="48" r="4" fill="#7c3aed"/><circle cx="290" cy="65" r="4" fill="#7c3aed"/><circle cx="365" cy="80" r="4" fill="#7c3aed"/></svg></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px"><span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span></div>
+            <div class="evolution-note"><span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">AÇÕES RÁPIDAS</div>
+      <div class="grid4">
+        <div class="qa-item" onclick="location.href='quiz.html'"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Exercícios','neutro')"><div class="qa-icon">🧠</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Recomendações','neutro')"><div class="qa-icon">⭐</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Histórico','neutro')"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico</div><div class="qa-sub">Veja suas avaliações anteriores</div></div><span class="qa-chevron">›</span></div>
+      </div>
+    </main>
   </div>
 </div>
 
-<!-- ══ MODAL: DIÁRIO ══ -->
-<div class="modal-bg" id="modal-journal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('journal')">✕</button>
-    <h3>📓 Diário guiado</h3>
-    <div class="modal-source">Penn State Worry Questionnaire · Reduz ansiedade em até 33%</div>
-    <p>Responda as perguntas abaixo com honestidade. Não há certo ou errado.</p>
-    <div class="journal-prompts">
-      <div class="journal-prompt">💭 O que está te pesando agora?</div>
-      <div class="journal-prompt">🎯 O que disso está no seu controle?</div>
-      <div class="journal-prompt">🌱 Uma coisa pequena que você pode fazer hoje?</div>
-    </div>
-    <textarea class="journal-area" id="journal-text" placeholder="Escreva livremente aqui..."></textarea>
-    <br>
-    <button class="btn-ativ" onclick="completeJournal()" style="margin-top:12px">Salvar +15 XP</button>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script type="module">
-const gender = localStorage.getItem('zenia_gender') || 'feminino';
-document.body.className = {feminino:'fem', masculino:'masc', neutro:'neutro'}[gender] || 'fem';
-
-// ── SUPABASE ──────────────────────────────────────────────────
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-const supabase = createClient(
-  'https://uhtumganaeooximgbkjv.supabase.co',
-  'sb_publishable_CinlAf3gm3clDcNpXRelGg_QQKylseJ'
-)
-
-// ── STATUS DO QUIZ ────────────────────────────────────────────
-localStorage.setItem('zenia_quiz_status', 'em_progresso');
-
-function voltarInicio(){
-  if(document.getElementById('scr-quiz').style.display !== 'none' && xp > 0){
-    openModal('sair');
-  } else {
-    confirmarSaida();
-  }
-}
-
-function confirmarSaida(){
-  if(localStorage.getItem('zenia_quiz_status') === 'em_progresso'){
-    localStorage.setItem('zenia_quiz_status', 'nao_completado');
-  }
-  closeModal('sair');
-  location.href = 'index.html';
-}
-
-// ── PERGUNTAS ─────────────────────────────────────────────────
-const Qs = [
-  {cat:'ans',icon:'😰',text:'Com que frequência você sente um aperto no peito, falta de ar ou coração acelerado sem causa física aparente?'},
-  {cat:'ans',icon:'🌀',text:'Você costuma ter pensamentos acelerados ou preocupações que não consegue desligar, mesmo quando quer descansar?'},
-  {cat:'ans',icon:'😬',text:'Com que frequência você evita situações ou tarefas por medo de que algo ruim aconteça?'},
-  {cat:'ans',icon:'😴',text:'Você tem dificuldade para adormecer ou acorda no meio da noite com pensamentos perturbadores?'},
-  {cat:'ans',icon:'🫀',text:'Com que frequência pequenas incertezas do dia a dia te causam preocupação desproporcional?'},
-  {cat:'esg',icon:'🪫',text:'Você acorda já se sentindo cansado, mesmo após uma noite de sono?'},
-  {cat:'esg',icon:'😶',text:'Com que frequência você sente que perdeu o interesse ou a motivação por coisas que antes te animavam?'},
-  {cat:'esg',icon:'🧊',text:'Você sente indiferença emocional — como se não conseguisse mais se importar com o que acontece ao redor?'},
-  {cat:'esg',icon:'📉',text:'Você sente que seu rendimento e produtividade caíram, mesmo sem saber exatamente por quê?'},
-  {cat:'esg',icon:'🏠',text:'Com que frequência você prefere se isolar das pessoas, mesmo daquelas que você gosta?'},
-  {cat:'est',icon:'🤯',text:'Você sente que tem responsabilidades demais e tempo de menos para dar conta de tudo?'},
-  {cat:'est',icon:'😤',text:'Com que frequência pequenas situações do dia a dia te irritam mais do que deveriam?'},
-  {cat:'est',icon:'⏳',text:'Você sente que está "no limite" e que qualquer nova demanda pode te fazer perder o controle?'},
-  {cat:'est',icon:'🎭',text:'Com que frequência você sente que precisa esconder como está se sentindo para parecer bem para os outros?'},
-  {cat:'est',icon:'💆',text:'Você consegue relaxar e desligar completamente dos problemas nos seus momentos de descanso?', reversed:true},
-];
-
-const OPTS = [
-  {label:'Nunca',          emoji:'😌', score:0},
-  {label:'Raramente',      emoji:'🙂', score:1},
-  {label:'Às vezes',       emoji:'😐', score:2},
-  {label:'Frequentemente', emoji:'😟', score:3},
-  {label:'Sempre',         emoji:'😰', score:4},
-];
-
-// ── ESTADO ────────────────────────────────────────────────────
-let cur=0, answers=new Array(Qs.length).fill(null), xp=0, activXp=0;
-let done={breath:false,ground:false,pmr:false,journal:false};
-let pcts={ans:0,esg:0,est:0};
-
-// ── QUIZ ─────────────────────────────────────────────────────
-function render(){
-  const q=Qs[cur], total=Qs.length, pct=Math.round((cur/total)*100);
-  document.getElementById('prog-label').textContent=`Pergunta ${cur+1} de ${total}`;
-  document.getElementById('prog-pct').textContent=pct+'%';
-  document.getElementById('prog-fill').style.width=pct+'%';
-  updateXP();
-  const catMap={ans:['cp-ans','😰 Ansiedade'],esg:['cp-esg','🪫 Esgotamento'],est:['cp-est','🤯 Estresse']};
-  const pill=document.getElementById('q-cat');
-  pill.className='cat-pill '+catMap[q.cat][0];
-  pill.textContent=catMap[q.cat][1];
-  document.getElementById('q-icon').textContent=q.icon;
-  document.getElementById('q-num').textContent=`Pergunta ${cur+1} de ${total}`;
-  document.getElementById('q-text').textContent=q.text;
-  const card=document.querySelector('.q-card');
-  card.style.animation='none';card.offsetHeight;card.style.animation='';
-  const container=document.getElementById('opts');
-  container.innerHTML='';
-  OPTS.forEach((o,i)=>{
-    const d=document.createElement('div');
-    d.className='opt'+(answers[cur]===i?' sel':'');
-    d.innerHTML=`<span class="opt-left"><span class="opt-emoji">${o.emoji}</span><span>${o.label}</span></span><span class="opt-badge">${i===0?'0 pts':'+' +(i*2)+' pts'}</span>`;
-    d.onclick=()=>selectAns(i);
-    container.appendChild(d);
-  });
-  document.getElementById('btn-prev').style.visibility=cur===0?'hidden':'visible';
-  const bn=document.getElementById('btn-next');
-  bn.disabled=answers[cur]===null;
-  bn.textContent=cur===Qs.length-1?'Ver resultado ✓':'Próxima →';
-}
-
-function selectAns(i){
-  const was=answers[cur]===null;
-  answers[cur]=i;
-  if(was){xp+=10;showToast('✨ +10 XP');}
-  document.querySelectorAll('.opt').forEach((el,j)=>el.classList.toggle('sel',j===i));
-  document.getElementById('btn-next').disabled=false;
-  updateXP();
-}
-
-function nextQ(){
-  if(answers[cur]===null)return;
-  if(cur===Qs.length-1){showResult();return;}
-  cur++;render();
-}
-function prevQ(){if(cur>0){cur--;render();}}
-function updateXP(){
-  const p=Math.min((xp/150)*100,100);
-  document.getElementById('xp-fill').style.width=p+'%';
-  document.getElementById('xp-pts').textContent=xp+' pts';
-}
-
-// ── RESULTADO ────────────────────────────────────────────────
-function showResult(){
-  const raw={ans:0,esg:0,est:0},cnt={ans:0,esg:0,est:0};
-  Qs.forEach((q,i)=>{
-    const a=answers[i]??0;
-    raw[q.cat]+=(q.reversed?(4-a):a);
-    cnt[q.cat]++;
-  });
-  for(const k in raw) pcts[k]=Math.round((raw[k]/(4*cnt[k]))*100);
-  const avg=Math.round((pcts.ans+pcts.esg+pcts.est)/3);
-  const level=p=>p===0?'Nenhum sinal':p<=30?'Leve':p<=60?'Moderado':'Elevado';
-  const emoji=p=>p===0?'🟢':p<=30?'🟡':p<=60?'🟠':'🔴';
-  document.getElementById('l-ans').textContent=emoji(pcts.ans)+' '+level(pcts.ans);
-  document.getElementById('l-esg').textContent=emoji(pcts.esg)+' '+level(pcts.esg);
-  document.getElementById('l-est').textContent=emoji(pcts.est)+' '+level(pcts.est);
-  let icon,title,desc;
-  if(avg===0){icon='🌟';title='Sem sinais identificados';desc='Seus indicadores estão zerados. Ótimo equilíbrio emocional! Continue assim.';}
-  else if(avg<=30){icon='😊';title='Equilibrado';desc='Você apresenta poucos sinais de sobrecarga. Continue cuidando de você com as atividades abaixo!';}
-  else if(avg<=60){icon='🧐';title='Atenção moderada';desc='Alguns pontos merecem cuidado. As atividades abaixo foram selecionadas para o que você está sentindo.';}
-  else{icon='💪';title='Atenção elevada';desc='Seus resultados indicam sobrecarga emocional significativa. As atividades abaixo podem ajudar — e considere falar com um profissional.';}
-  document.getElementById('res-icon').textContent=icon;
-  document.getElementById('res-title').textContent=title;
-  document.getElementById('res-desc').textContent=desc;
-  document.getElementById('scr-quiz').style.display='none';
-  document.getElementById('scr-result').style.display='block';
-  setTimeout(()=>{
-    ['ans','esg','est'].forEach(k=>{
-      document.getElementById('b-'+k).style.width=pcts[k]+'%';
-      document.getElementById('v-'+k).textContent=pcts[k]+'%';
-    });
-  },120);
-  localStorage.setItem('zenia_pcts',JSON.stringify(pcts));
-  localStorage.setItem('zenia_total',avg);
-  localStorage.setItem('zenia_scores',JSON.stringify({ansiedade:Math.round(pcts.ans/4),esgotamento:Math.round(pcts.esg/4),estresse:Math.round(pcts.est/4)}));
-  localStorage.setItem('zenia_quiz_status', 'concluido');
-  localStorage.setItem('zenia_quiz_data', new Date().toLocaleDateString('pt-BR'));
-
-  // Salva no banco de dados
-  supabase.auth.getSession().then(async ({ data: { session } }) => {
-    if (!session) return;
-    await supabase.from('resultados').insert([{
-      usuario_id: session.user.id,
-      ansiedade: Math.round(pcts.ans/4),
-      esgotamento: Math.round(pcts.esg/4),
-      estresse: Math.round(pcts.est/4),
-      total: avg,
-      xp: xp
-    }]);
-    // Atualiza XP no perfil
-    await supabase.from('perfis').update({ xp: xp }).eq('id', session.user.id);
-  });
-}
-
-// ── ATIVIDADES ────────────────────────────────────────────────
-const ATIV_DATA={
-  breath:{icon:'🌬️',title:'Respiração 4-7-8',why:'Ativa o nervo vago e reduz o cortisol rapidamente — ideal para ansiedade aguda.',source:'Dr. Andrew Weil · Harvard Medical School',modal:'breath'},
-  ground:{icon:'🌱',title:'Grounding 5-4-3-2-1',why:'Ancora a mente no presente e interrompe a espiral de pensamentos ansiosos.',source:'Terapia Cognitivo-Comportamental (TCC)',modal:'ground'},
-  pmr:{icon:'💪',title:'Relaxamento Muscular Progressivo',why:'Libera tensão física acumulada pelo estresse e esgotamento em grupos musculares.',source:'Edmund Jacobson (1929) · Validado por centenas de estudos',modal:'pmr'},
-  journal:{icon:'📓',title:'Diário guiado',why:'Externalizar preocupações reduz a ruminação e traz clareza sobre o que está no seu controle.',source:'Penn State Worry Questionnaire (PSWQ)',modal:'journal'},
+<script>
+const REC_DATA = {
+  ansiedade:[
+    {icon:'🌬️',title:'Respiração 4-7-8',desc:'Inspire por 4s, segure por 7s, expire por 8s. Ativa o nervo vago e reduz o cortisol rapidamente.',source:'Dr. Andrew Weil · Harvard Medical School'},
+    {icon:'🌱',title:'Técnica 5-4-3-2-1',desc:'Identifique 5 coisas que vê, 4 que toca, 3 que ouve, 2 que cheira, 1 que saboreia. Ancora a mente no presente.',source:'Terapia Cognitivo-Comportamental (TCC)'},
+    {icon:'📓',title:'Diário de preocupações (15 min/dia)',desc:'Reserve 15 minutos fixos por dia para escrever suas preocupações. Reduz ansiedade em até 33%.',source:'Penn State Worry Questionnaire · Borkovec et al.'},
+    {icon:'☕',title:'Reduza cafeína após 14h',desc:'A cafeína tem meia-vida de 5-6h e aumenta o cortisol, intensificando a ansiedade e prejudicando o sono.',source:'American Psychological Association (APA)'},
+  ],
+  esgotamento:[
+    {icon:'💪',title:'Relaxamento Muscular Progressivo',desc:'Tensione cada grupo muscular por 5s e solte. Libera tensão física acumulada pelo estresse.',source:'Edmund Jacobson (1929) · Validado por centenas de estudos'},
+    {icon:'🔁',title:'Técnica Pomodoro adaptada',desc:'25 minutos de foco + 5 minutos de pausa real (sem tela). Previne o esgotamento cognitivo.',source:'Ultradian Rhythm — Peretz Lavie'},
+    {icon:'🚶',title:'Caminhada de 10 minutos',desc:'10 minutos de caminhada aumentam o BDNF, que regenera neurônios e melhora o humor.',source:'Harvard Medical School · Neurociência do Movimento'},
+    {icon:'🌙',title:'Ritual de desconexão do trabalho',desc:'Defina um horário fixo para parar. Sem checar mensagens depois. Restaura a fronteira entre trabalho e descanso.',source:'Christina Maslach · Maslach Burnout Inventory'},
+  ],
+  estresse:[
+    {icon:'🛑',title:'Técnica STOP',desc:'Stop, Take a breath, Observe, Proceed. Pausa consciente nos momentos de pico de estresse.',source:'MBSR · Jon Kabat-Zinn'},
+    {icon:'☀️',title:'Exposição ao sol pela manhã',desc:'15-20 minutos de luz solar regulam o cortisol e a melatonina, reduzindo a sobrecarga ao longo do dia.',source:'Dr. Andrew Huberman · Stanford Neuroscience Lab'},
+    {icon:'📋',title:'Lista de 3 prioridades diárias',desc:'Escolha apenas 3 tarefas mais importantes por dia. Reduz sobrecarga cognitiva.',source:'Cognitive Load Theory · Sweller (1988)'},
+    {icon:'💬',title:'Contato social intencional (15 min)',desc:'15 minutos de conversa real reduz o cortisol. O contato humano ativa a oxitocina.',source:'UCLA Social Neuroscience Lab · Naomi Eisenberger'},
+  ],
 };
 
-function showAtiv(){
-  // decide destaque
-  const top=Object.entries(pcts).sort((a,b)=>b[1]-a[1])[0][0];
-  const hlMap={ans:'breath',esg:'pmr',est:'ground'};
-  const hlKey=pcts.ans===0&&pcts.esg===0&&pcts.est===0?'journal':hlMap[top];
-  const hl=ATIV_DATA[hlKey];
-  document.getElementById('hl-icon').textContent=hl.icon;
-  document.getElementById('hl-title').textContent=hl.title;
-  document.getElementById('hl-why').textContent=hl.why;
-  document.getElementById('hl-source').textContent=hl.source;
-  document.getElementById('hl-btn').textContent='Começar agora →';
-  document.getElementById('hl-btn').onclick=()=>openModal(hl.modal);
-  document.getElementById('scr-result').style.display='none';
-  document.getElementById('scr-ativ').style.display='block';
-  document.getElementById('ativ-xp').textContent=xp+activXp;
+// GÊNERO
+const g = localStorage.getItem('zenia_gender') || 'feminino';
+const themeId = {feminino:'fem',masculino:'masc',neutro:'neutro'}[g] || 'fem';
+const activeDash = document.getElementById(themeId) || document.getElementById('fem');
+activeDash.classList.add('active');
+
+// NOME
+const nome = localStorage.getItem('zenia_user_nome') || '';
+if (nome) {
+  ['fem','masc','neutro'].forEach(t => {
+    const el = document.getElementById(t + '-nome');
+    if (el) el.textContent = 'Olá, ' + nome + '! 👋';
+  });
 }
 
-function completeAtiv(id){
-  if(done[id])return;
-  done[id]=true;
-  const pts={breath:20,ground:20,pmr:25,journal:15};
-  activXp+=pts[id];
-  document.getElementById('ac-'+id).classList.add('done');
-  document.getElementById('ativ-xp').textContent=xp+activXp;
-  showToast('🎉 +'+pts[id]+' XP!');
-  closeModal(id);
-  if(Object.values(done).every(Boolean)){
-    document.getElementById('final-card').style.display='block';
-    document.getElementById('final-xp').textContent='⭐ '+(xp+activXp)+' XP total';
-    document.getElementById('final-card').scrollIntoView({behavior:'smooth'});
-  }
+// SCORES
+const rawScores = localStorage.getItem('zenia_scores');
+const scores = rawScores ? JSON.parse(rawScores) : {ansiedade:0,esgotamento:0,estresse:0};
+const pcts = (() => { try { return JSON.parse(localStorage.getItem('zenia_pcts')) || {ans:0,esg:0,est:0}; } catch(e){ return {ans:0,esg:0,est:0}; }})();
+const total = parseInt(localStorage.getItem('zenia_total') || '0');
+const xpTotal = parseInt(localStorage.getItem('zenia_xp') || '0');
+const quizStatus = localStorage.getItem('zenia_quiz_status') || 'nao_iniciado';
+const quizData = localStorage.getItem('zenia_quiz_data') || '—';
+
+function getResultLabel(t) {
+  if (t === 0) return {label:'Sem sinais 🌟',desc:'Seus indicadores estão zerados. Ótimo equilíbrio emocional!'};
+  if (t <= 30) return {label:'Equilibrado ✨',desc:'Você demonstra bom equilíbrio emocional. Continue cuidando de você!'};
+  if (t <= 60) return {label:'Atenção moderada 🧐',desc:'Alguns pontos merecem cuidado. Veja as recomendações personalizadas.'};
+  return {label:'Atenção elevada 💪',desc:'Seus resultados indicam sobrecarga. Considere falar com um profissional.'};
 }
 
-function irDash(){localStorage.setItem('zenia_xp',xp+activXp);location.href='index.html';}
-function irRec(){localStorage.setItem('zenia_xp',xp+activXp);localStorage.setItem('zenia_goto','recomendacoes');location.href='index.html';}
-
-// ── TOAST ─────────────────────────────────────────────────────
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),1800);
+function getTopArea() {
+  const s = scores;
+  if (s.ansiedade >= s.esgotamento && s.ansiedade >= s.estresse) return 'Ansiedade';
+  if (s.esgotamento >= s.ansiedade && s.esgotamento >= s.estresse) return 'Esgotamento';
+  if (s.estresse > 0) return 'Estresse';
+  return '—';
 }
 
-// ── MODAIS ────────────────────────────────────────────────────
-function openModal(id){document.getElementById('modal-'+id).classList.add('open');if(id==='pmr')initPMR();}
-function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');}
+const result = getResultLabel(total);
+const topArea = getTopArea();
 
-// RESPIRAÇÃO
-let bCycle=0,bRunning=false;
-function startBreath(){
-  if(bRunning)return;
-  bRunning=true;
-  document.getElementById('btn-breath').style.display='none';
-  bCycle=0;runBreath();
+// Atualiza dashboards
+['fem','masc','neutro'].forEach(t => {
+  const d = document.getElementById(t);
+  if (!d) return;
+  const titleEl = d.querySelector('.result-title');
+  const descEl = d.querySelector('.result-desc');
+  if (titleEl) titleEl.textContent = result.label;
+  if (descEl) descEl.textContent = result.desc;
+  const circ = 339.3;
+  const frac = Math.min(total / 75, 1);
+  const da = frac === 0 ? '0 339.3' : (frac * circ) + ' ' + circ;
+  const donut = d.querySelector('.donut-fill');
+  if (donut) donut.setAttribute('stroke-dasharray', da);
+  const dnum = d.querySelector('.donut-num');
+  if (dnum) dnum.textContent = total;
+  const catVals = [scores.ansiedade, scores.esgotamento, scores.estresse];
+  const keys = ['ans','esg','est'];
+  keys.forEach((k,i) => {
+    const v = catVals[i] || 0;
+    const barEl = document.getElementById(t + '-b-' + k);
+    const valEl = document.getElementById(t + '-v-' + k);
+    if (barEl) barEl.style.height = Math.max((v/25)*100, 4) + '%';
+    if (valEl) valEl.textContent = v;
+  });
+  const topEl = document.getElementById(t + '-top');
+  const attnEl = document.getElementById(t + '-attn');
+  if (topEl) topEl.textContent = topArea;
+  if (attnEl) attnEl.textContent = topArea;
+});
+
+// NAVEGAÇÃO
+function navTo(label, dashId) {
+  const dash = document.getElementById(dashId);
+  if (!dash) return;
+  dash.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  dash.querySelectorAll('.sb-item').forEach(i => {
+    if (i.textContent.includes(label)) i.classList.add('active');
+  });
+  showPanel(label, dash);
 }
-function runBreath(){
-  if(bCycle>=3){
-    document.getElementById('breath-phase').textContent='✅ Muito bem!';
-    bRunning=false;
-    setTimeout(()=>completeAtiv('breath'),600);
+
+function showPanel(label, dash) {
+  const mainItems = dash.querySelectorAll('.main > *:not(.tab-panel):not(.rec-panel)');
+  const allPanels = dash.querySelectorAll('.tab-panel, .rec-panel');
+
+  if (label.includes('Avaliações')) {
+    location.href = 'quiz.html';
     return;
   }
-  bCycle++;
-  document.getElementById('breath-cycle').textContent=bCycle;
-  const c=document.getElementById('breath-circle');
-  const p=document.getElementById('breath-phase');
-  c.textContent='Inspire...';p.textContent='Inspire... (4s)';
-  c.className='breath-circle inhale';
-  setTimeout(()=>{
-    c.textContent='Segure...';p.textContent='Segure... (7s)';
-    setTimeout(()=>{
-      c.textContent='Expire...';p.textContent='Expire... (8s)';
-      c.className='breath-circle exhale';
-      setTimeout(()=>runBreath(),8000);
-    },7000);
-  },4000);
-}
 
-// GROUNDING
-let groundCount=0;
-function checkGround(el){
-  if(el.classList.contains('done'))return;
-  el.classList.add('done');
-  groundCount++;
-  if(groundCount===5)document.getElementById('ground-ok').style.display='block';
-}
+  allPanels.forEach(p => p.classList.remove('visible'));
 
-// PMR
-let pmrIdx=0,pmrRunning=false,pmrTimer=null;
-function initPMR(){pmrIdx=0;pmrRunning=false;clearInterval(pmrTimer);document.getElementById('pmr-timer').style.display='none';document.getElementById('btn-pmr').style.display='inline-block';}
-function startPMR(){
-  if(pmrRunning)return;
-  pmrRunning=true;
-  document.getElementById('btn-pmr').style.display='none';
-  runPMR();
-}
-function runPMR(){
-  if(pmrIdx>=5){
-    document.getElementById('pmr-timer').style.display='none';
-    setTimeout(()=>completeAtiv('pmr'),500);
-    return;
-  }
-  const steps=document.querySelectorAll('.pmr-step');
-  steps.forEach((s,i)=>s.classList.remove('active'));
-  steps[pmrIdx].classList.add('active');
-  steps[pmrIdx].scrollIntoView({behavior:'smooth',block:'nearest'});
-  let secs=5;
-  const timerEl=document.getElementById('pmr-timer');
-  timerEl.style.display='block';timerEl.textContent=secs;
-  pmrTimer=setInterval(()=>{
-    secs--;timerEl.textContent=secs;
-    if(secs<=0){
-      clearInterval(pmrTimer);
-      steps[pmrIdx].classList.remove('active');
-      steps[pmrIdx].classList.add('done');
-      pmrIdx++;
-      setTimeout(runPMR,600);
+  if (label.includes('Visão geral')) {
+    mainItems.forEach(el => el.style.display = '');
+  } else {
+    mainItems.forEach(el => el.style.display = 'none');
+    const map = {'Recomendações':'rec-panel','Histórico':'panel-historico','Exercícios':'panel-exercicios','Conquistas':'panel-conquistas','Configurações':'panel-config'};
+    for (const [key, cls] of Object.entries(map)) {
+      if (label.includes(key)) {
+        const p = dash.querySelector('.' + cls);
+        if (p) p.classList.add('visible');
+        break;
+      }
     }
-  },1000);
+  }
 }
 
-// DIÁRIO
-function completeJournal(){
-  if(document.getElementById('journal-text').value.trim().length<10){showToast('Escreva um pouquinho mais 😊');return;}
-  completeAtiv('journal');
+document.querySelectorAll('.sb-item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    const label = item.textContent.trim();
+    const dash = document.querySelector('.dash.active');
+    if (!dash) return;
+    dash.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    showPanel(label, dash);
+  });
+});
+
+// INJETAR PAINÉIS
+function buildPanels(dash) {
+  const t = dash.id;
+  const isDark = t === 'masc';
+  const cardBg = isDark ? '#0d1220' : 'white';
+  const cardBorder = isDark ? 'rgba(255,255,255,.07)' : '#ede9fe';
+  const textColor = isDark ? '#e0e7ff' : '#1a0a3d';
+  const mutedColor = isDark ? 'rgba(255,255,255,.4)' : '#9ca3af';
+  const primaryColor = isDark ? '#818cf8' : '#7c3aed';
+  const btnBg = isDark ? 'rgba(99,102,241,.2)' : '#ede9fe';
+  const btnColor = isDark ? '#a5b4fc' : '#5b21b6';
+
+  // RECOMENDAÇÕES
+  const sorted = Object.entries({ansiedade:pcts.ans||0,esgotamento:pcts.esg||0,estresse:pcts.est||0}).sort((a,b)=>b[1]-a[1]);
+  const catLabels = {ansiedade:'😰 Ansiedade',esgotamento:'🪫 Esgotamento',estresse:'🤯 Estresse'};
+  let recHTML = '';
+  sorted.forEach(([cat,pct],idx) => {
+    const recs = REC_DATA[cat] || [];
+    recHTML += '<div><div class="rec-section-title" style="color:' + primaryColor + '">' + catLabels[cat] + ' — ' + pct + '%' + (idx===0?' · Maior atenção':'') + '</div><div class="rec-cards">';
+    recs.forEach(r => {
+      recHTML += '<div class="rec-card" style="background:' + cardBg + ';border-color:' + cardBorder + '">';
+      if (idx===0) recHTML += '<span class="rec-priority" style="background:' + btnBg + ';color:' + btnColor + '">PRIORIDADE</span>';
+      recHTML += '<div class="rec-card-head"><span class="rec-card-icon">' + r.icon + '</span><span class="rec-card-title" style="color:' + textColor + '">' + r.title + '</span></div>';
+      recHTML += '<div class="rec-card-desc" style="color:' + mutedColor + '">' + r.desc + '</div>';
+      recHTML += '<div class="rec-card-source" style="color:' + primaryColor + '">' + r.source + '</div></div>';
+    });
+    recHTML += '</div></div>';
+  });
+  const recPanel = document.createElement('div');
+  recPanel.className = 'rec-panel';
+  recPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">📋 Suas Recomendações</div><p class="tab-sub">Ordenadas pela área que mais precisa de atenção.</p>' + recHTML;
+  dash.querySelector('.main').appendChild(recPanel);
+
+  // HISTÓRICO
+  let histContent = '';
+  if (!quizStatus || quizStatus === 'nao_iniciado') {
+    histContent = '<div class="hist-empty" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="hist-empty-icon">📋</div><div class="hist-empty-title" style="color:' + textColor + '">Avaliação não iniciada</div><div class="hist-empty-sub">Você ainda não fez nenhuma avaliação.</div><button class="cfg-btn cfg-btn-primary" onclick="location.href=\'quiz.html\'">Fazer avaliação →</button></div>';
+  } else if (quizStatus === 'nao_completado' || quizStatus === 'em_progresso') {
+    histContent = '<div class="hist-empty" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="hist-empty-icon">⏳</div><div class="hist-empty-title" style="color:' + textColor + '">Avaliação não completada</div><div class="hist-empty-sub">Você começou mas não terminou. Continue!</div><button class="cfg-btn cfg-btn-primary" onclick="location.href=\'quiz.html\'">Continuar →</button></div>';
+  } else {
+    const avg = Math.round((pcts.ans+pcts.esg+pcts.est)/3);
+    const icon = avg===0?'🌟':avg<=30?'😊':avg<=60?'🧐':'💪';
+    const title = avg===0?'Sem sinais':avg<=30?'Equilibrado':avg<=60?'Atenção moderada':'Atenção elevada';
+    histContent = '<div class="hist-card" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="hist-icon">' + icon + '</div><div style="flex:1"><div class="hist-date" style="color:' + primaryColor + '">' + quizData + '</div><div class="hist-title" style="color:' + textColor + '">' + title + '</div><div class="hist-bars"><div class="hist-bar-row"><span class="hist-bar-label" style="color:' + mutedColor + '">😰 Ansiedade</span><div class="hist-bar-track"><div class="hist-bar-fill" style="width:' + pcts.ans + '%;background:linear-gradient(90deg,#f472b6,#ec4899)"></div></div><span class="hist-bar-val" style="color:' + primaryColor + '">' + pcts.ans + '%</span></div><div class="hist-bar-row"><span class="hist-bar-label" style="color:' + mutedColor + '">🪫 Esgotamento</span><div class="hist-bar-track"><div class="hist-bar-fill" style="width:' + pcts.esg + '%;background:linear-gradient(90deg,#c084fc,#7c3aed)"></div></div><span class="hist-bar-val" style="color:' + primaryColor + '">' + pcts.esg + '%</span></div><div class="hist-bar-row"><span class="hist-bar-label" style="color:' + mutedColor + '">🤯 Estresse</span><div class="hist-bar-track"><div class="hist-bar-fill" style="width:' + pcts.est + '%;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div></div><span class="hist-bar-val" style="color:' + primaryColor + '">' + pcts.est + '%</span></div></div></div></div>';
+  }
+  const histPanel = document.createElement('div');
+  histPanel.className = 'tab-panel panel-historico';
+  histPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">📊 Histórico</div><p class="tab-sub">Acompanhe sua evolução ao longo do tempo.</p>' + histContent;
+  dash.querySelector('.main').appendChild(histPanel);
+
+  // EXERCÍCIOS
+  const exs = [
+    {icon:'🌬️',title:'Respiração 4-7-8',sub:'Ativa o nervo vago e reduz cortisol em minutos',source:'Dr. Andrew Weil · Harvard',url:'quiz.html'},
+    {icon:'🌱',title:'Grounding 5-4-3-2-1',sub:'Ancora a mente no presente',source:'Terapia Cognitivo-Comportamental',url:'quiz.html'},
+    {icon:'💪',title:'Relaxamento Muscular',sub:'Libera tensão física acumulada',source:'Edmund Jacobson (1929)',url:'quiz.html'},
+    {icon:'📓',title:'Diário guiado',sub:'Reduz ansiedade em até 33%',source:'Penn State Worry Questionnaire',url:'quiz.html'},
+  ];
+  const exHTML = exs.map(e => '<div class="ex-card" style="background:' + cardBg + ';border-color:' + cardBorder + '" onclick="location.href=\'' + e.url + '\'"><div class="ex-icon">' + e.icon + '</div><div class="ex-title" style="color:' + textColor + '">' + e.title + '</div><div class="ex-sub" style="color:' + mutedColor + '">' + e.sub + '</div><div class="ex-source" style="color:' + primaryColor + '">' + e.source + '</div><button class="ex-btn" style="background:' + btnBg + ';color:' + btnColor + '">Praticar agora</button></div>').join('');
+  const exPanel = document.createElement('div');
+  exPanel.className = 'tab-panel panel-exercicios';
+  exPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">🧩 Exercícios</div><p class="tab-sub">Pratique agora — baseado em ciência.</p><div class="ex-grid">' + exHTML + '</div>';
+  dash.querySelector('.main').appendChild(exPanel);
+
+  // CONQUISTAS
+  const conquistas = [
+    {icon:'🌱',title:'Primeiro passo',sub:'Complete sua primeira avaliação',unlocked:quizStatus==='concluido'},
+    {icon:'🔥',title:'Dedicado',sub:'Complete 3 avaliações',unlocked:false},
+    {icon:'🧘',title:'Zen master',sub:'Complete todas as atividades',unlocked:xpTotal>=80},
+    {icon:'⭐',title:'Colecionador de XP',sub:'Acumule 100 XP',unlocked:xpTotal>=100},
+    {icon:'💪',title:'Guerreiro',sub:'Acumule 200 XP',unlocked:xpTotal>=200},
+    {icon:'🏆',title:'Campeão',sub:'Complete 10 avaliações',unlocked:false},
+  ];
+  const conqHTML = conquistas.map(c => '<div class="conq-card ' + (c.unlocked?'':'locked') + '" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="conq-icon">' + c.icon + '</div><div class="conq-title" style="color:' + textColor + '">' + c.title + '</div><div class="conq-sub" style="color:' + mutedColor + '">' + c.sub + '</div><span class="conq-badge" style="background:' + btnBg + ';color:' + btnColor + '">' + (c.unlocked?'✅ Conquistado':'🔒 Bloqueado') + '</span></div>').join('');
+  const conqPanel = document.createElement('div');
+  conqPanel.className = 'tab-panel panel-conquistas';
+  conqPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">🏆 Conquistas</div><p class="tab-sub">Você tem ' + xpTotal + ' XP acumulados.</p><div class="conq-grid">' + conqHTML + '</div>';
+  dash.querySelector('.main').appendChild(conqPanel);
+
+  // CONFIGURAÇÕES
+  const nomeAtual = localStorage.getItem('zenia_user_nome') || '';
+  const cfgPanel = document.createElement('div');
+  cfgPanel.className = 'tab-panel panel-config';
+  cfgPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">⚙️ Configurações</div><p class="tab-sub">Gerencie sua conta.</p>' +
+    '<div class="cfg-section" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="cfg-title">👤 Seus dados</div><div class="cfg-field"><label class="cfg-label" style="color:' + textColor + '">Nome</label><input class="cfg-input" id="cfg-nome-' + t + '" value="' + nomeAtual + '" placeholder="Seu nome" style="background:' + (isDark?'#161f35':'#f8f7ff') + ';color:' + textColor + ';border-color:' + cardBorder + '"></div><button class="cfg-btn cfg-btn-primary" onclick="salvarNome(\'' + t + '\')">Salvar</button></div>' +
+    '<div class="cfg-section" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="cfg-title">🔒 Recuperar senha</div><div class="cfg-field"><label class="cfg-label" style="color:' + textColor + '">E-mail cadastrado</label><input class="cfg-input" id="cfg-email-' + t + '" placeholder="seu@email.com" style="background:' + (isDark?'#161f35':'#f8f7ff') + ';color:' + textColor + ';border-color:' + cardBorder + '"></div><button class="cfg-btn cfg-btn-primary" onclick="recuperarSenha(\'' + t + '\')">Enviar link</button></div>' +
+    '<div class="cfg-section" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="cfg-title" style="color:#dc2626">⚠️ Conta</div><button class="cfg-btn cfg-btn-danger" onclick="sairConta()">Sair da conta</button></div>';
+  dash.querySelector('.main').appendChild(cfgPanel);
 }
 
-// Expõe funções globalmente (necessário para type="module")
-window.voltarInicio = voltarInicio;
-window.confirmarSaida = confirmarSaida;
-window.nextQ = nextQ;
-window.prevQ = prevQ;
-window.showAtiv = showAtiv;
-window.irDash = irDash;
-window.irRec = irRec;
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.startBreath = startBreath;
-window.checkGround = checkGround;
-window.startPMR = startPMR;
-window.completeJournal = completeJournal;
-window.completeAtiv = completeAtiv;
-window.selectAns = selectAns;
+['fem','masc','neutro'].forEach(theme => {
+  const dash = document.getElementById(theme);
+  if (dash) buildPanels(dash);
+});
 
-render();
+// FUNÇÕES
+function salvarNome(t) {
+  const nome = document.getElementById('cfg-nome-' + t).value.trim();
+  if (!nome) { alert('Digite um nome válido!'); return; }
+  localStorage.setItem('zenia_user_nome', nome);
+  ['fem','masc','neutro'].forEach(x => {
+    const el = document.getElementById(x + '-nome');
+    if (el) el.textContent = 'Olá, ' + nome + '! 👋';
+  });
+  alert('Nome salvo! ✅');
+}
+
+function recuperarSenha(t) {
+  const email = document.getElementById('cfg-email-' + t).value.trim();
+  if (!email) { alert('Digite seu e-mail!'); return; }
+  alert('Se esse e-mail estiver cadastrado, você receberá um link em breve. 📧');
+}
+
+function sairConta() {
+  if (confirm('Tem certeza que deseja sair?')) {
+    localStorage.clear();
+    location.href = 'cadastro.html';
+  }
+}
+
+// IR PARA RECOMENDAÇÕES se vier do quiz
+if (localStorage.getItem('zenia_goto') === 'recomendacoes') {
+  localStorage.removeItem('zenia_goto');
+  setTimeout(() => navTo('Recomendações', themeId), 300);
+}
 </script>
 </body>
 </html>
