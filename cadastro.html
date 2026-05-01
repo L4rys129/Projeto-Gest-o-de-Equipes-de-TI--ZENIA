@@ -267,7 +267,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif}
 
       <button class="btn-primary" onclick="signup()">Criar conta →</button>
 
-      <div class="login-link">Já tem uma conta? <a href="#">Fazer login</a></div>
+      <div class="login-link">Já tem uma conta? <a href="#" onclick="fazerLogin()">Fazer login</a></div>
     </div>
 
   </div>
@@ -339,21 +339,37 @@ html,body{height:100%;font-family:'DM Sans',sans-serif}
   </div>
 </div>
 
-<script>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://uhtumganaeooximgbkjv.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_CinlAf3gm3clDcNpXRelGg_QQKylkTZPW'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
 let gender = null;
 
-function selGender(btn){
+// Verifica se já está logado
+supabase.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    const g = localStorage.getItem('zenia_gender') || 'feminino';
+    window.location.href = 'index.html';
+  }
+});
+
+window.selGender = function(btn) {
   document.querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
   gender = btn.dataset.g;
 }
-function togglePwd(id,btn){
-  const i=document.getElementById(id);
+
+window.togglePwd = function(id, btn) {
+  const i = document.getElementById(id);
   if(i.type==='password'){i.type='text';btn.textContent='🙈';}
   else{i.type='password';btn.textContent='👁️';}
 }
-function updateStrength(v){
-  const f=document.getElementById('sfill');
+
+window.updateStrength = function(v) {
+  const f = document.getElementById('sfill');
   let w=0,c='#f87171';
   if(v.length>=6){w=40;c='#fb923c';}
   if(v.length>=8){w=65;c='#facc15';}
@@ -361,55 +377,95 @@ function updateStrength(v){
   if(!v.length)w=0;
   f.style.width=w+'%';f.style.background=c;
 }
-async function signup(){
+
+window.signup = async function() {
   if(!gender){alert('Por favor, selecione o campo Sexo para continuar.');return;}
-  
+
   const nome = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
   const senha = document.getElementById('pwd').value;
   const senha2 = document.getElementById('pwd2').value;
 
-  // Validações
   if(!nome){alert('Por favor, preencha seu nome.');return;}
   if(!email){alert('Por favor, preencha seu e-mail.');return;}
   if(senha.length < 6){alert('A senha deve ter pelo menos 6 caracteres.');return;}
   if(senha !== senha2){alert('As senhas não coincidem.');return;}
 
+  const btn = document.querySelector('.btn-primary');
+  btn.textContent = 'Criando conta...';
+  btn.disabled = true;
+
   try {
-    // Importa o supabase
-    const { supabase } = await import('./supabase.js');
+    // Cria usuário no Supabase Auth
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password: senha,
+      options: { data: { nome, genero: gender } }
+    });
 
-    // Salva no banco
-    const { data, error } = await supabase
-      .from('usuarios')
-      .insert([{ nome, email, senha, genero: gender }])
-      .select();
-
-    if(error){
-      if(error.code === '23505'){
-        alert('Este e-mail já está cadastrado!');
+    if (error) {
+      if (error.message.includes('already registered')) {
+        alert('Este e-mail já está cadastrado! Faça login.');
       } else {
-        alert('Erro ao cadastrar: ' + error.message);
+        alert('Erro: ' + error.message);
       }
+      btn.textContent = 'Criar conta →';
+      btn.disabled = false;
       return;
     }
 
-    // Salva o ID do usuário localmente
+    // Salva perfil na tabela perfis
+    if (data.user) {
+      await supabase.from('perfis').insert([{
+        id: data.user.id,
+        nome,
+        genero: gender,
+        xp: 0
+      }]);
+    }
+
     localStorage.setItem('zenia_gender', gender);
-    localStorage.setItem('zenia_user_id', data[0].id);
     localStorage.setItem('zenia_user_nome', nome);
     window.location.href = 'quiz.html';
 
   } catch(err) {
     console.error(err);
     alert('Erro de conexão. Tente novamente.');
+    btn.textContent = 'Criar conta →';
+    btn.disabled = false;
   }
 }
-function goBack(){
+
+window.goBack = function() {
   document.querySelectorAll('.home-screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('signup').classList.add('active');
   window.scrollTo(0,0);
 }
+
+// LOGIN (para o link "Fazer login")
+window.fazerLogin = async function() {
+  const email = prompt('Digite seu e-mail:');
+  if (!email) return;
+  const senha = prompt('Digite sua senha:');
+  if (!senha) return;
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
+
+  if (error) {
+    alert('E-mail ou senha incorretos.');
+    return;
+  }
+
+  // Busca perfil
+  const { data: perfil } = await supabase.from('perfis').select('*').eq('id', data.user.id).single();
+  if (perfil) {
+    localStorage.setItem('zenia_gender', perfil.genero || 'feminino');
+    localStorage.setItem('zenia_user_nome', perfil.nome || '');
+    localStorage.setItem('zenia_xp', perfil.xp || 0);
+  }
+
+  window.location.href = 'index.html';
+}
 </script>
 </body>
-</html> 
+</html>
