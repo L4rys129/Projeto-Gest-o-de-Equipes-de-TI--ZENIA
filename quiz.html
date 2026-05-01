@@ -410,16 +410,21 @@ textarea.journal-area:focus{border-color:var(--primary)}
 
 <div class="toast" id="toast"></div>
 
-<script>
-// ── TEMA ──────────────────────────────────────────────────────
+<script type="module">
 const gender = localStorage.getItem('zenia_gender') || 'feminino';
 document.body.className = {feminino:'fem', masculino:'masc', neutro:'neutro'}[gender] || 'fem';
+
+// ── SUPABASE ──────────────────────────────────────────────────
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase = createClient(
+  'https://uhtumganaeooximgbkjv.supabase.co',
+  'sb_publishable_CinlAf3gm3clDcNpXRelGg_QQKylseJ'
+)
 
 // ── STATUS DO QUIZ ────────────────────────────────────────────
 localStorage.setItem('zenia_quiz_status', 'em_progresso');
 
 function voltarInicio(){
-  // Se ainda no quiz, pede confirmação
   if(document.getElementById('scr-quiz').style.display !== 'none' && xp > 0){
     openModal('sair');
   } else {
@@ -428,7 +433,6 @@ function voltarInicio(){
 }
 
 function confirmarSaida(){
-  // Marca como não completado se não terminou
   if(localStorage.getItem('zenia_quiz_status') === 'em_progresso'){
     localStorage.setItem('zenia_quiz_status', 'nao_completado');
   }
@@ -556,6 +560,21 @@ function showResult(){
   localStorage.setItem('zenia_scores',JSON.stringify({ansiedade:Math.round(pcts.ans/4),esgotamento:Math.round(pcts.esg/4),estresse:Math.round(pcts.est/4)}));
   localStorage.setItem('zenia_quiz_status', 'concluido');
   localStorage.setItem('zenia_quiz_data', new Date().toLocaleDateString('pt-BR'));
+
+  // Salva no banco de dados
+  supabase.auth.getSession().then(async ({ data: { session } }) => {
+    if (!session) return;
+    await supabase.from('resultados').insert([{
+      usuario_id: session.user.id,
+      ansiedade: Math.round(pcts.ans/4),
+      esgotamento: Math.round(pcts.esg/4),
+      estresse: Math.round(pcts.est/4),
+      total: avg,
+      xp: xp
+    }]);
+    // Atualiza XP no perfil
+    await supabase.from('perfis').update({ xp: xp }).eq('id', session.user.id);
+  });
 }
 
 // ── ATIVIDADES ────────────────────────────────────────────────
@@ -692,6 +711,23 @@ function completeJournal(){
   if(document.getElementById('journal-text').value.trim().length<10){showToast('Escreva um pouquinho mais 😊');return;}
   completeAtiv('journal');
 }
+
+// Expõe funções globalmente (necessário para type="module")
+window.voltarInicio = voltarInicio;
+window.confirmarSaida = confirmarSaida;
+window.nextQ = nextQ;
+window.prevQ = prevQ;
+window.showAtiv = showAtiv;
+window.irDash = irDash;
+window.irRec = irRec;
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.startBreath = startBreath;
+window.checkGround = checkGround;
+window.startPMR = startPMR;
+window.completeJournal = completeJournal;
+window.completeAtiv = completeAtiv;
+window.selectAns = selectAns;
 
 render();
 </script>
