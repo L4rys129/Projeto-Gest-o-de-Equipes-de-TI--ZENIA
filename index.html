@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZenIA – Dashboard</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#7c3aed">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ZenIA">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js');}</script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -290,7 +297,71 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #masc .cfg-label{color:#e0e7ff}
 #masc .cfg-input{background:#161f35;border-color:rgba(255,255,255,.1);color:white}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){
+  .layout{flex-direction:column}
+  .sidebar{
+    width:100%;height:auto;
+    flex-direction:row;
+    padding:0;
+    position:fixed;bottom:0;left:0;right:0;
+    z-index:200;
+    border-top:1px solid rgba(255,255,255,.1);
+    overflow:visible;
+  }
+  .sb-logo{display:none}
+  .sb-tip{display:none}
+  .sb-nav{
+    flex-direction:row;
+    justify-content:space-around;
+    padding:8px 4px 12px;
+    gap:0;
+    flex:1;
+  }
+  .sb-item{
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    padding:6px 4px;
+    font-size:10px;
+    border-radius:10px;
+    flex:1;
+    text-align:center;
+  }
+  .sb-item span{font-size:22px}
+  .main{
+    padding:16px 12px 90px;
+    gap:14px;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .topbar{flex-wrap:wrap;gap:8px}
+  .topbar-name{font-size:15px}
+  .topbar-avatar{width:38px;height:38px;font-size:18px}
+  .btn-sair{padding:7px 12px;font-size:12px}
+  .result-card{flex-direction:column;padding:20px;gap:16px;min-height:auto}
+  .result-title{font-size:28px}
+  .result-art{display:none}
+  .result-center{flex-direction:row;gap:16px;align-items:center}
+  .grid2{grid-template-columns:1fr}
+  .grid4{grid-template-columns:1fr 1fr}
+  .qa-item{padding:12px}
+  .qa-title{font-size:12px}
+  .qa-sub{font-size:11px}
+  .bar-chart{height:100px;gap:12px}
+  .donut-wrap{width:100px;height:100px}
+  .donut-num{font-size:26px}
+  .ex-grid{grid-template-columns:1fr}
+  .conq-grid{grid-template-columns:1fr 1fr}
+  .rec-cards{gap:8px}
+  .rec-card{padding:14px}
+  .tab-title{font-size:18px}
+  .hist-card{flex-direction:column;gap:12px}
+}
+@media(max-width:380px){
+  .sb-item{font-size:9px}
+  .sb-item span{font-size:19px}
+  .grid4{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
