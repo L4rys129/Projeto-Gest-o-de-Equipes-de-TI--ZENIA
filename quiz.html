@@ -184,7 +184,19 @@ textarea.journal-area:focus{border-color:var(--primary)}
 
 <div class="topbar">
   <div class="logo"><div class="logo-icon">🧠</div><span class="logo-name">ZenIA</span></div>
-  <button class="btn-top" onclick="location.href='cadastro.html'">↩ Sair</button>
+  <button class="btn-top" onclick="voltarInicio()">← Voltar ao início</button>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO SAÍDA -->
+<div class="modal-bg" id="modal-sair">
+  <div class="modal" style="max-width:380px">
+    <h3 style="margin-bottom:10px">⚠️ Tem certeza?</h3>
+    <p>Se você sair agora, seu progresso no quiz será perdido.</p>
+    <div style="display:flex;gap:10px;margin-top:20px;justify-content:center">
+      <button class="btn-prev" onclick="closeModal('sair')" style="flex:1">Continuar quiz</button>
+      <button class="btn-next" onclick="confirmarSaida()" style="flex:1;margin:0">Sair mesmo assim</button>
+    </div>
+  </div>
 </div>
 
 <div class="wrap">
@@ -403,6 +415,27 @@ textarea.journal-area:focus{border-color:var(--primary)}
 const gender = localStorage.getItem('zenia_gender') || 'feminino';
 document.body.className = {feminino:'fem', masculino:'masc', neutro:'neutro'}[gender] || 'fem';
 
+// ── STATUS DO QUIZ ────────────────────────────────────────────
+localStorage.setItem('zenia_quiz_status', 'em_progresso');
+
+function voltarInicio(){
+  // Se ainda no quiz, pede confirmação
+  if(document.getElementById('scr-quiz').style.display !== 'none' && xp > 0){
+    openModal('sair');
+  } else {
+    confirmarSaida();
+  }
+}
+
+function confirmarSaida(){
+  // Marca como não completado se não terminou
+  if(localStorage.getItem('zenia_quiz_status') === 'em_progresso'){
+    localStorage.setItem('zenia_quiz_status', 'nao_completado');
+  }
+  closeModal('sair');
+  location.href = 'index.html';
+}
+
 // ── PERGUNTAS ─────────────────────────────────────────────────
 const Qs = [
   {cat:'ans',icon:'😰',text:'Com que frequência você sente um aperto no peito, falta de ar ou coração acelerado sem causa física aparente?'},
@@ -521,6 +554,8 @@ function showResult(){
   localStorage.setItem('zenia_pcts',JSON.stringify(pcts));
   localStorage.setItem('zenia_total',avg);
   localStorage.setItem('zenia_scores',JSON.stringify({ansiedade:Math.round(pcts.ans/4),esgotamento:Math.round(pcts.esg/4),estresse:Math.round(pcts.est/4)}));
+  localStorage.setItem('zenia_quiz_status', 'concluido');
+  localStorage.setItem('zenia_quiz_data', new Date().toLocaleDateString('pt-BR'));
 }
 
 // ── ATIVIDADES ────────────────────────────────────────────────

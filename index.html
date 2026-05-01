@@ -8,78 +8,33 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
-
-/* SCREEN SWITCHER */
 .dash{display:none;width:100%;height:100vh}
 .dash.active{display:flex}
-
-/* ════════════════════════════════════════
-   SHARED LAYOUT
-════════════════════════════════════════ */
 .layout{display:flex;width:100%;height:100vh;overflow:hidden}
-
-/* SIDEBAR */
-.sidebar{
-  width:240px;flex-shrink:0;
-  display:flex;flex-direction:column;
-  padding:28px 16px;
-  position:relative;overflow:hidden;
-  transition:all .3s
-}
+.sidebar{width:240px;flex-shrink:0;display:flex;flex-direction:column;padding:28px 16px;position:relative;overflow:hidden}
 .sb-logo{display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:32px}
 .sb-logo-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:22px}
 .sb-logo-name{font-family:'Fraunces',serif;font-weight:900;font-size:22px;letter-spacing:-.5px}
-
 .sb-nav{display:flex;flex-direction:column;gap:4px;flex:1}
-.sb-item{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 14px;border-radius:12px;
-  font-size:14px;font-weight:500;cursor:pointer;
-  transition:background .2s,color .2s;text-decoration:none
-}
+.sb-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s,color .2s;text-decoration:none}
 .sb-item span{font-size:18px}
-
-.sb-tip{
-  border-radius:16px;padding:16px;margin-top:16px;
-  font-size:13px;line-height:1.6
-}
+.sb-tip{border-radius:16px;padding:16px;margin-top:16px;font-size:13px;line-height:1.6}
 .sb-tip strong{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
-
-/* MAIN */
 .main{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:20px}
-
-/* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between}
 .topbar-user{display:flex;align-items:center;gap:14px}
 .topbar-avatar{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:22px}
 .topbar-name{font-size:18px;font-weight:700}
 .topbar-sub{font-size:13px;margin-top:1px}
-.btn-sair{
-  display:flex;align-items:center;gap:8px;
-  padding:10px 18px;border-radius:12px;border:none;
-  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;
-  transition:opacity .2s
-}
+.btn-sair{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s}
 .btn-sair:hover{opacity:.8}
-
-/* RESULT CARD */
-.result-card{
-  border-radius:20px;padding:28px 32px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:relative;overflow:hidden;min-height:200px
-}
+.result-card{border-radius:20px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;min-height:200px}
 .result-left{flex:1}
 .result-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
 .result-title{font-family:'Fraunces',serif;font-size:42px;font-weight:900;letter-spacing:-1px;line-height:1}
 .result-desc{font-size:14px;margin-top:10px;line-height:1.6;max-width:320px}
-.result-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  margin-top:18px;padding:10px 16px;border-radius:12px;
-  font-size:13px;font-weight:600
-}
+.result-badge{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600}
 .result-badge span{font-size:18px}
-
-/* DONUT */
 .result-center{display:flex;flex-direction:column;align-items:center;gap:10px}
 .donut-wrap{position:relative;width:140px;height:140px}
 .donut-wrap svg{transform:rotate(-90deg)}
@@ -89,60 +44,38 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 .donut-num{font-family:'Fraunces',serif;font-size:36px;font-weight:900;line-height:1}
 .donut-sub{font-size:11px;margin-top:2px}
 .result-badge2{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600}
-
 .result-art{font-size:100px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.15))}
-
-/* GRID 2 col */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-
-/* CARDS */
 .card{border-radius:16px;padding:22px}
 .card-title{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-
-/* BAR CHART */
 .bar-chart{display:flex;align-items:flex-end;gap:24px;height:130px;padding-bottom:8px;position:relative}
-.bar-chart::before{
-  content:'';position:absolute;left:0;right:0;top:0;bottom:28px;
-  background:repeating-linear-gradient(to bottom,rgba(128,128,128,.1) 0px,rgba(128,128,128,.1) 1px,transparent 1px,transparent 26px);
-}
+.bar-chart::before{content:'';position:absolute;left:0;right:0;top:0;bottom:28px;background:repeating-linear-gradient(to bottom,rgba(128,128,128,.1) 0px,rgba(128,128,128,.1) 1px,transparent 1px,transparent 26px)}
 .bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
 .bar-val{font-size:13px;font-weight:700}
 .bar{width:100%;border-radius:8px 8px 0 0;transition:height .8s ease}
 .bar-label{font-size:12px;margin-top:4px}
-
 .chart-note{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:12px 16px;border-radius:12px;font-size:13px;cursor:pointer}
 .chart-note strong{font-weight:700}
-.chart-chevron{font-size:16px;opacity:.5}
-
-/* ATTENTION CARD */
 .attention-inner{display:flex;align-items:center;justify-content:space-between}
 .attention-left{display:flex;align-items:center;gap:12px}
 .attention-emoji{font-size:32px}
 .attention-name{font-family:'Fraunces',serif;font-size:22px;font-weight:700}
 .attention-sub{font-size:12px;margin-top:2px;max-width:160px;line-height:1.5}
-.attention-art{font-size:64px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.15))}
-
-/* LINE CHART */
+.attention-art{font-size:64px}
 .line-chart-wrap{position:relative;height:100px;margin-top:8px}
 .line-chart-wrap svg{width:100%;height:100%}
 .evolution-note{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;cursor:pointer}
 .evo-pct{font-weight:700}
-
-/* QUICK ACTIONS */
 .qa-item{border-radius:14px;padding:16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:transform .2s}
 .qa-item:hover{transform:translateY(-2px)}
 .qa-icon{font-size:22px;margin-top:2px}
 .qa-title{font-size:13px;font-weight:700}
 .qa-sub{font-size:12px;margin-top:2px;line-height:1.4}
 .qa-chevron{margin-left:auto;font-size:14px;opacity:.4;align-self:center}
-
-/* SECTION LABEL */
 .section-label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:-4px}
 
-/* ════════════════════════════════════════
-   TEMA FEMININO
-════════════════════════════════════════ */
+/* FEMININO */
 #fem{background:linear-gradient(160deg,#fdf4ff 0%,#fce7f3 50%,#ede9fe 100%)}
 #fem .sidebar{background:linear-gradient(180deg,#3b1d72 0%,#5b21b6 60%,#7c3aed 100%)}
 #fem .sb-logo-icon{background:linear-gradient(135deg,#f472b6,#a855f7)}
@@ -153,13 +86,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #fem .sb-tip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
 #fem .sb-tip strong{color:white}
 #fem .sb-tip p{color:rgba(255,255,255,.65);font-size:12.5px}
-#fem .sb-tip-art{font-size:60px;text-align:center;margin-top:8px}
-
 #fem .topbar-avatar{background:linear-gradient(135deg,#f9a8d4,#c084fc)}
 #fem .topbar-name{color:#1a0a3d}
 #fem .topbar-sub{color:#9ca3af}
 #fem .btn-sair{background:white;color:#7c3aed;border:1.5px solid #e9d5ff}
-
 #fem .result-card{background:linear-gradient(135deg,#fdf4ff 0%,#fae8ff 40%,#ede9fe 100%);border:1px solid #e9d5ff}
 #fem .result-tag{color:#9333ea}
 #fem .result-title{color:#ec4899}
@@ -170,28 +100,22 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #fem .donut-num{color:#1a0a3d}
 #fem .donut-sub{color:#9ca3af}
 #fem .result-badge2{background:#f3e8ff;color:#7c3aed}
-
 #fem .card{background:white;box-shadow:0 2px 12px rgba(139,92,246,.08);border:1px solid #f3e8ff}
 #fem .card-title{color:#7c3aed}
 #fem .bar-val{color:#1a0a3d}
 #fem .bar-label{color:#9ca3af}
 #fem .chart-note{background:#fdf4ff;color:#6b7280}
 #fem .chart-note strong{color:#ec4899}
-
 #fem .attention-name{color:#ec4899}
 #fem .attention-sub{color:#9ca3af}
 #fem .evolution-note{background:#fdf4ff;color:#6b7280}
 #fem .evo-pct{color:#ec4899}
-
 #fem .qa-item{background:white;border:1px solid #f3e8ff;box-shadow:0 2px 8px rgba(139,92,246,.06)}
 #fem .qa-title{color:#1a0a3d}
 #fem .qa-sub{color:#9ca3af}
 #fem .section-label{color:#7c3aed}
-#fem .main{background:transparent}
 
-/* ════════════════════════════════════════
-   TEMA MASCULINO (DARK)
-════════════════════════════════════════ */
+/* MASCULINO */
 #masc{background:#070b14}
 #masc .sidebar{background:#0d1220;border-right:1px solid rgba(255,255,255,.06)}
 #masc .sb-logo-icon{background:linear-gradient(135deg,#6366f1,#8b5cf6)}
@@ -202,13 +126,10 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #masc .sb-tip{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2)}
 #masc .sb-tip strong{color:#a5b4fc}
 #masc .sb-tip p{color:rgba(255,255,255,.45);font-size:12.5px}
-#masc .sb-tip-art{font-size:60px;text-align:center;margin-top:8px}
-
 #masc .topbar-avatar{background:linear-gradient(135deg,#4f46e5,#7c3aed)}
 #masc .topbar-name{color:white}
 #masc .topbar-sub{color:rgba(255,255,255,.4)}
 #masc .btn-sair{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
-
 #masc .result-card{background:linear-gradient(135deg,#0f172a,#1e1b4b);border:1px solid rgba(99,102,241,.2)}
 #masc .result-tag{color:#818cf8}
 #masc .result-title{color:white}
@@ -219,28 +140,22 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #masc .donut-num{color:white}
 #masc .donut-sub{color:rgba(255,255,255,.4)}
 #masc .result-badge2{background:rgba(99,102,241,.2);color:#a5b4fc}
-
 #masc .card{background:#0d1220;border:1px solid rgba(255,255,255,.07)}
 #masc .card-title{color:#818cf8}
 #masc .bar-val{color:white}
 #masc .bar-label{color:rgba(255,255,255,.35)}
 #masc .chart-note{background:rgba(99,102,241,.08);color:rgba(255,255,255,.5)}
 #masc .chart-note strong{color:#a78bfa}
-
 #masc .attention-name{color:#a78bfa}
 #masc .attention-sub{color:rgba(255,255,255,.4)}
 #masc .evolution-note{background:rgba(99,102,241,.08);color:rgba(255,255,255,.5)}
 #masc .evo-pct{color:#34d399}
-
 #masc .qa-item{background:#0d1220;border:1px solid rgba(255,255,255,.07)}
 #masc .qa-title{color:white}
 #masc .qa-sub{color:rgba(255,255,255,.35)}
 #masc .section-label{color:#818cf8}
-#masc .main{background:transparent}
 
-/* ════════════════════════════════════════
-   TEMA NEUTRO (CLEAN WHITE)
-════════════════════════════════════════ */
+/* NEUTRO */
 #neutro{background:#f8f7ff}
 #neutro .sidebar{background:white;border-right:1px solid #ede9fe}
 #neutro .sb-logo-icon{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
@@ -248,17 +163,13 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #neutro .sb-item{color:#6b7280}
 #neutro .sb-item:hover{background:#f5f3ff;color:#7c3aed}
 #neutro .sb-item.active{background:#ede9fe;color:#7c3aed;font-weight:600}
-#neutro .sb-tip{background:linear-gradient(135deg,#ede9fe,#fce7f3);border:none}
+#neutro .sb-tip{background:linear-gradient(135deg,#ede9fe,#fce7f3)}
 #neutro .sb-tip strong{color:#1a0a3d}
 #neutro .sb-tip p{color:#6b7280;font-size:12.5px}
-#neutro .sb-tip-art{font-size:60px;text-align:center;margin-top:8px}
-
 #neutro .topbar-avatar{background:linear-gradient(135deg,#c4b5fd,#a78bfa)}
 #neutro .topbar-name{color:#1a0a3d}
 #neutro .topbar-sub{color:#9ca3af}
 #neutro .btn-sair{background:white;color:#7c3aed;border:1.5px solid #ede9fe}
-#neutro .btn-notif{background:none;border:none;font-size:20px;cursor:pointer;position:relative}
-
 #neutro .result-card{background:linear-gradient(135deg,#faf5ff 0%,#ede9fe 60%,#f5f3ff 100%);border:1px solid #ddd6fe}
 #neutro .result-tag{color:#7c3aed}
 #neutro .result-title{color:#4c1d95}
@@ -269,479 +180,30 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 #neutro .donut-num{color:#1a0a3d}
 #neutro .donut-sub{color:#9ca3af}
 #neutro .result-badge2{background:#ede9fe;color:#7c3aed}
-
 #neutro .card{background:white;box-shadow:0 2px 12px rgba(124,58,237,.06);border:1px solid #ede9fe}
 #neutro .card-title{color:#7c3aed}
 #neutro .bar-val{color:#1a0a3d}
 #neutro .bar-label{color:#9ca3af}
 #neutro .chart-note{background:#faf5ff;color:#6b7280}
 #neutro .chart-note strong{color:#7c3aed}
-
 #neutro .attention-name{color:#7c3aed}
 #neutro .attention-sub{color:#9ca3af}
 #neutro .evolution-note{background:#faf5ff;color:#6b7280}
 #neutro .evo-pct{color:#059669}
-
 #neutro .qa-item{background:white;border:1px solid #ede9fe;box-shadow:0 2px 8px rgba(124,58,237,.05)}
 #neutro .qa-title{color:#1a0a3d}
 #neutro .qa-sub{color:#9ca3af}
 #neutro .section-label{color:#7c3aed}
-#neutro .main{background:transparent}
 
-/* animations */
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.dash.active .main>*{animation:fadeIn .5s ease both}
-.dash.active .main>*:nth-child(1){animation-delay:.05s}
-.dash.active .main>*:nth-child(2){animation-delay:.12s}
-.dash.active .main>*:nth-child(3){animation-delay:.2s}
-.dash.active .main>*:nth-child(4){animation-delay:.28s}
-.dash.active .main>*:nth-child(5){animation-delay:.36s}
-</style>
-</head>
-<body>
-
-<!-- ══════════════════════════════
-     FEMININO
-══════════════════════════════ -->
-<div id="fem" class="dash">
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="sb-logo">
-        <div class="sb-logo-icon">🧠</div>
-        <span class="sb-logo-name">ZenIA</span>
-      </div>
-      <nav class="sb-nav">
-        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
-        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
-        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
-        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
-        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
-        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
-        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
-      </nav>
-      <div class="sb-tip">
-        <strong>💡 Dica do dia</strong>
-        <p>Respire fundo. Um minuto de calma já faz diferença.</p>
-        <div class="sb-tip-art">🧠</div>
-      </div>
-    </aside>
-    <main class="main">
-      <!-- topbar -->
-      <div class="topbar">
-        <div class="topbar-user">
-          <div class="topbar-avatar">🌸</div>
-          <div>
-            <div class="topbar-name">Olá, Larissa 👋</div>
-            <div class="topbar-sub">Que bom te ver por aqui!</div>
-          </div>
-        </div>
-        <button class="btn-sair" onclick="location.href='cadastro.html'">↩ Sair</button>
-      </div>
-      <!-- result -->
-      <div class="result-card">
-        <div class="result-left">
-          <div class="result-tag">SEU RESULTADO</div>
-          <div class="result-title">Equilibrado ✨</div>
-          <div class="result-desc">Você demonstra um bom equilíbrio emocional. Continue cuidando da sua saúde com consistência!</div>
-          <div class="result-badge"><span>💗</span> Você está no caminho certo! Pequenas atitudes geram grandes mudanças.</div>
-        </div>
-        <div class="result-center">
-          <div class="donut-wrap">
-            <svg viewBox="0 0 140 140" width="140" height="140">
-              <defs>
-                <linearGradient id="fem-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#ec4899"/>
-                  <stop offset="100%" stop-color="#a855f7"/>
-                </linearGradient>
-              </defs>
-              <circle class="donut-bg" cx="70" cy="70" r="54"/>
-              <circle class="donut-fill" cx="70" cy="70" r="54" stroke-dasharray="113 226" stroke-dashoffset="0"/>
-            </svg>
-            <div class="donut-text">
-              <div class="donut-num">15</div>
-              <div class="donut-sub">de 75</div>
-            </div>
-          </div>
-          <div class="result-badge2">Pontuação total</div>
-        </div>
-        <div class="result-art">💗</div>
-      </div>
-      <!-- grid -->
-      <div class="grid2">
-        <!-- analise -->
-        <div class="card">
-          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
-          <div class="bar-chart" id="fem-bars">
-            <div class="bar-col">
-              <div class="bar-val">8</div>
-              <div class="bar" style="height:62%;background:linear-gradient(180deg,#c084fc,#a855f7)"></div>
-              <div class="bar-label">Ansiedade</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-val">12</div>
-              <div class="bar" style="height:92%;background:linear-gradient(180deg,#e879f9,#c026d3)"></div>
-              <div class="bar-label">Esgotamento</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-val">7</div>
-              <div class="bar" style="height:54%;background:linear-gradient(180deg,#c084fc,#a855f7)"></div>
-              <div class="bar-label">Estresse</div>
-            </div>
-          </div>
-          <div class="chart-note">
-            <span>🧠 Sua área de maior atenção no momento é <strong>Ansiedade</strong></span>
-            <span class="chart-chevron">›</span>
-          </div>
-        </div>
-        <!-- right col -->
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="card">
-            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
-            <div class="attention-inner">
-              <div class="attention-left">
-                <div class="attention-emoji">😰</div>
-                <div>
-                  <div class="attention-name">Ansiedade</div>
-                  <div class="attention-sub">Área que precisa de mais atenção neste momento.</div>
-                </div>
-              </div>
-              <div class="attention-art">🎯</div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">📈 SUA EVOLUÇÃO</div>
-            <div class="line-chart-wrap">
-              <svg viewBox="0 0 400 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="fem-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ec4899"/>
-                    <stop offset="100%" stop-color="#a855f7"/>
-                  </linearGradient>
-                </defs>
-                <polyline points="0,15 70,22 145,38 215,50 290,68 365,82 400,88" fill="none" stroke="url(#fem-line)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="0" cy="15" r="4" fill="#ec4899"/>
-                <circle cx="70" cy="22" r="4" fill="#ec4899"/>
-                <circle cx="145" cy="38" r="4" fill="#ec4899"/>
-                <circle cx="215" cy="50" r="4" fill="#ec4899"/>
-                <circle cx="290" cy="68" r="4" fill="#ec4899"/>
-                <circle cx="365" cy="82" r="4" fill="#ec4899"/>
-              </svg>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px">
-              <span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span>
-            </div>
-            <div class="evolution-note">
-              <span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span>
-              <span>›</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- quick actions -->
-      <div class="section-label">AÇÕES RÁPIDAS</div>
-      <div class="grid4">
-        <div class="qa-item"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">🧘‍♀️</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">💗</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico completo</div><div class="qa-sub">Veja todas as suas avaliações</div></div><span class="qa-chevron">›</span></div>
-      </div>
-    </main>
-  </div>
-</div>
-
-<!-- ══════════════════════════════
-     MASCULINO
-══════════════════════════════ -->
-<div id="masc" class="dash">
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="sb-logo">
-        <div class="sb-logo-icon">🧠</div>
-        <span class="sb-logo-name">ZenIA</span>
-      </div>
-      <nav class="sb-nav">
-        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
-        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
-        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
-        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
-        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
-        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
-        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
-      </nav>
-      <div class="sb-tip">
-        <strong>🌬 Respiro do dia</strong>
-        <p>Respire fundo. Você está fazendo o seu melhor.</p>
-        <div class="sb-tip-art">🌌</div>
-      </div>
-    </aside>
-    <main class="main">
-      <div class="topbar">
-        <div class="topbar-user">
-          <div class="topbar-avatar">👤</div>
-          <div>
-            <div class="topbar-name">Olá, Larissa! 👋</div>
-            <div class="topbar-sub">Que bom te ver por aqui!</div>
-          </div>
-        </div>
-        <button class="btn-sair" onclick="location.href='cadastro.html'">↩ Sair</button>
-      </div>
-      <div class="result-card">
-        <div class="result-left">
-          <div class="result-tag">SEU RESULTADO</div>
-          <div class="result-title">Equilibrado 🛡️</div>
-          <div class="result-desc">Você demonstra um bom equilíbrio emocional. Continue cuidando da sua saúde com consistência!</div>
-          <div class="result-badge"><span>🎯</span> Continue assim! Pequenas atitudes geram grandes mudanças.</div>
-        </div>
-        <div class="result-center">
-          <div class="donut-wrap">
-            <svg viewBox="0 0 140 140" width="140" height="140">
-              <defs>
-                <linearGradient id="masc-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#6366f1"/>
-                  <stop offset="100%" stop-color="#34d399"/>
-                </linearGradient>
-              </defs>
-              <circle class="donut-bg" cx="70" cy="70" r="54"/>
-              <circle class="donut-fill" cx="70" cy="70" r="54" stroke-dasharray="113 226" stroke-dashoffset="0"/>
-            </svg>
-            <div class="donut-text">
-              <div class="donut-num">15</div>
-              <div class="donut-sub">de 75</div>
-            </div>
-          </div>
-          <div class="result-badge2">Pontuação total</div>
-        </div>
-        <div class="result-art">🧠</div>
-      </div>
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
-          <div class="bar-chart">
-            <div class="bar-col">
-              <div class="bar-val">8</div>
-              <div class="bar" style="height:62%;background:linear-gradient(180deg,#818cf8,#6366f1)"></div>
-              <div class="bar-label">Ansiedade</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-val">12</div>
-              <div class="bar" style="height:92%;background:linear-gradient(180deg,#60a5fa,#3b82f6)"></div>
-              <div class="bar-label">Esgotamento</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-val">7</div>
-              <div class="bar" style="height:54%;background:linear-gradient(180deg,#34d399,#059669)"></div>
-              <div class="bar-label">Estresse</div>
-            </div>
-          </div>
-          <div class="chart-note">
-            <span>🧠 Sua área de maior atenção no momento é <strong>Ansiedade</strong></span>
-            <span class="chart-chevron">›</span>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="card">
-            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
-            <div class="attention-inner">
-              <div class="attention-left">
-                <div class="attention-emoji">😰</div>
-                <div>
-                  <div class="attention-name">Ansiedade</div>
-                  <div class="attention-sub">Área que precisa de mais atenção neste momento.</div>
-                </div>
-              </div>
-              <div class="attention-art">🎯</div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">📈 SUA EVOLUÇÃO</div>
-            <div class="line-chart-wrap">
-              <svg viewBox="0 0 400 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="masc-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#818cf8"/>
-                    <stop offset="100%" stop-color="#a78bfa"/>
-                  </linearGradient>
-                </defs>
-                <polyline points="0,15 70,22 145,38 215,50 290,68 365,82 400,88" fill="none" stroke="url(#masc-line)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="0" cy="15" r="4" fill="#818cf8"/>
-                <circle cx="70" cy="22" r="4" fill="#818cf8"/>
-                <circle cx="145" cy="38" r="4" fill="#818cf8"/>
-                <circle cx="215" cy="50" r="4" fill="#818cf8"/>
-                <circle cx="290" cy="68" r="4" fill="#818cf8"/>
-                <circle cx="365" cy="82" r="4" fill="#818cf8"/>
-              </svg>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.3);margin-top:4px">
-              <span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span>
-            </div>
-            <div class="evolution-note">
-              <span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span>
-              <span>›</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="section-label">AÇÕES RÁPIDAS</div>
-      <div class="grid4">
-        <div class="qa-item"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">🧘</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">💙</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico completo</div><div class="qa-sub">Veja todas as suas avaliações</div></div><span class="qa-chevron">›</span></div>
-      </div>
-    </main>
-  </div>
-</div>
-
-<!-- ══════════════════════════════
-     NEUTRO
-══════════════════════════════ -->
-<div id="neutro" class="dash">
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="sb-logo">
-        <div class="sb-logo-icon">🧠</div>
-        <span class="sb-logo-name">ZenIA</span>
-      </div>
-      <nav class="sb-nav">
-        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
-        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
-        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
-        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
-        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
-        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
-        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
-      </nav>
-      <div class="sb-tip">
-        <strong>🌱 Respire. Você não está sozinho.</strong>
-        <p>Pequenas atitudes podem transformar seus dias.</p>
-        <div class="sb-tip-art">🪴</div>
-      </div>
-    </aside>
-    <main class="main">
-      <div class="topbar">
-        <div class="topbar-user">
-          <div class="topbar-avatar">🧘</div>
-          <div>
-            <div class="topbar-name">Olá, Larissa! 👋</div>
-            <div class="topbar-sub">Que bom te ver por aqui.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <button class="btn-notif">🔔</button>
-          <button class="btn-sair" onclick="location.href='cadastro.html'">↩ Sair</button>
-        </div>
-      </div>
-      <div class="result-card">
-        <div class="result-left">
-          <div class="result-tag">SEU RESULTADO</div>
-          <div class="result-title">Equilibrado</div>
-          <div class="result-desc">Você demonstra um bom equilíbrio emocional. Continue cuidando da sua saúde com consistência!</div>
-          <div class="result-badge"><span>💜</span> Você está no caminho certo! Pequenas escolhas diárias fazem diferença.</div>
-        </div>
-        <div class="result-center">
-          <div class="donut-wrap">
-            <svg viewBox="0 0 140 140" width="140" height="140">
-              <defs>
-                <linearGradient id="neutro-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#a78bfa"/>
-                  <stop offset="100%" stop-color="#7c3aed"/>
-                </linearGradient>
-              </defs>
-              <circle class="donut-bg" cx="70" cy="70" r="54"/>
-              <circle class="donut-fill" cx="70" cy="70" r="54" stroke-dasharray="113 226" stroke-dashoffset="0"/>
-            </svg>
-            <div class="donut-text">
-              <div class="donut-num">15</div>
-              <div class="donut-sub">de 75</div>
-            </div>
-          </div>
-          <div class="result-badge2">Pontuação total</div>
-        </div>
-        <div class="result-art">🪨</div>
-      </div>
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
-          <div class="bar-chart">
-            <div class="bar-col">
-              <div class="bar-val">8</div>
-              <div class="bar" style="height:62%;background:linear-gradient(180deg,#c4b5fd,#a78bfa)"></div>
-              <div class="bar-label">Ansiedade</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-val">12</div>
-              <div class="bar" style="height:92%;background:linear-gradient(180deg,#a78bfa,#7c3aed)"></div>
-              <div class="bar-label">Esgotamento</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-val">7</div>
-              <div class="bar" style="height:54%;background:linear-gradient(180deg,#c4b5fd,#a78bfa)"></div>
-              <div class="bar-label">Estresse</div>
-            </div>
-          </div>
-          <div class="chart-note">
-            <span>💡 Sua área de maior atenção no momento é <strong>Ansiedade</strong></span>
-            <span class="chart-chevron">›</span>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:16px">
-          <div class="card">
-            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
-            <div class="attention-inner">
-              <div class="attention-left">
-                <div class="attention-emoji">😰</div>
-                <div>
-                  <div class="attention-name">Ansiedade</div>
-                  <div class="attention-sub">Área que precisa de mais atenção neste momento.</div>
-                </div>
-              </div>
-              <button style="padding:8px 16px;background:#ede9fe;color:#7c3aed;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer">Entender mais</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-title">📈 SUA EVOLUÇÃO</div>
-            <div class="line-chart-wrap">
-              <svg viewBox="0 0 400 100" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="neutro-line" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#7c3aed"/>
-                    <stop offset="100%" stop-color="#a78bfa"/>
-                  </linearGradient>
-                </defs>
-                <polyline points="0,5 70,18 145,35 215,48 290,65 365,80 400,88" fill="none" stroke="url(#neutro-line)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="0" cy="5" r="4" fill="#7c3aed"/>
-                <circle cx="70" cy="18" r="4" fill="#7c3aed"/>
-                <circle cx="145" cy="35" r="4" fill="#7c3aed"/>
-                <circle cx="215" cy="48" r="4" fill="#7c3aed"/>
-                <circle cx="290" cy="65" r="4" fill="#7c3aed"/>
-                <circle cx="365" cy="80" r="4" fill="#7c3aed"/>
-              </svg>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px">
-              <span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span>
-            </div>
-            <div class="evolution-note">
-              <span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span>
-              <span>›</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="section-label">AÇÕES RÁPIDAS</div>
-      <div class="grid4">
-        <div class="qa-item"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">🧠</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">⭐</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
-        <div class="qa-item"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico completo</div><div class="qa-sub">Veja todas as suas avaliações</div></div><span class="qa-chevron">›</span></div>
-      </div>
-    </main>
-  </div>
-</div>
-
-<style>
-/* ── RECOMENDAÇÕES PANEL ── */
+/* PAINÉIS EXTRAS */
+.tab-panel{display:none;flex-direction:column;gap:20px;animation:fadeIn .3s ease both}
+.tab-panel.visible,.rec-panel.visible{display:flex}
 .rec-panel{display:none;flex-direction:column;gap:20px}
-.rec-panel.visible{display:flex}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tab-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;margin-bottom:4px}
+.tab-sub{font-size:13px;color:#9ca3af}
+
+/* RECOMENDAÇÕES */
 .rec-section-title{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px}
 .rec-cards{display:flex;flex-direction:column;gap:12px}
 .rec-card{border-radius:16px;padding:18px 20px;border:1px solid #ede9fe;background:white}
@@ -751,178 +213,583 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;overflow:hidden}
 .rec-card-desc{font-size:13px;line-height:1.65;margin-bottom:6px;color:#4b5563}
 .rec-card-source{font-size:11px;font-style:italic;color:#9ca3af}
 .rec-priority{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.6px;padding:2px 8px;border-radius:99px;margin-bottom:8px;background:#fce7f3;color:#be185d}
-.rec-panel-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:#7c3aed}
-.rec-panel-sub{font-size:13px;color:#9ca3af;margin-top:-8px}
-
-/* Dark theme overrides */
 #masc .rec-card{background:#161f35;border-color:rgba(129,140,248,.25)}
 #masc .rec-card-title{color:#e0e7ff}
 #masc .rec-card-desc{color:#94a3b8}
 #masc .rec-card-source{color:#6366f1}
 #masc .rec-priority{background:rgba(99,102,241,.25);color:#a5b4fc}
 #masc .rec-section-title{color:#818cf8}
-#masc .rec-panel-title{color:#a5b4fc}
-#masc .rec-panel-sub{color:rgba(255,255,255,.35)}
-
-/* Neutro overrides */
-#neutro .rec-card{background:white;border-color:#ede9fe}
-#neutro .rec-card-title{color:#1a0a3d}
-#neutro .rec-card-desc{color:#4b5563}
+#masc .tab-title{color:#e0e7ff}
 #neutro .rec-card-source{color:#a78bfa}
 #neutro .rec-priority{background:#ede9fe;color:#5b21b6}
-#neutro .rec-section-title{color:#7c3aed}
-#neutro .rec-panel-title{color:#7c3aed}
+
+/* HISTÓRICO */
+.hist-card{border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:16px;background:white;border:1px solid #ede9fe}
+.hist-icon{font-size:36px;flex-shrink:0}
+.hist-date{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:4px;color:#7c3aed}
+.hist-title{font-size:18px;font-weight:700;margin-bottom:8px;color:#1a0a3d}
+.hist-bars{display:flex;flex-direction:column;gap:6px;flex:1}
+.hist-bar-row{display:flex;align-items:center;gap:8px}
+.hist-bar-label{font-size:11px;width:90px;flex-shrink:0;color:#9ca3af}
+.hist-bar-track{flex:1;height:6px;border-radius:99px;background:#ede9fe;overflow:hidden}
+.hist-bar-fill{height:100%;border-radius:99px}
+.hist-bar-val{font-size:11px;font-weight:700;width:32px;text-align:right;flex-shrink:0;color:#7c3aed}
+.hist-empty{text-align:center;padding:48px 24px;border-radius:20px;background:white;border:1px solid #ede9fe}
+.hist-empty-icon{font-size:48px;margin-bottom:12px}
+.hist-empty-title{font-size:16px;font-weight:700;margin-bottom:6px;color:#1a0a3d}
+.hist-empty-sub{font-size:13px;color:#9ca3af;margin-bottom:20px}
+#masc .hist-card,#masc .hist-empty{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .hist-date{color:#818cf8}
+#masc .hist-title{color:#e0e7ff}
+#masc .hist-bar-label{color:rgba(255,255,255,.4)}
+#masc .hist-bar-val{color:#818cf8}
+#masc .hist-bar-track{background:rgba(255,255,255,.08)}
+#masc .hist-empty-title{color:#e0e7ff}
+
+/* EXERCÍCIOS */
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ex-card{border-radius:20px;padding:24px;cursor:pointer;transition:transform .2s;text-align:center;background:white;border:1.5px solid #ede9fe}
+.ex-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(124,58,237,.12)}
+.ex-icon{font-size:40px;margin-bottom:10px}
+.ex-title{font-size:15px;font-weight:700;margin-bottom:4px;color:#1a0a3d}
+.ex-sub{font-size:12px;line-height:1.5;margin-bottom:6px;color:#9ca3af}
+.ex-source{font-size:10px;font-style:italic;color:#a78bfa;margin-bottom:10px}
+.ex-btn{display:inline-block;padding:8px 18px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:#ede9fe;color:#5b21b6}
+#masc .ex-card{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .ex-title{color:#e0e7ff}
+#masc .ex-sub{color:rgba(255,255,255,.4)}
+#masc .ex-source{color:#6366f1}
+#masc .ex-btn{background:rgba(99,102,241,.2);color:#a5b4fc}
+
+/* CONQUISTAS */
+.conq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.conq-card{border-radius:16px;padding:20px;text-align:center;background:white;border:1.5px solid #ede9fe}
+.conq-icon{font-size:36px;margin-bottom:8px}
+.conq-title{font-size:13px;font-weight:700;margin-bottom:4px;color:#1a0a3d}
+.conq-sub{font-size:11px;line-height:1.4;color:#9ca3af}
+.conq-card.locked{opacity:.4;filter:grayscale(1)}
+.conq-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:6px;background:#ede9fe;color:#5b21b6}
+#masc .conq-card{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .conq-title{color:#e0e7ff}
+#masc .conq-sub{color:rgba(255,255,255,.4)}
+#masc .conq-badge{background:rgba(99,102,241,.2);color:#a5b4fc}
+
+/* CONFIGURAÇÕES */
+.cfg-section{border-radius:16px;padding:22px;background:white;border:1px solid #ede9fe}
+.cfg-title{font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:16px;color:#7c3aed}
+.cfg-field{margin-bottom:14px}
+.cfg-label{font-size:12px;font-weight:600;margin-bottom:6px;display:block;color:#1a0a3d}
+.cfg-input{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid #ede9fe;background:#f8f7ff;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;color:#1a0a3d}
+.cfg-input:focus{border-color:#7c3aed}
+.cfg-btn{padding:11px 24px;border-radius:12px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .2s;margin-right:8px}
+.cfg-btn:hover{opacity:.85}
+.cfg-btn-primary{background:linear-gradient(135deg,#a78bfa,#7c3aed);color:white}
+.cfg-btn-danger{background:#fee2e2;color:#dc2626}
+#masc .cfg-section{background:#0d1220;border-color:rgba(255,255,255,.07)}
+#masc .cfg-title{color:#818cf8}
+#masc .cfg-label{color:#e0e7ff}
+#masc .cfg-input{background:#161f35;border-color:rgba(255,255,255,.1);color:white}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 </style>
+</head>
+<body>
+
+<!-- ══ FEMININO ══ -->
+<div id="fem" class="dash">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon">🧠</div><span class="sb-logo-name">ZenIA</span></div>
+      <nav class="sb-nav">
+        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
+        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
+        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
+        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
+        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
+        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
+        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
+      </nav>
+      <div class="sb-tip"><strong>💡 Dica do dia</strong><p>Respire fundo. Um minuto de calma já faz diferença.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-user"><div class="topbar-avatar">🌸</div><div><div class="topbar-name" id="fem-nome">Olá! 👋</div><div class="topbar-sub">Que bom te ver por aqui!</div></div></div>
+        <button class="btn-sair" onclick="sairConta()">↩ Sair</button>
+      </div>
+      <div class="result-card">
+        <div class="result-left">
+          <div class="result-tag">SEU RESULTADO</div>
+          <div class="result-title" id="fem-result-title">Equilibrado ✨</div>
+          <div class="result-desc" id="fem-result-desc">Você demonstra um bom equilíbrio emocional.</div>
+          <div class="result-badge"><span>💗</span> Você está no caminho certo!</div>
+        </div>
+        <div class="result-center">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="140" height="140">
+              <defs><linearGradient id="fem-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+              <circle class="donut-bg" cx="70" cy="70" r="54"/>
+              <circle class="donut-fill" id="fem-donut" cx="70" cy="70" r="54" stroke-dasharray="0 339.3"/>
+            </svg>
+            <div class="donut-text"><div class="donut-num" id="fem-donut-num">0</div><div class="donut-sub">de 75</div></div>
+          </div>
+          <div class="result-badge2">Pontuação total</div>
+        </div>
+        <div class="result-art">💗</div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" id="fem-v-ans">0</div><div class="bar" id="fem-b-ans" style="height:4%;background:linear-gradient(180deg,#f472b6,#ec4899)"></div><div class="bar-label">Ansiedade</div></div>
+            <div class="bar-col"><div class="bar-val" id="fem-v-esg">0</div><div class="bar" id="fem-b-esg" style="height:4%;background:linear-gradient(180deg,#e879f9,#c026d3)"></div><div class="bar-label">Esgotamento</div></div>
+            <div class="bar-col"><div class="bar-val" id="fem-v-est">0</div><div class="bar" id="fem-b-est" style="height:4%;background:linear-gradient(180deg,#c084fc,#a855f7)"></div><div class="bar-label">Estresse</div></div>
+          </div>
+          <div class="chart-note"><span>🧠 Maior atenção: <strong id="fem-top">—</strong></span><span>›</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
+            <div class="attention-inner">
+              <div class="attention-left"><div class="attention-emoji">😰</div><div><div class="attention-name" id="fem-attn">—</div><div class="attention-sub">Área que precisa de mais atenção.</div></div></div>
+              <div class="attention-art">🎯</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 SUA EVOLUÇÃO</div>
+            <div class="line-chart-wrap"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><defs><linearGradient id="fem-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs><polyline points="0,15 70,22 145,38 215,50 290,68 365,82 400,88" fill="none" stroke="url(#fem-line)" stroke-width="2.5" stroke-linecap="round"/><circle cx="0" cy="15" r="4" fill="#ec4899"/><circle cx="70" cy="22" r="4" fill="#ec4899"/><circle cx="145" cy="38" r="4" fill="#ec4899"/><circle cx="215" cy="50" r="4" fill="#ec4899"/><circle cx="290" cy="68" r="4" fill="#ec4899"/><circle cx="365" cy="82" r="4" fill="#ec4899"/></svg></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px"><span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span></div>
+            <div class="evolution-note"><span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">AÇÕES RÁPIDAS</div>
+      <div class="grid4">
+        <div class="qa-item" onclick="location.href='quiz.html'"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Exercícios','fem')"><div class="qa-icon">🧘‍♀️</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Recomendações','fem')"><div class="qa-icon">💗</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Histórico','fem')"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico</div><div class="qa-sub">Veja suas avaliações anteriores</div></div><span class="qa-chevron">›</span></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══ MASCULINO ══ -->
+<div id="masc" class="dash">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon">🧠</div><span class="sb-logo-name">ZenIA</span></div>
+      <nav class="sb-nav">
+        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
+        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
+        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
+        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
+        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
+        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
+        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
+      </nav>
+      <div class="sb-tip"><strong>🌬 Respiro do dia</strong><p>Respire fundo. Você está fazendo o seu melhor.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-user"><div class="topbar-avatar">👤</div><div><div class="topbar-name" id="masc-nome">Olá! 👋</div><div class="topbar-sub">Que bom te ver por aqui!</div></div></div>
+        <button class="btn-sair" onclick="sairConta()">↩ Sair</button>
+      </div>
+      <div class="result-card">
+        <div class="result-left">
+          <div class="result-tag">SEU RESULTADO</div>
+          <div class="result-title" id="masc-result-title">Equilibrado 🛡️</div>
+          <div class="result-desc" id="masc-result-desc">Você demonstra um bom equilíbrio emocional.</div>
+          <div class="result-badge"><span>🎯</span> Continue assim!</div>
+        </div>
+        <div class="result-center">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="140" height="140">
+              <defs><linearGradient id="masc-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#34d399"/></linearGradient></defs>
+              <circle class="donut-bg" cx="70" cy="70" r="54"/>
+              <circle class="donut-fill" id="masc-donut" cx="70" cy="70" r="54" stroke-dasharray="0 339.3"/>
+            </svg>
+            <div class="donut-text"><div class="donut-num" id="masc-donut-num">0</div><div class="donut-sub">de 75</div></div>
+          </div>
+          <div class="result-badge2">Pontuação total</div>
+        </div>
+        <div class="result-art">🧠</div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" id="masc-v-ans">0</div><div class="bar" id="masc-b-ans" style="height:4%;background:linear-gradient(180deg,#818cf8,#6366f1)"></div><div class="bar-label">Ansiedade</div></div>
+            <div class="bar-col"><div class="bar-val" id="masc-v-esg">0</div><div class="bar" id="masc-b-esg" style="height:4%;background:linear-gradient(180deg,#60a5fa,#3b82f6)"></div><div class="bar-label">Esgotamento</div></div>
+            <div class="bar-col"><div class="bar-val" id="masc-v-est">0</div><div class="bar" id="masc-b-est" style="height:4%;background:linear-gradient(180deg,#34d399,#059669)"></div><div class="bar-label">Estresse</div></div>
+          </div>
+          <div class="chart-note"><span>🧠 Maior atenção: <strong id="masc-top">—</strong></span><span>›</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
+            <div class="attention-inner">
+              <div class="attention-left"><div class="attention-emoji">😰</div><div><div class="attention-name" id="masc-attn">—</div><div class="attention-sub">Área que precisa de mais atenção.</div></div></div>
+              <div class="attention-art">🎯</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 SUA EVOLUÇÃO</div>
+            <div class="line-chart-wrap"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><defs><linearGradient id="masc-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><polyline points="0,15 70,22 145,38 215,50 290,68 365,82 400,88" fill="none" stroke="url(#masc-line)" stroke-width="2.5" stroke-linecap="round"/><circle cx="0" cy="15" r="4" fill="#818cf8"/><circle cx="70" cy="22" r="4" fill="#818cf8"/><circle cx="145" cy="38" r="4" fill="#818cf8"/><circle cx="215" cy="50" r="4" fill="#818cf8"/><circle cx="290" cy="68" r="4" fill="#818cf8"/><circle cx="365" cy="82" r="4" fill="#818cf8"/></svg></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.3);margin-top:4px"><span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span></div>
+            <div class="evolution-note"><span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">AÇÕES RÁPIDAS</div>
+      <div class="grid4">
+        <div class="qa-item" onclick="location.href='quiz.html'"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Exercícios','masc')"><div class="qa-icon">🧘</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Recomendações','masc')"><div class="qa-icon">💙</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Histórico','masc')"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico</div><div class="qa-sub">Veja suas avaliações anteriores</div></div><span class="qa-chevron">›</span></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══ NEUTRO ══ -->
+<div id="neutro" class="dash">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-icon">🧠</div><span class="sb-logo-name">ZenIA</span></div>
+      <nav class="sb-nav">
+        <a class="sb-item active" href="#"><span>🏠</span> Visão geral</a>
+        <a class="sb-item" href="#"><span>📋</span> Avaliações</a>
+        <a class="sb-item" href="#"><span>📊</span> Histórico</a>
+        <a class="sb-item" href="#"><span>⬇️</span> Recomendações</a>
+        <a class="sb-item" href="#"><span>🧩</span> Exercícios</a>
+        <a class="sb-item" href="#"><span>🏆</span> Conquistas</a>
+        <a class="sb-item" href="#"><span>⚙️</span> Configurações</a>
+      </nav>
+      <div class="sb-tip"><strong>🌱 Respire. Você não está sozinho.</strong><p>Pequenas atitudes podem transformar seus dias.</p></div>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="topbar-user"><div class="topbar-avatar">🧘</div><div><div class="topbar-name" id="neutro-nome">Olá! 👋</div><div class="topbar-sub">Que bom te ver por aqui.</div></div></div>
+        <button class="btn-sair" onclick="sairConta()">↩ Sair</button>
+      </div>
+      <div class="result-card">
+        <div class="result-left">
+          <div class="result-tag">SEU RESULTADO</div>
+          <div class="result-title" id="neutro-result-title">Equilibrado</div>
+          <div class="result-desc" id="neutro-result-desc">Você demonstra um bom equilíbrio emocional.</div>
+          <div class="result-badge"><span>💜</span> Você está no caminho certo!</div>
+        </div>
+        <div class="result-center">
+          <div class="donut-wrap">
+            <svg viewBox="0 0 140 140" width="140" height="140">
+              <defs><linearGradient id="neutro-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs>
+              <circle class="donut-bg" cx="70" cy="70" r="54"/>
+              <circle class="donut-fill" id="neutro-donut" cx="70" cy="70" r="54" stroke-dasharray="0 339.3"/>
+            </svg>
+            <div class="donut-text"><div class="donut-num" id="neutro-donut-num">0</div><div class="donut-sub">de 75</div></div>
+          </div>
+          <div class="result-badge2">Pontuação total</div>
+        </div>
+        <div class="result-art">🪨</div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">📊 ANÁLISE POR ÁREA</div>
+          <div class="bar-chart">
+            <div class="bar-col"><div class="bar-val" id="neutro-v-ans">0</div><div class="bar" id="neutro-b-ans" style="height:4%;background:linear-gradient(180deg,#c4b5fd,#a78bfa)"></div><div class="bar-label">Ansiedade</div></div>
+            <div class="bar-col"><div class="bar-val" id="neutro-v-esg">0</div><div class="bar" id="neutro-b-esg" style="height:4%;background:linear-gradient(180deg,#a78bfa,#7c3aed)"></div><div class="bar-label">Esgotamento</div></div>
+            <div class="bar-col"><div class="bar-val" id="neutro-v-est">0</div><div class="bar" id="neutro-b-est" style="height:4%;background:linear-gradient(180deg,#6ee7b7,#059669)"></div><div class="bar-label">Estresse</div></div>
+          </div>
+          <div class="chart-note"><span>💡 Maior atenção: <strong id="neutro-top">—</strong></span><span>›</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">🎯 PRINCIPAL ATENÇÃO</div>
+            <div class="attention-inner">
+              <div class="attention-left"><div class="attention-emoji">😰</div><div><div class="attention-name" id="neutro-attn">—</div><div class="attention-sub">Área que precisa de mais atenção.</div></div></div>
+              <button style="padding:8px 16px;background:#ede9fe;color:#7c3aed;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer">Entender mais</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 SUA EVOLUÇÃO</div>
+            <div class="line-chart-wrap"><svg viewBox="0 0 400 100" preserveAspectRatio="none"><defs><linearGradient id="neutro-line" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><polyline points="0,5 70,18 145,35 215,48 290,65 365,80 400,88" fill="none" stroke="url(#neutro-line)" stroke-width="2.5" stroke-linecap="round"/><circle cx="0" cy="5" r="4" fill="#7c3aed"/><circle cx="70" cy="18" r="4" fill="#7c3aed"/><circle cx="145" cy="35" r="4" fill="#7c3aed"/><circle cx="215" cy="48" r="4" fill="#7c3aed"/><circle cx="290" cy="65" r="4" fill="#7c3aed"/><circle cx="365" cy="80" r="4" fill="#7c3aed"/></svg></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px"><span>29/04</span><span>06/05</span><span>13/05</span><span>20/05</span><span>27/05</span><span>03/06</span></div>
+            <div class="evolution-note"><span>📈 Ótimo! Você melhorou <span class="evo-pct">35%</span> desde sua primeira avaliação.</span><span>›</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="section-label">AÇÕES RÁPIDAS</div>
+      <div class="grid4">
+        <div class="qa-item" onclick="location.href='quiz.html'"><div class="qa-icon">📋</div><div><div class="qa-title">Nova avaliação</div><div class="qa-sub">Avalie como está se sentindo hoje</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Exercícios','neutro')"><div class="qa-icon">🧠</div><div><div class="qa-title">Exercícios</div><div class="qa-sub">Práticas para cuidar da sua mente</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Recomendações','neutro')"><div class="qa-icon">⭐</div><div><div class="qa-title">Recomendações</div><div class="qa-sub">Dicas personalizadas para você</div></div><span class="qa-chevron">›</span></div>
+        <div class="qa-item" onclick="navTo('Histórico','neutro')"><div class="qa-icon">🕐</div><div><div class="qa-title">Histórico</div><div class="qa-sub">Veja suas avaliações anteriores</div></div><span class="qa-chevron">›</span></div>
+      </div>
+    </main>
+  </div>
+</div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────
 const REC_DATA = {
-  ansiedade: [
-    {icon:'🌬️', title:'Respiração 4-7-8', desc:'Inspire por 4s, segure por 7s, expire por 8s. Repita 3 ciclos. Ativa o nervo vago e reduz o cortisol rapidamente — use no momento de crise ou antes de situações estressantes.', source:'Dr. Andrew Weil · Harvard Medical School'},
-    {icon:'🌱', title:'Técnica de Grounding 5-4-3-2-1', desc:'Identifique 5 coisas que vê, 4 que pode tocar, 3 que ouve, 2 que cheira, 1 que saboreia. Interrompe a espiral de pensamentos ansiosos ancorando a mente no presente.', source:'Terapia Cognitivo-Comportamental (TCC)'},
-    {icon:'📓', title:'Diário de preocupações (15 min/dia)', desc:'Reserve 15 minutos fixos por dia para escrever suas preocupações. Fora desse horário, adie ativamente os pensamentos ansiosos. Estudos mostram redução de até 33% na ansiedade.', source:'Penn State Worry Questionnaire (PSWQ) · Borkovec et al.'},
-    {icon:'☕', title:'Reduza cafeína após 14h', desc:'A cafeína tem meia-vida de 5–6 horas e aumenta o cortisol, intensificando sintomas de ansiedade e prejudicando o sono. Troque por chá de camomila ou melissa no período da tarde.', source:'American Psychological Association (APA)'},
+  ansiedade:[
+    {icon:'🌬️',title:'Respiração 4-7-8',desc:'Inspire por 4s, segure por 7s, expire por 8s. Ativa o nervo vago e reduz o cortisol rapidamente.',source:'Dr. Andrew Weil · Harvard Medical School'},
+    {icon:'🌱',title:'Técnica 5-4-3-2-1',desc:'Identifique 5 coisas que vê, 4 que toca, 3 que ouve, 2 que cheira, 1 que saboreia. Ancora a mente no presente.',source:'Terapia Cognitivo-Comportamental (TCC)'},
+    {icon:'📓',title:'Diário de preocupações (15 min/dia)',desc:'Reserve 15 minutos fixos por dia para escrever suas preocupações. Reduz ansiedade em até 33%.',source:'Penn State Worry Questionnaire · Borkovec et al.'},
+    {icon:'☕',title:'Reduza cafeína após 14h',desc:'A cafeína tem meia-vida de 5-6h e aumenta o cortisol, intensificando a ansiedade e prejudicando o sono.',source:'American Psychological Association (APA)'},
   ],
-  esgotamento: [
-    {icon:'💪', title:'Relaxamento Muscular Progressivo (PMR)', desc:'Tensione cada grupo muscular por 5 segundos e solte lentamente, da cabeça aos pés. Libera a tensão física acumulada e ativa a resposta de relaxamento do sistema nervoso parassimpático.', source:'Edmund Jacobson (1929) · Validado por centenas de estudos clínicos'},
-    {icon:'🔁', title:'Técnica Pomodoro adaptada', desc:'25 minutos de foco + 5 minutos de pausa real (sem tela). A cada 4 ciclos, faça uma pausa de 20 min. Alinha com os ciclos ultradianos do cérebro e previne o esgotamento cognitivo.', source:'Ultradian Rhythm — Peretz Lavie · Neuroscience of Rest'},
-    {icon:'🚶', title:'Caminhada de 10 minutos', desc:'Apenas 10 minutos de caminhada aumentam o BDNF (fator neurotrófico cerebral), que regenera neurônios e melhora o humor. Não precisa ser exercício intenso — o movimento leve já é suficiente.', source:'Harvard Medical School · Neurociência do Movimento'},
-    {icon:'🌙', title:'Ritual de desconexão do trabalho', desc:'Defina um horário fixo para parar e cumpra. Sem checar mensagens depois. Crie um ritual de encerramento (ex: anotar 3 realizações do dia). Restaura a fronteira entre trabalho e descanso.', source:'Christina Maslach · Maslach Burnout Inventory (MBI)'},
+  esgotamento:[
+    {icon:'💪',title:'Relaxamento Muscular Progressivo',desc:'Tensione cada grupo muscular por 5s e solte. Libera tensão física acumulada pelo estresse.',source:'Edmund Jacobson (1929) · Validado por centenas de estudos'},
+    {icon:'🔁',title:'Técnica Pomodoro adaptada',desc:'25 minutos de foco + 5 minutos de pausa real (sem tela). Previne o esgotamento cognitivo.',source:'Ultradian Rhythm — Peretz Lavie'},
+    {icon:'🚶',title:'Caminhada de 10 minutos',desc:'10 minutos de caminhada aumentam o BDNF, que regenera neurônios e melhora o humor.',source:'Harvard Medical School · Neurociência do Movimento'},
+    {icon:'🌙',title:'Ritual de desconexão do trabalho',desc:'Defina um horário fixo para parar. Sem checar mensagens depois. Restaura a fronteira entre trabalho e descanso.',source:'Christina Maslach · Maslach Burnout Inventory'},
   ],
-  estresse: [
-    {icon:'🛑', title:'Técnica STOP', desc:'Stop (pare o que está fazendo), Take a breath (respire fundo), Observe (observe seus pensamentos sem julgamento), Proceed (siga conscientemente). Use em momentos de pico de estresse.', source:'Mindfulness-Based Stress Reduction (MBSR) · Jon Kabat-Zinn'},
-    {icon:'☀️', title:'Exposição ao sol pela manhã', desc:'15–20 minutos de luz solar nas primeiras horas do dia regulam o cortisol e a melatonina, sincronizando o ritmo circadiano. Reduz a sensação de sobrecarga ao longo do dia.', source:'Dr. Andrew Huberman · Stanford Neuroscience Lab'},
-    {icon:'📋', title:'Lista de 3 prioridades diárias', desc:'Ao começar o dia, escolha apenas 3 tarefas mais importantes. Tudo que não estiver nessa lista é secundário. Reduz a sobrecarga cognitiva e a sensação de nunca dar conta de tudo.', source:'Cognitive Load Theory · Sweller (1988)'},
-    {icon:'💬', title:'Contato social intencional (15 min)', desc:'15 minutos de conversa real (não por texto) com alguém de confiança reduz o cortisol de forma mensurável. O contato humano ativa a oxitocina, antagonista natural do estresse.', source:'UCLA Social Neuroscience Lab · Naomi Eisenberger'},
+  estresse:[
+    {icon:'🛑',title:'Técnica STOP',desc:'Stop, Take a breath, Observe, Proceed. Pausa consciente nos momentos de pico de estresse.',source:'MBSR · Jon Kabat-Zinn'},
+    {icon:'☀️',title:'Exposição ao sol pela manhã',desc:'15-20 minutos de luz solar regulam o cortisol e a melatonina, reduzindo a sobrecarga ao longo do dia.',source:'Dr. Andrew Huberman · Stanford Neuroscience Lab'},
+    {icon:'📋',title:'Lista de 3 prioridades diárias',desc:'Escolha apenas 3 tarefas mais importantes por dia. Reduz sobrecarga cognitiva.',source:'Cognitive Load Theory · Sweller (1988)'},
+    {icon:'💬',title:'Contato social intencional (15 min)',desc:'15 minutos de conversa real reduz o cortisol. O contato humano ativa a oxitocina.',source:'UCLA Social Neuroscience Lab · Naomi Eisenberger'},
   ],
 };
 
-// ── GÊNERO + TEMA ─────────────────────────────────────────────
+// GÊNERO
 const g = localStorage.getItem('zenia_gender') || 'feminino';
-const themeId = {feminino:'fem', masculino:'masc', neutro:'neutro'}[g] || 'fem';
+const themeId = {feminino:'fem',masculino:'masc',neutro:'neutro'}[g] || 'fem';
 const activeDash = document.getElementById(themeId) || document.getElementById('fem');
 activeDash.classList.add('active');
 
-// ── SCORES ────────────────────────────────────────────────────
+// NOME
+const nome = localStorage.getItem('zenia_user_nome') || '';
+if (nome) {
+  ['fem','masc','neutro'].forEach(t => {
+    const el = document.getElementById(t + '-nome');
+    if (el) el.textContent = 'Olá, ' + nome + '! 👋';
+  });
+}
+
+// SCORES
 const rawScores = localStorage.getItem('zenia_scores');
-const scores = rawScores ? JSON.parse(rawScores) : {ansiedade:8, esgotamento:12, estresse:7};
-const pcts = (() => { const p = localStorage.getItem('zenia_pcts'); return p ? JSON.parse(p) : {ans:40,esg:60,est:35}; })();
-const total = parseInt(localStorage.getItem('zenia_total') || '27');
+const scores = rawScores ? JSON.parse(rawScores) : {ansiedade:0,esgotamento:0,estresse:0};
+const pcts = (() => { try { return JSON.parse(localStorage.getItem('zenia_pcts')) || {ans:0,esg:0,est:0}; } catch(e){ return {ans:0,esg:0,est:0}; }})();
+const total = parseInt(localStorage.getItem('zenia_total') || '0');
+const xpTotal = parseInt(localStorage.getItem('zenia_xp') || '0');
+const quizStatus = localStorage.getItem('zenia_quiz_status') || 'nao_iniciado';
+const quizData = localStorage.getItem('zenia_quiz_data') || '—';
 
 function getResultLabel(t) {
-  if (t === 0) return {label:'Perfeito 🌟', desc:'Seus indicadores estão zerados. Continue com esse equilíbrio incrível!'};
-  if (t <= 30) return {label:'Equilibrado ✨', desc:'Você demonstra um bom equilíbrio emocional. Continue cuidando da sua saúde!'};
-  if (t <= 60) return {label:'Atenção moderada 🧐', desc:'Alguns pontos merecem atenção. Veja as recomendações personalizadas para você.'};
-  return {label:'Cuidado necessário 💪', desc:'Seus resultados indicam sobrecarga emocional. É importante cuidar de você agora.'};
+  if (t === 0) return {label:'Sem sinais 🌟',desc:'Seus indicadores estão zerados. Ótimo equilíbrio emocional!'};
+  if (t <= 30) return {label:'Equilibrado ✨',desc:'Você demonstra bom equilíbrio emocional. Continue cuidando de você!'};
+  if (t <= 60) return {label:'Atenção moderada 🧐',desc:'Alguns pontos merecem cuidado. Veja as recomendações personalizadas.'};
+  return {label:'Atenção elevada 💪',desc:'Seus resultados indicam sobrecarga. Considere falar com um profissional.'};
 }
 
 function getTopArea() {
   const s = scores;
   if (s.ansiedade >= s.esgotamento && s.ansiedade >= s.estresse) return 'Ansiedade';
   if (s.esgotamento >= s.ansiedade && s.esgotamento >= s.estresse) return 'Esgotamento';
-  return 'Estresse';
+  if (s.estresse > 0) return 'Estresse';
+  return '—';
 }
 
 const result = getResultLabel(total);
 const topArea = getTopArea();
 
-// ── ATUALIZA DASHBOARDS ───────────────────────────────────────
-['fem','masc','neutro'].forEach(theme => {
-  const dash = document.getElementById(theme);
-  if (!dash) return;
-  const titleEl = dash.querySelector('.result-title');
-  const descEl  = dash.querySelector('.result-desc');
+// Atualiza dashboards
+['fem','masc','neutro'].forEach(t => {
+  const d = document.getElementById(t);
+  if (!d) return;
+  const titleEl = d.querySelector('.result-title');
+  const descEl = d.querySelector('.result-desc');
   if (titleEl) titleEl.textContent = result.label;
-  if (descEl)  descEl.textContent  = result.desc;
-  const circumference = 339.3;
-  const fraction = Math.min(total / 75, 1);
-  const dashArr = fraction === 0 ? '0 339.3' : `${fraction * circumference} ${circumference}`;
-  const donutFill = dash.querySelector('.donut-fill');
-  if (donutFill) {
-    donutFill.setAttribute('stroke-dasharray', dashArr);
-    if (total > 60) donutFill.style.stroke = theme === 'masc' ? '#f87171' : '#f43f5e';
-  }
-  const donutNum = dash.querySelector('.donut-num');
-  if (donutNum) donutNum.textContent = total;
-  const barCols = dash.querySelectorAll('.bar-col');
-  const catValues = [scores.ansiedade, scores.esgotamento, scores.estresse];
-  barCols.forEach((col, i) => {
-    const val = catValues[i] ?? 0;
-    const bar = col.querySelector('.bar');
-    const valEl = col.querySelector('.bar-val');
-    if (bar) bar.style.height = Math.max((val / 25) * 100, 4) + '%';
-    if (valEl) valEl.textContent = val;
+  if (descEl) descEl.textContent = result.desc;
+  const circ = 339.3;
+  const frac = Math.min(total / 75, 1);
+  const da = frac === 0 ? '0 339.3' : (frac * circ) + ' ' + circ;
+  const donut = d.querySelector('.donut-fill');
+  if (donut) donut.setAttribute('stroke-dasharray', da);
+  const dnum = d.querySelector('.donut-num');
+  if (dnum) dnum.textContent = total;
+  const catVals = [scores.ansiedade, scores.esgotamento, scores.estresse];
+  const keys = ['ans','esg','est'];
+  keys.forEach((k,i) => {
+    const v = catVals[i] || 0;
+    const barEl = document.getElementById(t + '-b-' + k);
+    const valEl = document.getElementById(t + '-v-' + k);
+    if (barEl) barEl.style.height = Math.max((v/25)*100, 4) + '%';
+    if (valEl) valEl.textContent = v;
   });
-  const noteStrong = dash.querySelectorAll('.chart-note strong, .attention-name');
-  noteStrong.forEach(el => { el.textContent = topArea; });
+  const topEl = document.getElementById(t + '-top');
+  const attnEl = document.getElementById(t + '-attn');
+  if (topEl) topEl.textContent = topArea;
+  if (attnEl) attnEl.textContent = topArea;
 });
 
-// ── NAVEGAÇÃO SIDEBAR ─────────────────────────────────────────
+// NAVEGAÇÃO
+function navTo(label, dashId) {
+  const dash = document.getElementById(dashId);
+  if (!dash) return;
+  dash.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  dash.querySelectorAll('.sb-item').forEach(i => {
+    if (i.textContent.includes(label)) i.classList.add('active');
+  });
+  showPanel(label, dash);
+}
+
+function showPanel(label, dash) {
+  const mainItems = dash.querySelectorAll('.main > *:not(.tab-panel):not(.rec-panel)');
+  const allPanels = dash.querySelectorAll('.tab-panel, .rec-panel');
+  allPanels.forEach(p => p.classList.remove('visible'));
+  if (label === 'Visão geral') {
+    mainItems.forEach(el => el.style.display = '');
+  } else if (label === 'Avaliações') {
+    location.href = 'quiz.html';
+  } else {
+    mainItems.forEach(el => el.style.display = 'none');
+    const map = {'Recomendações':'rec-panel','Histórico':'panel-historico','Exercícios':'panel-exercicios','Conquistas':'panel-conquistas','Configurações':'panel-config'};
+    for (const [key, cls] of Object.entries(map)) {
+      if (label.includes(key)) {
+        const p = dash.querySelector('.' + cls);
+        if (p) p.classList.add('visible');
+        break;
+      }
+    }
+  }
+}
+
 document.querySelectorAll('.sb-item').forEach(item => {
   item.addEventListener('click', e => {
     e.preventDefault();
     const label = item.textContent.trim();
-    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
     const dash = document.querySelector('.dash.active');
     if (!dash) return;
-    const mainArea  = dash.querySelector('.main');
-    const recPanel  = dash.querySelector('.rec-panel');
-    const mainItems = dash.querySelectorAll('.main > *:not(.rec-panel)');
-    if (label.includes('Recomendações')) {
-      mainItems.forEach(el => el.style.display = 'none');
-      if (recPanel) recPanel.classList.add('visible');
-    } else if (label.includes('Avaliações')) {
-      window.location.href = 'quiz.html';
-    } else {
-      mainItems.forEach(el => el.style.display = '');
-      if (recPanel) recPanel.classList.remove('visible');
-    }
+    dash.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    showPanel(label, dash);
   });
 });
 
-// ── INJETA PAINEL RECOMENDAÇÕES ───────────────────────────────
-function buildRecPanel(dash) {
-  const sorted = Object.entries({ansiedade: pcts.ans||0, esgotamento: pcts.esg||0, estresse: pcts.est||0})
-    .sort((a,b) => b[1]-a[1]);
+// INJETAR PAINÉIS
+function buildPanels(dash) {
+  const t = dash.id;
+  const isDark = t === 'masc';
+  const cardBg = isDark ? '#0d1220' : 'white';
+  const cardBorder = isDark ? 'rgba(255,255,255,.07)' : '#ede9fe';
+  const textColor = isDark ? '#e0e7ff' : '#1a0a3d';
+  const mutedColor = isDark ? 'rgba(255,255,255,.4)' : '#9ca3af';
+  const primaryColor = isDark ? '#818cf8' : '#7c3aed';
+  const btnBg = isDark ? 'rgba(99,102,241,.2)' : '#ede9fe';
+  const btnColor = isDark ? '#a5b4fc' : '#5b21b6';
 
-  const catLabels = {ansiedade:'😰 Ansiedade', esgotamento:'🪫 Esgotamento', estresse:'🤯 Estresse'};
-
-  let html = '';
-  sorted.forEach(([cat, pct], idx) => {
+  // RECOMENDAÇÕES
+  const sorted = Object.entries({ansiedade:pcts.ans||0,esgotamento:pcts.esg||0,estresse:pcts.est||0}).sort((a,b)=>b[1]-a[1]);
+  const catLabels = {ansiedade:'😰 Ansiedade',esgotamento:'🪫 Esgotamento',estresse:'🤯 Estresse'};
+  let recHTML = '';
+  sorted.forEach(([cat,pct],idx) => {
     const recs = REC_DATA[cat] || [];
-    html += '<div>';
-    html += '<div class="rec-section-title">' + catLabels[cat] + ' — ' + pct + '%' + (idx===0?' · Maior atenção':'') + '</div>';
-    html += '<div class="rec-cards">';
+    recHTML += '<div><div class="rec-section-title" style="color:' + primaryColor + '">' + catLabels[cat] + ' — ' + pct + '%' + (idx===0?' · Maior atenção':'') + '</div><div class="rec-cards">';
     recs.forEach(r => {
-      html += '<div class="rec-card">';
-      if (idx===0) html += '<span class="rec-priority">PRIORIDADE</span>';
-      html += '<div class="rec-card-head"><span class="rec-card-icon">' + r.icon + '</span><span class="rec-card-title">' + r.title + '</span></div>';
-      html += '<div class="rec-card-desc">' + r.desc + '</div>';
-      html += '<div class="rec-card-source">' + r.source + '</div>';
-      html += '</div>';
+      recHTML += '<div class="rec-card" style="background:' + cardBg + ';border-color:' + cardBorder + '">';
+      if (idx===0) recHTML += '<span class="rec-priority" style="background:' + btnBg + ';color:' + btnColor + '">PRIORIDADE</span>';
+      recHTML += '<div class="rec-card-head"><span class="rec-card-icon">' + r.icon + '</span><span class="rec-card-title" style="color:' + textColor + '">' + r.title + '</span></div>';
+      recHTML += '<div class="rec-card-desc" style="color:' + mutedColor + '">' + r.desc + '</div>';
+      recHTML += '<div class="rec-card-source" style="color:' + primaryColor + '">' + r.source + '</div></div>';
     });
-    html += '</div></div>';
+    recHTML += '</div></div>';
   });
+  const recPanel = document.createElement('div');
+  recPanel.className = 'rec-panel';
+  recPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">📋 Suas Recomendações</div><p class="tab-sub">Ordenadas pela área que mais precisa de atenção.</p>' + recHTML;
+  dash.querySelector('.main').appendChild(recPanel);
 
-  const panel = document.createElement('div');
-  panel.className = 'rec-panel';
-  panel.innerHTML = '<div class="rec-panel-title">📋 Suas Recomendações</div><p class="rec-panel-sub">Ordenadas pela área que mais precisa de atenção com base no seu resultado.</p>' + html;
-  dash.querySelector('.main').appendChild(panel);
+  // HISTÓRICO
+  let histContent = '';
+  if (!quizStatus || quizStatus === 'nao_iniciado') {
+    histContent = '<div class="hist-empty" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="hist-empty-icon">📋</div><div class="hist-empty-title" style="color:' + textColor + '">Avaliação não iniciada</div><div class="hist-empty-sub">Você ainda não fez nenhuma avaliação.</div><button class="cfg-btn cfg-btn-primary" onclick="location.href=\'quiz.html\'">Fazer avaliação →</button></div>';
+  } else if (quizStatus === 'nao_completado' || quizStatus === 'em_progresso') {
+    histContent = '<div class="hist-empty" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="hist-empty-icon">⏳</div><div class="hist-empty-title" style="color:' + textColor + '">Avaliação não completada</div><div class="hist-empty-sub">Você começou mas não terminou. Continue!</div><button class="cfg-btn cfg-btn-primary" onclick="location.href=\'quiz.html\'">Continuar →</button></div>';
+  } else {
+    const avg = Math.round((pcts.ans+pcts.esg+pcts.est)/3);
+    const icon = avg===0?'🌟':avg<=30?'😊':avg<=60?'🧐':'💪';
+    const title = avg===0?'Sem sinais':avg<=30?'Equilibrado':avg<=60?'Atenção moderada':'Atenção elevada';
+    histContent = '<div class="hist-card" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="hist-icon">' + icon + '</div><div style="flex:1"><div class="hist-date" style="color:' + primaryColor + '">' + quizData + '</div><div class="hist-title" style="color:' + textColor + '">' + title + '</div><div class="hist-bars"><div class="hist-bar-row"><span class="hist-bar-label" style="color:' + mutedColor + '">😰 Ansiedade</span><div class="hist-bar-track"><div class="hist-bar-fill" style="width:' + pcts.ans + '%;background:linear-gradient(90deg,#f472b6,#ec4899)"></div></div><span class="hist-bar-val" style="color:' + primaryColor + '">' + pcts.ans + '%</span></div><div class="hist-bar-row"><span class="hist-bar-label" style="color:' + mutedColor + '">🪫 Esgotamento</span><div class="hist-bar-track"><div class="hist-bar-fill" style="width:' + pcts.esg + '%;background:linear-gradient(90deg,#c084fc,#7c3aed)"></div></div><span class="hist-bar-val" style="color:' + primaryColor + '">' + pcts.esg + '%</span></div><div class="hist-bar-row"><span class="hist-bar-label" style="color:' + mutedColor + '">🤯 Estresse</span><div class="hist-bar-track"><div class="hist-bar-fill" style="width:' + pcts.est + '%;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div></div><span class="hist-bar-val" style="color:' + primaryColor + '">' + pcts.est + '%</span></div></div></div></div>';
+  }
+  const histPanel = document.createElement('div');
+  histPanel.className = 'tab-panel panel-historico';
+  histPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">📊 Histórico</div><p class="tab-sub">Acompanhe sua evolução ao longo do tempo.</p>' + histContent;
+  dash.querySelector('.main').appendChild(histPanel);
+
+  // EXERCÍCIOS
+  const exs = [
+    {icon:'🌬️',title:'Respiração 4-7-8',sub:'Ativa o nervo vago e reduz cortisol em minutos',source:'Dr. Andrew Weil · Harvard',url:'quiz.html'},
+    {icon:'🌱',title:'Grounding 5-4-3-2-1',sub:'Ancora a mente no presente',source:'Terapia Cognitivo-Comportamental',url:'quiz.html'},
+    {icon:'💪',title:'Relaxamento Muscular',sub:'Libera tensão física acumulada',source:'Edmund Jacobson (1929)',url:'quiz.html'},
+    {icon:'📓',title:'Diário guiado',sub:'Reduz ansiedade em até 33%',source:'Penn State Worry Questionnaire',url:'quiz.html'},
+  ];
+  const exHTML = exs.map(e => '<div class="ex-card" style="background:' + cardBg + ';border-color:' + cardBorder + '" onclick="location.href=\'' + e.url + '\'"><div class="ex-icon">' + e.icon + '</div><div class="ex-title" style="color:' + textColor + '">' + e.title + '</div><div class="ex-sub" style="color:' + mutedColor + '">' + e.sub + '</div><div class="ex-source" style="color:' + primaryColor + '">' + e.source + '</div><button class="ex-btn" style="background:' + btnBg + ';color:' + btnColor + '">Praticar agora</button></div>').join('');
+  const exPanel = document.createElement('div');
+  exPanel.className = 'tab-panel panel-exercicios';
+  exPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">🧩 Exercícios</div><p class="tab-sub">Pratique agora — baseado em ciência.</p><div class="ex-grid">' + exHTML + '</div>';
+  dash.querySelector('.main').appendChild(exPanel);
+
+  // CONQUISTAS
+  const conquistas = [
+    {icon:'🌱',title:'Primeiro passo',sub:'Complete sua primeira avaliação',unlocked:quizStatus==='concluido'},
+    {icon:'🔥',title:'Dedicado',sub:'Complete 3 avaliações',unlocked:false},
+    {icon:'🧘',title:'Zen master',sub:'Complete todas as atividades',unlocked:xpTotal>=80},
+    {icon:'⭐',title:'Colecionador de XP',sub:'Acumule 100 XP',unlocked:xpTotal>=100},
+    {icon:'💪',title:'Guerreiro',sub:'Acumule 200 XP',unlocked:xpTotal>=200},
+    {icon:'🏆',title:'Campeão',sub:'Complete 10 avaliações',unlocked:false},
+  ];
+  const conqHTML = conquistas.map(c => '<div class="conq-card ' + (c.unlocked?'':'locked') + '" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="conq-icon">' + c.icon + '</div><div class="conq-title" style="color:' + textColor + '">' + c.title + '</div><div class="conq-sub" style="color:' + mutedColor + '">' + c.sub + '</div><span class="conq-badge" style="background:' + btnBg + ';color:' + btnColor + '">' + (c.unlocked?'✅ Conquistado':'🔒 Bloqueado') + '</span></div>').join('');
+  const conqPanel = document.createElement('div');
+  conqPanel.className = 'tab-panel panel-conquistas';
+  conqPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">🏆 Conquistas</div><p class="tab-sub">Você tem ' + xpTotal + ' XP acumulados.</p><div class="conq-grid">' + conqHTML + '</div>';
+  dash.querySelector('.main').appendChild(conqPanel);
+
+  // CONFIGURAÇÕES
+  const nomeAtual = localStorage.getItem('zenia_user_nome') || '';
+  const cfgPanel = document.createElement('div');
+  cfgPanel.className = 'tab-panel panel-config';
+  cfgPanel.innerHTML = '<div class="tab-title" style="color:' + primaryColor + '">⚙️ Configurações</div><p class="tab-sub">Gerencie sua conta.</p>' +
+    '<div class="cfg-section" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="cfg-title">👤 Seus dados</div><div class="cfg-field"><label class="cfg-label" style="color:' + textColor + '">Nome</label><input class="cfg-input" id="cfg-nome-' + t + '" value="' + nomeAtual + '" placeholder="Seu nome" style="background:' + (isDark?'#161f35':'#f8f7ff') + ';color:' + textColor + ';border-color:' + cardBorder + '"></div><button class="cfg-btn cfg-btn-primary" onclick="salvarNome(\'' + t + '\')">Salvar</button></div>' +
+    '<div class="cfg-section" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="cfg-title">🔒 Recuperar senha</div><div class="cfg-field"><label class="cfg-label" style="color:' + textColor + '">E-mail cadastrado</label><input class="cfg-input" id="cfg-email-' + t + '" placeholder="seu@email.com" style="background:' + (isDark?'#161f35':'#f8f7ff') + ';color:' + textColor + ';border-color:' + cardBorder + '"></div><button class="cfg-btn cfg-btn-primary" onclick="recuperarSenha(\'' + t + '\')">Enviar link</button></div>' +
+    '<div class="cfg-section" style="background:' + cardBg + ';border-color:' + cardBorder + '"><div class="cfg-title" style="color:#dc2626">⚠️ Conta</div><button class="cfg-btn cfg-btn-danger" onclick="sairConta()">Sair da conta</button></div>';
+  dash.querySelector('.main').appendChild(cfgPanel);
 }
 
 ['fem','masc','neutro'].forEach(theme => {
   const dash = document.getElementById(theme);
-  if (dash) buildRecPanel(dash);
+  if (dash) buildPanels(dash);
 });
 
-// ── IR DIRETO PARA RECOMENDAÇÕES se vier do quiz ──────────────
+// FUNÇÕES
+function salvarNome(t) {
+  const nome = document.getElementById('cfg-nome-' + t).value.trim();
+  if (!nome) { alert('Digite um nome válido!'); return; }
+  localStorage.setItem('zenia_user_nome', nome);
+  ['fem','masc','neutro'].forEach(x => {
+    const el = document.getElementById(x + '-nome');
+    if (el) el.textContent = 'Olá, ' + nome + '! 👋';
+  });
+  alert('Nome salvo! ✅');
+}
+
+function recuperarSenha(t) {
+  const email = document.getElementById('cfg-email-' + t).value.trim();
+  if (!email) { alert('Digite seu e-mail!'); return; }
+  alert('Se esse e-mail estiver cadastrado, você receberá um link em breve. 📧');
+}
+
+function sairConta() {
+  if (confirm('Tem certeza que deseja sair?')) {
+    localStorage.clear();
+    location.href = 'cadastro.html';
+  }
+}
+
+// IR PARA RECOMENDAÇÕES se vier do quiz
 if (localStorage.getItem('zenia_goto') === 'recomendacoes') {
   localStorage.removeItem('zenia_goto');
-  setTimeout(() => {
-    const recBtn = activeDash.querySelector('.sb-item:nth-child(4)');
-    if (recBtn) recBtn.click();
-  }, 300);
+  setTimeout(() => navTo('Recomendações', themeId), 300);
 }
 </script>
 </body>
