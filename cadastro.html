@@ -111,6 +111,11 @@ html,body{height:100%;font-family:'DM Sans',sans-serif}
 .login-link{text-align:center;margin-top:16px;font-size:13px;color:var(--muted)}
 .login-link a{color:var(--purple);font-weight:600;text-decoration:none}
 
+.tabs{display:flex;gap:0;margin-bottom:24px;border-bottom:2px solid #E5E3F0}
+.tab-btn{flex:1;padding:12px;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;color:#9ca3af;cursor:pointer;transition:all .2s}
+.tab-btn.active{color:#7c3aed;border-bottom-color:#7c3aed}
+.tab-btn:hover{color:#7c3aed}
+
 /* HOME SCREENS */
 .home-screen{display:none;flex-direction:column;min-height:100vh;animation:fadeIn .6s ease both}
 .home-screen.active{display:flex}
@@ -234,42 +239,66 @@ html,body{height:100%;font-family:'DM Sans',sans-serif}
 
     <!-- DIREITA: BRANCO -->
     <div class="panel-branco">
-      <div class="form-title">Criar sua conta ✨</div>
-      <div class="form-sub">É rápido, fácil e gratuito!</div>
 
-      <div class="field">
-        <span class="field-icon">👤</span>
-        <input type="text" id="name" placeholder="Nome completo">
-      </div>
-      <div class="field">
-        <span class="field-icon">✉️</span>
-        <input type="email" id="email" placeholder="E-mail">
-      </div>
-      <div class="field">
-        <span class="field-icon">🔒</span>
-        <input type="password" id="pwd" placeholder="Senha" oninput="updateStrength(this.value)">
-        <button class="eye-btn" onclick="togglePwd('pwd',this)" type="button">👁️</button>
-      </div>
-      <div class="pwd-hint">A senha deve conter pelo menos 6 caracteres.</div>
-      <div class="strength-bar"><div class="strength-fill" id="sfill"></div></div>
-      <div class="field">
-        <span class="field-icon">🛡️</span>
-        <input type="password" id="pwd2" placeholder="Confirmar senha">
-        <button class="eye-btn" onclick="togglePwd('pwd2',this)" type="button">👁️</button>
+      <!-- ABAS -->
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-cadastro" onclick="switchTab('cadastro')">Criar conta</button>
+        <button class="tab-btn" id="tab-login" onclick="switchTab('login')">Entrar</button>
       </div>
 
-      <div class="gender-label">Sexo</div>
-      <div class="gender-group">
-        <button class="gender-btn" data-g="feminino" onclick="selGender(this)">♀ Feminino</button>
-        <button class="gender-btn" data-g="masculino" onclick="selGender(this)">♂ Masculino</button>
-        <button class="gender-btn" data-g="neutro" onclick="selGender(this)">◯ Prefiro não informar</button>
+      <!-- FORMULÁRIO CADASTRO -->
+      <div id="form-cadastro">
+        <div class="form-sub" style="margin-bottom:20px">É rápido, fácil e gratuito! ✨</div>
+        <div class="field">
+          <span class="field-icon">👤</span>
+          <input type="text" id="name" placeholder="Nome completo">
+        </div>
+        <div class="field">
+          <span class="field-icon">✉️</span>
+          <input type="email" id="email" placeholder="E-mail">
+        </div>
+        <div class="field">
+          <span class="field-icon">🔒</span>
+          <input type="password" id="pwd" placeholder="Senha" oninput="updateStrength(this.value)">
+          <button class="eye-btn" onclick="togglePwd('pwd',this)" type="button">👁️</button>
+        </div>
+        <div class="pwd-hint">A senha deve conter pelo menos 6 caracteres.</div>
+        <div class="strength-bar"><div class="strength-fill" id="sfill"></div></div>
+        <div class="field">
+          <span class="field-icon">🛡️</span>
+          <input type="password" id="pwd2" placeholder="Confirmar senha">
+          <button class="eye-btn" onclick="togglePwd('pwd2',this)" type="button">👁️</button>
+        </div>
+        <div class="gender-label">Sexo</div>
+        <div class="gender-group">
+          <button class="gender-btn" data-g="feminino" onclick="selGender(this)">♀ Feminino</button>
+          <button class="gender-btn" data-g="masculino" onclick="selGender(this)">♂ Masculino</button>
+          <button class="gender-btn" data-g="neutro" onclick="selGender(this)">◯ Prefiro não informar</button>
+        </div>
+        <button class="btn-primary" onclick="signup()">Criar conta →</button>
+        <div class="login-link" style="margin-top:14px">Já tem uma conta? <a href="#" onclick="switchTab('login')">Entrar</a></div>
       </div>
 
-      <button class="btn-primary" onclick="signup()">Criar conta →</button>
+      <!-- FORMULÁRIO LOGIN -->
+      <div id="form-login" style="display:none">
+        <div class="form-sub" style="margin-bottom:20px">Bem-vinda de volta! 👋</div>
+        <div class="field">
+          <span class="field-icon">✉️</span>
+          <input type="email" id="login-email" placeholder="E-mail">
+        </div>
+        <div class="field">
+          <span class="field-icon">🔒</span>
+          <input type="password" id="login-pwd" placeholder="Senha">
+          <button class="eye-btn" onclick="togglePwd('login-pwd',this)" type="button">👁️</button>
+        </div>
+        <div style="text-align:right;margin-bottom:16px">
+          <a href="#" onclick="recuperarSenhaEmail()" style="font-size:12px;color:#7c3aed;font-weight:600;text-decoration:none">Esqueci minha senha</a>
+        </div>
+        <button class="btn-primary" onclick="fazerLogin()">Entrar →</button>
+        <div class="login-link" style="margin-top:14px">Não tem conta? <a href="#" onclick="switchTab('cadastro')">Criar conta</a></div>
+      </div>
 
-      <div class="login-link">Já tem uma conta? <a href="#" onclick="fazerLogin()">Fazer login</a></div>
     </div>
-
   </div>
 </div>
 
@@ -436,27 +465,42 @@ window.signup = async function() {
   }
 }
 
-window.goBack = function() {
-  document.querySelectorAll('.home-screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('signup').classList.add('active');
-  window.scrollTo(0,0);
+window.switchTab = function(tab) {
+  document.getElementById('form-cadastro').style.display = tab === 'cadastro' ? 'block' : 'none';
+  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('tab-cadastro').classList.toggle('active', tab === 'cadastro');
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
 }
 
-// LOGIN (para o link "Fazer login")
+window.recuperarSenhaEmail = async function() {
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) { alert('Digite seu e-mail no campo acima primeiro.'); return; }
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  if (error) { alert('Erro ao enviar e-mail: ' + error.message); return; }
+  alert('Link de recuperação enviado para ' + email + ' 📧');
+}
+
+// LOGIN
 window.fazerLogin = async function() {
-  const email = prompt('Digite seu e-mail:');
-  if (!email) return;
-  const senha = prompt('Digite sua senha:');
-  if (!senha) return;
+  const email = document.getElementById('login-email').value.trim();
+  const senha = document.getElementById('login-pwd').value;
+
+  if (!email) { alert('Digite seu e-mail.'); return; }
+  if (!senha) { alert('Digite sua senha.'); return; }
+
+  const btn = document.querySelectorAll('.btn-primary')[1];
+  btn.textContent = 'Entrando...';
+  btn.disabled = true;
 
   const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
 
   if (error) {
     alert('E-mail ou senha incorretos.');
+    btn.textContent = 'Entrar →';
+    btn.disabled = false;
     return;
   }
 
-  // Busca perfil
   const { data: perfil } = await supabase.from('perfis').select('*').eq('id', data.user.id).single();
   if (perfil) {
     localStorage.setItem('zenia_gender', perfil.genero || 'feminino');
