@@ -637,11 +637,16 @@ function navTo(label, dashId) {
 function showPanel(label, dash) {
   const mainItems = dash.querySelectorAll('.main > *:not(.tab-panel):not(.rec-panel)');
   const allPanels = dash.querySelectorAll('.tab-panel, .rec-panel');
-  allPanels.forEach(p => p.classList.remove('visible'));
-  if (label === 'Visão geral') {
-    mainItems.forEach(el => el.style.display = '');
-  } else if (label === 'Avaliações') {
+
+  if (label.includes('Avaliações')) {
     location.href = 'quiz.html';
+    return;
+  }
+
+  allPanels.forEach(p => p.classList.remove('visible'));
+
+  if (label.includes('Visão geral')) {
+    mainItems.forEach(el => el.style.display = '');
   } else {
     mainItems.forEach(el => el.style.display = 'none');
     const map = {'Recomendações':'rec-panel','Histórico':'panel-historico','Exercícios':'panel-exercicios','Conquistas':'panel-conquistas','Configurações':'panel-config'};
