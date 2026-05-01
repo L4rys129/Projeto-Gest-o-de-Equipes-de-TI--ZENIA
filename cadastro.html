@@ -361,10 +361,49 @@ function updateStrength(v){
   if(!v.length)w=0;
   f.style.width=w+'%';f.style.background=c;
 }
-function signup(){
+async function signup(){
   if(!gender){alert('Por favor, selecione o campo Sexo para continuar.');return;}
-  localStorage.setItem('zenia_gender', gender);
-  window.location.href = 'index.html';
+  
+  const nome = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('pwd').value;
+  const senha2 = document.getElementById('pwd2').value;
+
+  // Validações
+  if(!nome){alert('Por favor, preencha seu nome.');return;}
+  if(!email){alert('Por favor, preencha seu e-mail.');return;}
+  if(senha.length < 6){alert('A senha deve ter pelo menos 6 caracteres.');return;}
+  if(senha !== senha2){alert('As senhas não coincidem.');return;}
+
+  try {
+    // Importa o supabase
+    const { supabase } = await import('./supabase.js');
+
+    // Salva no banco
+    const { data, error } = await supabase
+      .from('usuarios')
+      .insert([{ nome, email, senha, genero: gender }])
+      .select();
+
+    if(error){
+      if(error.code === '23505'){
+        alert('Este e-mail já está cadastrado!');
+      } else {
+        alert('Erro ao cadastrar: ' + error.message);
+      }
+      return;
+    }
+
+    // Salva o ID do usuário localmente
+    localStorage.setItem('zenia_gender', gender);
+    localStorage.setItem('zenia_user_id', data[0].id);
+    localStorage.setItem('zenia_user_nome', nome);
+    window.location.href = 'quiz.html';
+
+  } catch(err) {
+    console.error(err);
+    alert('Erro de conexão. Tente novamente.');
+  }
 }
 function goBack(){
   document.querySelectorAll('.home-screen').forEach(s=>s.classList.remove('active'));
